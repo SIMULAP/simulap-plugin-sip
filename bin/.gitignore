@@ -1,0 +1,6 @@
+**/*.class
+**/*.md.html
+/target/
+/.classpath
+/.project
+/src/
