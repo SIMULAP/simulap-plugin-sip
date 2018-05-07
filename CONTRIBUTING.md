@@ -87,21 +87,21 @@ In the following, we distinguish three roles :
 ## Contributor
 
 
-#### __Step 1__ : fork https://github.hpe.com/SIMULAP/simulap-plugin-sip
+#### __Step 1__ : fork https://github.com/SIMULAP/simulap-plugin-sip
 
-You obtain a new public github repository  : https://github.hpe.com/MY_USERNAME/simulap-plugin-sip .
-In the following , https://github.hpe.com/SIMULAP/simulap-plugin-sip is called the __upstream__ while https://github.hpe.com/MY_USERNAME/simulap-plugin-sip is called the __origin__
+You obtain a new public github repository  : https://github.com/MY_USERNAME/simulap-plugin-sip .
+In the following , https://github.com/SIMULAP/simulap-plugin-sip is called the __upstream__ while https://github.com/MY_USERNAME/simulap-plugin-sip is called the __origin__
 
-#### __Step 2__ : create a local clone of https://github.hpe.com/MY_USERNAME/simulap-plugin-sip
+#### __Step 2__ : create a local clone of https://github.com/MY_USERNAME/simulap-plugin-sip
 
 ```
-prompt> git clone  git@github.hpe.com:MY_USERNAME/simulap-plugin-sip.git
+prompt> git clone  git@github.com:MY_USERNAME/simulap-plugin-sip.git
 ```
 
 #### __Step 3__ : add upstream as a remote repository 
  
  ```
-prompt> git add remote upstream  git@github.hpe.com:SIMULAP/simulap-plugin-sip.git
+prompt> git add remote upstream  git@github.com:SIMULAP/simulap-plugin-sip.git
 prompt> git remote -v    # list the remote
 
 ```
@@ -141,7 +141,7 @@ prompt> git push origin feature/myFeature         # push branch to origin
 A pull request is a relationship object between  "feature/myFeature branch on origin" and "master branch on upstream".
 Contributor has to create the pull request on origin. It automatically propagates the pull request on upstream, and notify upstream committers so as she/he can review it and treat it .
 
-To create the pull request on origin, please navigate to https://github.hpe.com/MY_USERNAME/simulap-plugin-sip .
+To create the pull request on origin, please navigate to https://github.com/MY_USERNAME/simulap-plugin-sip .
 A new button __Compare & pull request__ appeared under __code__ tab which offers the possibility to create a pull request for your newly pushed branch feature/myFeature.
 A comparison will be made with upstream/master branch to see if merge is possible.
 You have the possibility to enter comments, to explain why your code is worth merging with upstream/master branch.
@@ -177,12 +177,12 @@ If contributor wants to work on a new feature, he has to come back to step 4 to 
 
 ### Manage Release branch
 
-As a committer, integrator can directly clone the native blessed repository https://github.hpe.com/SIMULAP/simulap-plugin-sip.  No needs to fork a repository on github first. In the following, native blessed repository https://github.hpe.com/SIMULAP/simulap-plugin-sip will be called __origin__ while clone will be called __local__.
+As a committer, integrator can directly clone the native blessed repository https://github.com/SIMULAP/simulap-plugin-sip.  No needs to fork a repository on github first. In the following, native blessed repository https://github.com/SIMULAP/simulap-plugin-sip will be called __origin__ while clone will be called __local__.
 
-#### __Step 1__ : create a local clone of https://github.hpe.com/SIMULAP/simulap-plugin-sip
+#### __Step 1__ : create a local clone of https://github.com/SIMULAP/simulap-plugin-sip
 
 ```
-prompt> git clone  git@github.hpe.com:SIMULAP/simulap-plugin-sip.git # create a local copy of https://github.hpe.com/SIMULAP/simulap-plugin-sip
+prompt> git clone  git@github.com:SIMULAP/simulap-plugin-sip.git # create a local copy of https://github.com/SIMULAP/simulap-plugin-sip
 ```
 
 #### __Step 2__ : create a local release branch release/myRelease from local master branch
@@ -217,7 +217,7 @@ prompt> git push --tags origin release/myRelease  # push release/myRelease with 
 
 #### __Step 6__ : create a pull request on origin
 
-To create the pull request on origin, please navigate to https://github.hpe.com/SIMULAP/simulap-plugin-sip .
+To create the pull request on origin, please navigate to https://github.com/SIMULAP/simulap-plugin-sip .
 A new button __Compare & pull request__ appeared under __code__ tab which offers the possibility to create a pull request for your newly pushed branch release/Release.
 A comparison will be made with origin/master branch to see if merge is possible.
 You have the possibility to enter comments, to explain why your code is worth merging with upstream/master branch. It can be for instance a summary of myRelease content.
