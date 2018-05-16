@@ -101,7 +101,7 @@ prompt> git clone  git@github.com:MY_USERNAME/simulap-plugin-sip.git
 #### __Step 3__ : add upstream as a remote repository 
  
  ```
-prompt> git add remote upstream  git@github.com:SIMULAP/simulap-plugin-sip.git
+prompt> git remote add upstream  git@github.com:SIMULAP/simulap-plugin-sip.git
 prompt> git remote -v    # list the remote
 
 ```
