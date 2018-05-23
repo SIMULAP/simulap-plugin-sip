@@ -12,7 +12,7 @@ import gov.nist.javax.sip.stack.SIPServerTransactionImpl;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+//import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -83,7 +83,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
     private static final long serialVersionUID = 9000864455912232864L;
     private static final String MISSING = "NODEF:";
     private SipNodeContext sipNodeContext = null;
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:HH:mm:ss.SSS");
+//    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:HH:mm:ss.SSS");
     private String sipNodeName = null;
     private String direction = null;
     private boolean isRequest;
@@ -702,7 +702,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             inviteTid.sendRequest();
             
             if ("INVITE".equals(command)) {
-            	if ( _logger.isWarnEnabled()) _logger.warn("SND INVITE : " + request.getHeader("Call-ID").toString().substring("Call-ID: ".length()).replaceAll("\\r|\\n", "")+ ", From = " + request.getHeader("From").toString().replaceAll("\\r|\\n", "")+ ", From = " + request.getHeader("To").toString().replaceAll("\\r|\\n", "") + "," + LocalDateTime.now().format(formatter));
+//            	if ( _logger.isWarnEnabled()) _logger.warn("SND INVITE : " + request.getHeader("Call-ID").toString().substring("Call-ID: ".length()).replaceAll("\\r|\\n", "")+ ", From = " + request.getHeader("From").toString().replaceAll("\\r|\\n", "")+ ", From = " + request.getHeader("To").toString().replaceAll("\\r|\\n", "") + "," + LocalDateTime.now().format(formatter));
     		}
 
 
@@ -1736,7 +1736,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                     if (_logger.isDebugEnabled()) _logger.debug("incoming request callid "+callid+ ".");
                     
                     if ("INVITE".equals(rcvReq.getMethod())) {
-                    	if ( _logger.isWarnEnabled()) _logger.warn("RCV INVITE : " + rcvReq.getHeader("Call-ID").toString().substring("Call-ID: ".length()).replaceAll("\\r|\\n", "")+ ", From = " + rcvReq.getHeader("From").toString().replaceAll("\\r|\\n", "")+ ", From = " + rcvReq.getHeader("To").toString().replaceAll("\\r|\\n", "") + "," + LocalDateTime.now().format(formatter));
+//                    	if ( _logger.isWarnEnabled()) _logger.warn("RCV INVITE : " + rcvReq.getHeader("Call-ID").toString().substring("Call-ID: ".length()).replaceAll("\\r|\\n", "")+ ", From = " + rcvReq.getHeader("From").toString().replaceAll("\\r|\\n", "")+ ", From = " + rcvReq.getHeader("To").toString().replaceAll("\\r|\\n", "") + "," + LocalDateTime.now().format(formatter));
             		}
 
                     // Store available data about the session

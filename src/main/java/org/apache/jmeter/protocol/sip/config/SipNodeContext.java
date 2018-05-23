@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+//import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -91,7 +91,7 @@ public class SipNodeContext implements SipListener {
 
 	private SipNodeElement sipNode = null;
 	private static final Logger _logger = LoggingManager.getLoggerForClass();
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:HH:mm:ss.SSS");
+//	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:HH:mm:ss.SSS");
 	private boolean isNodeReady = false;
 	private boolean isNonReliableResponseRetransmissionIgnored = true ;
 	private boolean isReliableResponseRetransmissionIgnored = true ;
@@ -786,7 +786,7 @@ public class SipNodeContext implements SipListener {
 
 	@Override
 	public void processRequest(RequestEvent arg0) {
-		if (_logger.isWarnEnabled()) _logger.warn("RCV "+ arg0.getRequest().getMethod() + " : " + arg0.getRequest().getHeader("Call-ID").toString().substring("Call-ID: ".length()).replaceAll("\\r|\\n", "") + ", From = " + arg0.getRequest().getHeader("From").toString().replaceAll("\\r|\\n", "")+ ", From = " + arg0.getRequest().getHeader("To").toString().replaceAll("\\r|\\n", "")+ "," + LocalDateTime.now().format(formatter));
+//		if (_logger.isWarnEnabled()) _logger.warn("RCV "+ arg0.getRequest().getMethod() + " : " + arg0.getRequest().getHeader("Call-ID").toString().substring("Call-ID: ".length()).replaceAll("\\r|\\n", "") + ", From = " + arg0.getRequest().getHeader("From").toString().replaceAll("\\r|\\n", "")+ ", From = " + arg0.getRequest().getHeader("To").toString().replaceAll("\\r|\\n", "")+ "," + LocalDateTime.now().format(formatter));
 		threadsPool.execute(new ProcessIncomingRequestMessage(this, arg0));
 	}
 	
@@ -800,7 +800,7 @@ public class SipNodeContext implements SipListener {
 				).increase();
 
 		if (arg0 != null && arg0.getRequest() != null && "INVITE".equals(arg0.getRequest().getMethod())) {
-			if( _logger.isWarnEnabled()) _logger.warn("RCV INVITE : " + arg0.getRequest().getHeader("Call-ID").toString().substring("Call-ID: ".length()).replaceAll("\\r|\\n", "")+ ", From = " + arg0.getRequest().getHeader("From").toString().replaceAll("\\r|\\n", "")+ ", From = " + arg0.getRequest().getHeader("To").toString().replaceAll("\\r|\\n", "") + "," + LocalDateTime.now().format(formatter));
+//			if( _logger.isWarnEnabled()) _logger.warn("RCV INVITE : " + arg0.getRequest().getHeader("Call-ID").toString().substring("Call-ID: ".length()).replaceAll("\\r|\\n", "")+ ", From = " + arg0.getRequest().getHeader("From").toString().replaceAll("\\r|\\n", "")+ ", From = " + arg0.getRequest().getHeader("To").toString().replaceAll("\\r|\\n", "") + "," + LocalDateTime.now().format(formatter));
 		}
 		if (SipNodeElement.FUNCTIONAL_TRAFIC.equals(sipNode.getTraficType())) {
 			processRequestFunctional(arg0);
