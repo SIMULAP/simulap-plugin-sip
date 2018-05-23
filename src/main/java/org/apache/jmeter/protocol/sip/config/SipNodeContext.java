@@ -17,6 +17,7 @@ import java.net.ServerSocket;
 import java.net.URL;
 import java.time.LocalDateTime;
 //import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -443,7 +444,7 @@ public class SipNodeContext implements SipListener {
 			threadpoolmin  = 100;			
 		}
 		
-		threadsPool = new ThreadPoolExecutor(100, 200, 1, TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(200, true));//keepAliveTime, unit, workQueue)
+		threadsPool = new ThreadPoolExecutor(threadpoolmin, threadpoolmax, 1, TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(threadpoolmax, true));//keepAliveTime, unit, workQueue)
 
 		String idH = sipNode.getIdentificationHeader(); 
 		if ((idH == null || idH.equals("")) || (!idH.equals("To") && !idH.equals("From") && !idH.equals("Request-URI") && !idH.equals("Call-ID") )) {
