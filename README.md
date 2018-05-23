@@ -14,15 +14,15 @@ __Prerequisites__ :
 * git must be installed on your __local__ system and you must be familiar with git CLI  : see https://git-scm.com/
 * You must know how to fork, clone a repository on github  : see https://help.github.com/
 
-#### __Step 1__ : fork https://github.hpe.com/SIMULAP/simulap-plugin-sip
+#### __Step 1__ : fork https://github.com/SIMULAP/simulap-plugin-sip
 
-You obtain a new public github repository  : https://github.hpe.com/MY_USERNAME/simulap-plugin-sip .
-In the following , https://github.hpe.com/SIMULAP/simulap-plugin-sip is called the __upstream__ while https://github.hpe.com/MY_USERNAME/simulap-plugin-sip is called the __origin__
+You obtain a new public github repository  : https://github.com/MY_USERNAME/simulap-plugin-sip .
+In the following , https://github.com/SIMULAP/simulap-plugin-sip is called the __upstream__ while https://github.com/MY_USERNAME/simulap-plugin-sip is called the __origin__
 
-#### __Step 2__ : create a local clone of https://github.hpe.com/MY_USERNAME/simulap-plugin-sip
+#### __Step 2__ : create a local clone of https://github.com/MY_USERNAME/simulap-plugin-sip
 
 ```
-prompt> git clone  git@github.hpe.com:MY_USERNAME/simulap-plugin-sip.git
+prompt> git clone  git@github.com:MY_USERNAME/simulap-plugin-sip.git
 ```
 
 __Result__ :
@@ -64,6 +64,6 @@ __Step 1__
 
 ## How to create a SIP Test plan with  simulap-sip-plugin and Apache JMeter 3.3 ?
 
-Please refer to simulap-plugin-sip github wiki : https://github.hpe.com/SIMULAP/simulap-plugin-sip/wiki
+Please refer to simulap-plugin-sip github wiki : https://github.com/SIMULAP/simulap-plugin-sip/wiki
 
 
