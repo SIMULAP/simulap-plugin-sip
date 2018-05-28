@@ -48,10 +48,10 @@ a new directory has been created ( simulap-plugin-sip/target ) containing the ja
 
 
 
-## How to start Apache JMeter 3.3 with simulap-sip-plugin ?
+## How to start Apache JMeter with simulap-sip-plugin ?
 
 __Prerequisites__ :
-* Apache JMeter 3.3 must be installed on your system : see http://jmeter.apache.org/
+* Apache JMeter must be installed on your system : see http://jmeter.apache.org/
 * In the following ,  __JMETER_HOME__ is the Apache JMeter home directory
 
 __Step 1__
@@ -62,7 +62,7 @@ __Step 1__
 ```
 
 
-## How to create a SIP Test plan with  simulap-sip-plugin and Apache JMeter 3.3 ?
+## How to create a SIP Test plan with  simulap-sip-plugin and Apache JMeter ?
 
 Please refer to simulap-plugin-sip github wiki : https://github.com/SIMULAP/simulap-plugin-sip/wiki
 
