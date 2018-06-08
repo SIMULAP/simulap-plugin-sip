@@ -31,7 +31,6 @@
 		<url>https://github.com/SIMULAP/simulap-plugin-sip</url>
 		<tag>JMeter plugin SIP</tag>
 	</scm>
-    
 
 	<build>
 		<plugins>
@@ -67,6 +66,26 @@
 							<artifactId>jain-sip-ri</artifactId>
 							<version>${jain.sip.ri.version}</version>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>default-testResources</id>
+						<phase>process-test-resources</phase>
+						<goals>
+							<goal>testResources</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>default-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>resources</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
@@ -165,21 +184,20 @@
 						</mapping>
 						<mapping>
 							<directory>/opt/simulap_manager/simulap/simulap-jmeter-sip/lib</directory>
-                                                        <sources>
-                                                           <softlinkSource>
-                                                               <destination>jain-sip-api.jar</destination>
-                                                               <location>/opt/simulap_manager/simulap/simulap-jmeter-sip/sys/lib/jain-sip-api-${jain.sip.api.version}.jar</location>
-                                                           </softlinkSource>
-                                                           <softlinkSource>
-                                                               <destination>jain-sip-ri.jar</destination>
-                                                               <location>/opt/simulap_manager/simulap/simulap-jmeter-sip/sys/lib/jain-sip-ri-${jain.sip.ri.version}.jar</location>
-                                                           </softlinkSource>
-                                                           <softlinkSource>
-                                                               <destination>javasimon-core.jar</destination>
-                                                               <location>/opt/simulap_manager/simulap/simulap-jmeter-sip/sys/lib/javasimon-core-${javasimon.core.version}.jar</location>
-                                                           </softlinkSource>
-                                                        </sources>
-                                                        
+							<sources>
+								<softlinkSource>
+									<destination>jain-sip-api.jar</destination>
+									<location>/opt/simulap_manager/simulap/simulap-jmeter-sip/sys/lib/jain-sip-api-${jain.sip.api.version}.jar</location>
+								</softlinkSource>
+								<softlinkSource>
+									<destination>jain-sip-ri.jar</destination>
+									<location>/opt/simulap_manager/simulap/simulap-jmeter-sip/sys/lib/jain-sip-ri-${jain.sip.ri.version}.jar</location>
+								</softlinkSource>
+								<softlinkSource>
+									<destination>javasimon-core.jar</destination>
+									<location>/opt/simulap_manager/simulap/simulap-jmeter-sip/sys/lib/javasimon-core-${javasimon.core.version}.jar</location>
+								</softlinkSource>
+							</sources>
 						</mapping>
 					</mappings>
 				</configuration>
@@ -211,7 +229,7 @@
 							<groupId>javax.sip</groupId>
 							<artifactId>jain-sip-ri</artifactId>
 							<version>${jain.sip.ri.version}</version>
-						<type>jar</type>
+							<type>jar</type>
 							<overWrite>false</overWrite>
 							<outputDirectory>${project.build.directory}/dependencies</outputDirectory>
 						</artifactItem>
@@ -242,7 +260,8 @@
 				<configuration>
 					<executable>${jmeter.command}</executable>
 					<arguments>
-
+						<argument>-j</argument>
+						<argument>${project.build.directory}/jmeter.log</argument>
 						<argument>-j ${project.build.directory}/jmeter.log</argument>
 						<argument>-Jsearch_paths=${project.build.directory}</argument>
 						<argument>-Jplugin_dependency_paths=${project.build.directory}/dependencies</argument>

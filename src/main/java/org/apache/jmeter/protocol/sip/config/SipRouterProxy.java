@@ -54,10 +54,13 @@ public class SipRouterProxy extends DefaultRouter { //implements Router {
 			}
 			else {
 				// ipV4 address format
-				ipAddress = hopDef.substring(0,hopDef.indexOf(":")-1 );
-				port = Integer.parseInt(hopDef.substring(hopDef.indexOf(":")+1,hopDef.indexOf("/")-1));
-				transportType = hopDef.substring(hopDef.indexOf("/")+1, hopDef.length()-1);
+				int deuxpoints = hopDef.indexOf(":");
+				int divise = hopDef.indexOf("/");
+				int longueur = hopDef.length();
 
+				ipAddress = hopDef.substring(0, deuxpoints);
+				port = Integer.parseInt(hopDef.substring(deuxpoints+1, divise));
+				transportType = hopDef.substring(divise+1, longueur);
 			}
 
 		}
