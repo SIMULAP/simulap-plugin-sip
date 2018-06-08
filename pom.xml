@@ -26,9 +26,10 @@
 	<version>${plugin.version}-${src.version}</version>
 
 	<scm>
-		<connection>scm:git@github.hpe.com:SIMULAP/simulap-plugin-sip.git</connection>
-		<developerConnection>scm:git@github.hpe.com:SIMULAP/simulap-plugin-sip.git</developerConnection>
-		<url>https://github.hpe.com/SIMULAP/simulap-plugin-sip</url>
+		<connection>scm:git@github.com:SIMULAP/simulap-plugin-sip.git</connection>
+		<developerConnection>scm:git@github.com:SIMULAP/simulap-plugin-sip.git</developerConnection>
+		<url>https://github.com/SIMULAP/simulap-plugin-sip</url>
+		<tag>JMeter plugin SIP</tag>
 	</scm>
     
 
@@ -290,4 +291,11 @@
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/SIMULAP/simulap-plugin-sip/issues</url>
+	</issueManagement>
+	<ciManagement>
+		<system> </system>
+	</ciManagement>
 </project>
