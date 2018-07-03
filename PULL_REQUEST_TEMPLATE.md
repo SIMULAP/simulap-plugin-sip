@@ -1,6 +1,5 @@
-## Description
 <!--- Provide a general summary of your PR in the Title above -->
-
+## Description
 <!--- Provide issue or issues list covered by this PR -->
 Fixes # .
 
@@ -15,9 +14,11 @@ Changes proposed in this pull request:
 - a `bug` you experienced by testing with the plugin,
 - an `enhancements` you required to lead your tests with the plugin. -->
 
-## Resources (if appropriate):
+## Resources
+<!--- (if appropriate):
 - possible screenshots,
 - small test scenario (`.jmx` file) to highlight the changes.
+-->
 
 ## Checklist:
 <!--- Go over all the following points, and put an `x` in all the boxes that apply. -->
