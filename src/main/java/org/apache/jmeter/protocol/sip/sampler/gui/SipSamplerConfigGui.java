@@ -56,7 +56,6 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 	 * 
 	 */
 	private static final long serialVersionUID = 8252795145202180613L;
-	//implements TreeCellRenderer 
 
 	private static final int AVP_DETAIL_ALL_NOT_VISIBLE = 0;
 	private static final int AVP_DETAIL_ALL_VISIBLE = 1;
@@ -100,7 +99,6 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 	private int i =0;
 	private JComboBox sipHeaderSelector = new JComboBox();
 	
-//	private List<String> headers = new ArrayList<String>();
 	private List<Header> dico = null;
 	
     private JLabel bodyLabel = new JLabel("Sip Body part");
@@ -129,8 +127,6 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 	 * This will initalize all the panel in the SipSamplerConfigGui
 	 **************************************************************************/
 	protected void init() {
-		// Sort the command list
-		// Collections.sort(list);
 		_logger.debug("init ");
 		dico = SipDico.loadDico();		
 
@@ -138,10 +134,8 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 		setComment("Comment2");
 		
 		setLayout(new BorderLayout(0, 10));
-//        mainPanel = new JPanel(new BorderLayout(0, 5));
 		setBorder(makeBorder());
 		add(makeTitlePanel(), BorderLayout.NORTH);
-		//mainPanel = new DynamicVerticalPanel();
 		mainPanel.setName("name1");
 		createSipNodeNamePanel(mainPanel);
 		createDirectionPanel(mainPanel);
@@ -149,34 +143,14 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 		createControlPanel(mainPanel);
 		createTreePanel(mainPanel);
 		
-		//currentLabel.setLabelFor(currentValue);
-		
 		add(mainPanel);//, BorderLayout.CENTER);
 	}
 
-	/***************************************************************************
-	 * !ToDo (Constructor description)
-	 * 
-	 * @param displayName
-	 *            !ToDo (Parameter description)
-	 **************************************************************************/
-/*	public SipSamplerConfigGui(boolean displayName) {
-		this.displayName = displayName;
-		_logger.debug("SipSamplerConfigGui boolean " + displayName);
-
-		init();
-	}
-*/
-	
     public String getStaticLabel() {
-		//_logger.debug("SipSamplerConfigGui getStaticLabel = SipCommandSampler");
-
         return "SipCommandSampler";
     }
 	
 	public String getLabelResource() {
-		//_logger.debug("SipSamplerConfigGui getLabelResource");
-
 		return "Siptitle";
 	}
 
@@ -188,16 +162,12 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 
 		super.clearGui();
 		if (table != null && table.getCellEditor() != null) {
-			// table.getCellEditor().cancelCellEditing();
 			table.getCellEditor().stopCellEditing();
 		}
-//		table.clearSelection();
-	//	table.repaint();
-				
 		sipNodeName.setText("");
 		
 		GuiUtils.stopTableEditing(table);
-		dataModel.setRowCount(0);//clearData();
+		dataModel.setRowCount(0);
 		
 		bodyText.setText("");
 		
@@ -232,7 +202,6 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 	 *            the TestElement to configure
 	 */
 	public void configure(TestElement element) {
-	//	_logger.debug("SipSamplerConfigGui configure");
 		
 	    if (_logger.isDebugEnabled())
 		_logger.debug("configure: element " + element.getName());
@@ -481,7 +450,6 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 	 * Refer to  CR7623.
 	 * @param vertPanel
 	 */
-	//protected void createRequestResponsePanel(DynamicVerticalPanel vertPanel) {
 	protected void createRequestResponsePanel(HorizontalPanel vertPanel) {
 	
 		_logger.debug("SipSamplerConfigGui createRequestResponsePanel");
@@ -504,7 +472,6 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
     }
 
 
-	//private void createResponseCodePanel(DynamicVerticalPanel vertPanel) {
 	private void createResponseCodePanel(HorizontalPanel vertPanel) {
 		_logger.debug("createresponseCodePanel ");
 	    responseCodePanel.setBorder(BorderFactory.createTitledBorder("Which response code"));
@@ -559,8 +526,8 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 		sipRelatedTransactionPanel.add(sipRelatedTransactionSelector);
 		
 		commandPanel.add(sipCommandPanel);
-		commandPanel.add(sipDialogPanel);//sipDialogueSelector);
-		commandPanel.add(sipTransactionPanel);//sipTransactionSelector);
+		commandPanel.add(sipDialogPanel);
+		commandPanel.add(sipTransactionPanel);
 		commandPanel.add(sipRelatedTransactionPanel);
 		vertPanel.add(commandPanel);
 	}
@@ -651,7 +618,6 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 				sipRcvTimeout.setVisible(true);
 				optionalRadio.setVisible(true);
 				ignoreRetransmissionRadio.setVisible(true);
-		        //resetRadio.setVisible(false);
 				resetRadio.setVisible(true);
 		}
 
@@ -713,11 +679,6 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 
     public void tableChanged(TableModelEvent e) {
     	_logger.debug("tableChanged ");
-/*		_logger.debug("tableChanged: " + e.getColumn() + ":" + e.getFirstRow() + ":" + e.getLastRow() + ":" + e.getType());
-		if (e.getColumn() >= 0 &&  e.getFirstRow() >=0) {
-			_logger.debug("tableChanged value: " + table.getValueAt(e.getFirstRow(), e.getColumn()-1));
-			_logger.debug("dataModel value: " + dataModel.getValueAt(e.getFirstRow(), e.getColumn()-1));
-		}*/
 		table.repaint();
     }
 

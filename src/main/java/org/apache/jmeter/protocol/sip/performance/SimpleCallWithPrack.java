@@ -56,12 +56,9 @@ public class SimpleCallWithPrack implements SipListener {
 
 	@Override
 	public void processRequest(RequestEvent arg0) {
-		//printQueueSize();
 		if (_logger.isDebugEnabled()) _logger.debug("processRequestPerformance: " + arg0.getRequest().getMethod() + " identified by " + this.sipNodeCtx.getSipNode().getIdentificationHeader() + " = " + arg0.getRequest().getHeader(this.sipNodeCtx.getSipNode().getIdentificationHeader()));
 
 		ServerTransaction st = null;
-		//		ToHeader toH = (ToHeader) arg0.getRequest().getHeader(this.sipNode.getIdentificationHeader());//"To");
-		//	String id = SipString.cleanString(toH.getAddress().toString());
 		String id = sipNodeCtx.getIdHeader(arg0.getRequest());
 		try {
 			if (arg0.getServerTransaction() == null) {
@@ -70,14 +67,6 @@ public class SimpleCallWithPrack implements SipListener {
 			} else {
 				st = arg0.getServerTransaction();
 			}
-			//			ArrayBlockingQueue<SipRequestTransaction> reqQueue = checkRequestQueue(id + "_" + arg0.getRequest().getMethod());
-
-
-			//			SipRequestTransaction reqTrans = new SipRequestTransaction((SIPServerTransactionImpl)st, arg0.getRequest());
-
-			//			reqQueue.add(reqTrans);
-
-			//			msgRequestsQueues.put(id, reqQueue);
 
 			Request rcvReq = arg0.getRequest();			
 
@@ -85,8 +74,6 @@ public class SimpleCallWithPrack implements SipListener {
 				if (_logger.isDebugEnabled()) _logger.debug("processRequestPerformance: ACK recevied. Do nothing");
 			} else if (Request.INVITE.equals(rcvReq.getMethod())) {
 				// Create the response
-				//Response theResponse = this.sipNodeCtx.getMessageFactory().createResponse(183 , arg0.getRequest());
-				
 				SIPServerTransactionImpl aReq = (SIPServerTransactionImpl) arg0.getServerTransaction();
 				if (aReq == null) {
 					aReq = (SIPServerTransactionImpl) st;
@@ -100,7 +87,6 @@ public class SimpleCallWithPrack implements SipListener {
 				// Add Contact header (mandatory)
 				Address address = this.sipNodeCtx.getAddressFactory().createAddress(SipString.extractAddress("sip:" +sipNodeCtx.getSipNode().getLocalIP()+":"+sipNodeCtx.getSipNode().getLocalPort()));
 				_logger.error(sipNodeCtx.getSipNode().getSipNodeName() + "Set Contact header with : " + "sip:" +sipNodeCtx.getSipNode().getLocalIP()+":"+sipNodeCtx.getSipNode().getLocalPort());				
-				// "${b_name}" <sip:${b_username}_${idkey}@${b_ip}:${b_port}>
 				ContactHeader autoContact = this.sipNodeCtx.getHeaderFactory().createContactHeader(address);
 				theResponse.removeHeader("Contact");
 				theResponse.setHeader(autoContact);
@@ -114,18 +100,10 @@ public class SimpleCallWithPrack implements SipListener {
 					_logger.debug("Rseq header tag not set. Input badly formated ");
 				}
 				
-				
-
 				theResponse.setHeader(this.sipNodeCtx.getHeaderFactory().createHeader("Require", "100rel"));
 
-
 				st.sendResponse(theResponse);
-				/*				if (Request.BYE.equals(rcvReq.getMethod())) {
-					clearQueue(id + "_" + arg0.getRequest().getMethod());
-				}
-				 */
 
-				//Dialog newDialog = this.sipNodeCtx.getSipProvider().getNewDialog(st);
 				newDialog.setApplicationData(arg0.getRequest());
 				st.getDialog().setApplicationData(arg0.getRequest());
 
@@ -145,10 +123,6 @@ public class SimpleCallWithPrack implements SipListener {
 
 
 				st.sendResponse(theResponse);
-				/*				if (Request.BYE.equals(rcvReq.getMethod())) {
-					clearQueue(id + "_" + arg0.getRequest().getMethod());
-				}
-				 */
 				SimonManager.getCounter(
 						SipCounters.SIP_NODE_OUTBOUND_ANSWER.toString() + SipCounters.SUCCESS_SUFFIX.toString() + "."
 								+ rcvReq.getMethod()
@@ -159,14 +133,6 @@ public class SimpleCallWithPrack implements SipListener {
 				Request invReq = this.sipNodeCtx.getDialogListPerf().remove("INVITE_"+rcvReq.getHeader("Call-ID"));
 
 				Response theResponseInvite = this.sipNodeCtx.getMessageFactory().createResponse(200 , invReq);
-				//				Response theResponseInvite = messageFactory.createResponse(200 , (Request) arg0.getServerTransaction().getApplicationData());
-
-				//				List<Via> vialist = new ArrayList<Via>();
-				//				vialist.add((Via)rcvReq.getHeader("Via"));
-				//				_logger.error("create 200 for Invite "+ ":" + (CallIdHeader)rcvReq.getHeader("Call-ID") + ":" + (CSeqHeader)headerFactory.createCSeqHeader(1, "INVITE") + ":" + (FromHeader)rcvReq.getHeader("From")+ ":" + (ToHeader)rcvReq.getHeader("To")+ ":" + vialist.size() + ":" + (MaxForwardsHeader)rcvReq.getHeader("Max-Forwards"));
-				//				Response theResponseInvite = messageFactory.createResponse(200, (CallIdHeader)rcvReq.getHeader("Call-ID"), (CSeqHeader)headerFactory.createCSeqHeader(1, "INVITE"), (FromHeader)rcvReq.getHeader("From"), (ToHeader)rcvReq.getHeader("To"), vialist, (MaxForwardsHeader)rcvReq.getHeader("Max-Forwards"));
-				//Response theResponseInvite = messageFactory.createResponse("200 OK");
-				//				theResponseInvite.setReasonPhrase("OK");
 
 				// Add Contact header (mandatory)
 				Address address2 = this.sipNodeCtx.getAddressFactory().createAddress(SipString.extractAddress("sip:" +sipNodeCtx.getSipNode().getLocalIP()+":"+sipNodeCtx.getSipNode().getLocalPort()));
@@ -187,10 +153,6 @@ public class SimpleCallWithPrack implements SipListener {
 
 
 				st.sendResponse(theResponse);
-				/*				if (Request.BYE.equals(rcvReq.getMethod())) {
-					clearQueue(id + "_" + arg0.getRequest().getMethod());
-				}
-				 */
 				SimonManager.getCounter(
 						SipCounters.SIP_NODE_OUTBOUND_ANSWER.toString() + SipCounters.SUCCESS_SUFFIX.toString() + "."
 								+ rcvReq.getMethod()
@@ -234,30 +196,6 @@ public class SimpleCallWithPrack implements SipListener {
 		String method = cseH.getMethod();
 
 		String dialId = SipString.cleanString(responseReceivedEvent.getResponse().getHeader("Call-ID").toString().substring("Call-ID".length() + 2)); //ClientTransaction().getDialog().getDialogId();
-		//		ArrayBlockingQueue<SipResponseTransaction> respQueue;
-		/*		try {
-			respQueue = checkResponseQueue(dialId+"_" + response.getStatusCode() + "_" + method);
-		} catch (Exception e) {
-			_logger.error("processResponsePerformance: error in checkResponseQueue for id = " + dialId,e);
-			return;
-		}
-		 */		
-
-		// Check last received response is different
-		/*		if (respQueue != null && respQueue.peek() != null) {
-			SipResponseTransaction clientTrans = respQueue.peek();
-			Response lastStoredResp = clientTrans.getTheResponse();//clientTrans.getTheTransaction().getLastResponse();
-			if (lastStoredResp != null) {
-				if ((lastStoredResp.getStatusCode() == response.getStatusCode()) &&
-						(lastStoredResp.getHeader("Call-ID").toString().equals(response.getHeader("Call-ID").toString())) &&
-						(lastStoredResp.getHeader("From").toString().equals(response.getHeader("From").toString())) &&
-						(lastStoredResp.getHeader("To").toString().equals(response.getHeader("To").toString()))) {
-					_logger.debug("response already received: should be retransmission " + lastStoredResp.getStatusCode() + ":" + response.getStatusCode());
-					return;
-				}
-			}
-		}
-		 */		
 		
 		SIPClientTransactionImpl ct = (SIPClientTransactionImpl) responseReceivedEvent.getClientTransaction();
 
@@ -278,7 +216,6 @@ public class SimpleCallWithPrack implements SipListener {
 			if (respCode > 180 && respCode <200) {
 				// early media.
 				// Send Prack
-				//_logger.debug("processResponsePerformance: " + response.getStatusCode() + " ! send Prack ");
 				_logger.error("processResponsePerformance: " + response.getStatusCode() + " ! send Prack ");
 				try {
 					// Create PRACK
@@ -335,18 +272,15 @@ public class SimpleCallWithPrack implements SipListener {
 							).increase();
 
 				} catch (SipException e) {
-					// TODO Auto-generated catch block
 					SimonManager.getCounter(
 							SipCounters.SIP_NODE_OUTBOUND_REQUEST.toString() + SipCounters.ERROR_SUFFIX.toString() + "."
 									+ "ACK"
 									+ "." + this.sipNodeCtx.getSipNode().getSipNodeName().replace(".", "_")
 							).increase();
 
-					// e.printStackTrace();
 				}
 			}
 		} else if (Request.BYE.equals(cs.getMethod())) {
-			//clearQueue(dialId+"_" + response.getStatusCode() + "_" + method);
 			_logger.error("processResponsePerformance: " + response.getStatusCode() + " ! BYE ");
 		} else {
 			if (_logger.isDebugEnabled()) _logger.debug("processResponsePerformance: " + response.getStatusCode() + " ! Not an Invite, nor a BYE ");

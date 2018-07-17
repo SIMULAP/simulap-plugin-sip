@@ -102,14 +102,12 @@ TestStateListener, TestIterationListener, TestBean {
 
 	public Object clone() {
 		SipNodeElement el = (SipNodeElement) super.clone();
-		// TO DO
 		// clone the private fields
 		return el;
 	}
 	
 	public void addConfigElement(ConfigElement config) {
 		_logger.debug("addConfigElement");
-//		sipSamplerConfig = (SipSamplerConfigGui) config;
 	}
 
 	public boolean expectsModification() {

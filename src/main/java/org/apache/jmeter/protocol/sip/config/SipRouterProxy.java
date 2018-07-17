@@ -48,9 +48,12 @@ public class SipRouterProxy extends DefaultRouter { //implements Router {
 
 			if (hopDef.contains("[") && hopDef.contains("]")) {
 				// ipv6 address format
-				ipAddress = hopDef.substring(1,hopDef.indexOf("]")-1);
-				port = Integer.parseInt(hopDef.substring(hopDef.indexOf("]")+2,hopDef.indexOf("/")-1));
-				transportType = hopDef.substring(hopDef.indexOf("/")+1, hopDef.length() -1);
+////				ipAddress = hopDef.substring(1,hopDef.indexOf("]")-1);
+				ipAddress = hopDef.substring(1,hopDef.indexOf("]"));
+////				port = Integer.parseInt(hopDef.substring(hopDef.indexOf("]")+2,hopDef.indexOf("/")-1));
+				port = Integer.parseInt(hopDef.substring(hopDef.indexOf("]")+2,hopDef.indexOf("/")));
+////				transportType = hopDef.substring(hopDef.indexOf("/")+1, hopDef.length() -1);
+				transportType = hopDef.substring(hopDef.indexOf("/")+1, hopDef.length());
 			}
 			else {
 				// ipV4 address format

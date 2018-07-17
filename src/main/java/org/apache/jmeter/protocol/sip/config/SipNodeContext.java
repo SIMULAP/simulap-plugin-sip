@@ -2,8 +2,6 @@
 //Licensed under Apache License version 2.0: http://www.apache.org/licenses/LICENSE-2.0
 package org.apache.jmeter.protocol.sip.config;
 
-///import gov.nist.javax.sip.address.AddressFactoryEx;
-///import gov.nist.javax.sip.address.AddressFactoryImpl;
 import gov.nist.javax.sip.ResponseEventExt;
 import gov.nist.javax.sip.header.Via;
 import gov.nist.javax.sip.RequestEventExt;
@@ -16,7 +14,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URL;
 import java.time.LocalDateTime;
-//import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -85,14 +82,12 @@ import org.apache.jmeter.threads.JMeterVariables;
 import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
 import org.javasimon.SimonManager;
-//import org.javasimon.Split;
 
 
 public class SipNodeContext implements SipListener {
 
 	private SipNodeElement sipNode = null;
 	private static final Logger _logger = LoggingManager.getLoggerForClass();
-//	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:HH:mm:ss.SSS");
 	private boolean isNodeReady = false;
 	private boolean isNonReliableResponseRetransmissionIgnored = true ;
 	private boolean isReliableResponseRetransmissionIgnored = true ;
@@ -105,7 +100,6 @@ public class SipNodeContext implements SipListener {
 	private SipProvider sipProvider = null;
 	private SipFactory sipFactory = null;
 	private HeaderFactory headerFactory = null;
-	///	private AddressFactoryEx addressFactory = null;
 	private AddressFactory addressFactory = null;
 	private MessageFactory messageFactory = null;
 	private Map<String, ArrayBlockingQueue<SipRequestTransaction>> msgRequestsQueues = new ConcurrentHashMap<String, ArrayBlockingQueue<SipRequestTransaction>>();
@@ -125,9 +119,6 @@ public class SipNodeContext implements SipListener {
 	private long cleanPeriod = 5000;
 	private long cleanDialogPeriod = 5000;
 	private boolean isAutomaticCleanup = false;
-	/*	private static HashMap<String, ArrayBlockingQueue<SIPServerTransactionImpl>> msgRequestsQueues = new HashMap<String, ArrayBlockingQueue<SIPServerTransactionImpl>>();
-	private static HashMap<String, ArrayBlockingQueue<SIPClientTransactionImpl>> msgResponsesQueues = new HashMap<String, ArrayBlockingQueue<SIPClientTransactionImpl>>();
-	 */	
 
 	public class StringLong {
 		private String aString;
@@ -160,24 +151,6 @@ public class SipNodeContext implements SipListener {
 		private void printQueueTime() {
 		_logger.debug("msgRequestsQueues size = " + msgRequestsQueues.size());
 		try {
-			/*
-		Set<Entry<String, ArrayBlockingQueue<SipRequestTransaction>>> toto = msgRequestsQueues.entrySet();
-		if (toto != null) {
-		for (Entry<String, ArrayBlockingQueue<SipRequestTransaction>> entry : toto) {
-			if (entry.getValue() != null) {
-			_logger.error("msgRequestsQueues elem : " + entry.getKey() + ":" + entry.getValue().peek().creationTime);
-			}
-		}
-		}
-		_logger.error("msgResponsesQueues size = " + msgResponsesQueues.size());
-		Set<Entry<String, ArrayBlockingQueue<SipResponseTransaction>>> titi = msgResponsesQueues.entrySet();
-		if (titi != null) {
-		for (Entry<String, ArrayBlockingQueue<SipResponseTransaction>> entry : titi) {
-			if (entry.getValue() != null) {
-			_logger.error("msgResponsesQueues elem : " + entry.getKey() + ":" + entry.getValue().peek().creationTime);
-			}
-		}
-		}*/
 		_logger.debug("msgRequestsIdList size = " + msgRequestsIdList.size());
 		if (msgRequestsIdList.size() >0) {
 		for (StringLong stringLong : msgRequestsIdList) {
@@ -242,28 +215,8 @@ public class SipNodeContext implements SipListener {
 			_logger.debug("SipNodeContext(SipNodeElement) SIP stack logging disabled");
 		}
 
-		/*  else if ( System.getProperty("stackloglevel","true") != null && !"".equals(System.getProperty("stackloglevel","ERROR"))) {
-			_logger.debug("SipNodeContext(SipNodeElement) SIP stack logging NONE and ");
-			prop.setProperty("gov.nist.javax.sip.STACK_LOGGER", SipStackLogger.class.getName());
-			prop.setProperty("gov.nist.javax.sip.SERVER_LOGGER", SipServerLogger.class.getName());
-			prop.setProperty("gov.nist.javax.sip.TRACE_LEVEL", System.getProperty("stackloglevel","ERROR"));
-		}*/
-
 		String enableGlobalCaching = System.getProperty("sip.enableGlobalCaching","NOGLOBALCACHING");
 		boolean globalCachingEnabled =  "true".equals(System.getProperty("sip.enableGlobalCaching","false"));
-
-/*		if (globalCachingEnabled || ("NOGLOBALCACHING".equals(enableGlobalCaching)  && (SipNodeElement.YES.equals(sipNode.getCacheConnections()) && Integer.parseInt(sipNode.getMaxConnections()) > 0))) {
-			_logger.debug("SipNodeContext(SipNodeElement) CACHE YES: setup pooling management with pool size " + sipNode.getMaxConnections());
-			prop.setProperty("gov.nist.javax.sip.CACHE_SERVER_CONNECTIONS", "true");
-			prop.setProperty("gov.nist.javax.sip.CACHE_CLIENT_CONNECTIONS", "true");
-			prop.setProperty("gov.nist.javax.sip.TCP_POST_PARSING_THREAD_POOL_SIZE", sipNode.getMaxConnections());
-		} else {
-			_logger.debug("SipNodeContext(SipNodeElement) CACHE NO: setup pooling management with pool size " + sipNode.getMaxConnections());
-			prop.setProperty("gov.nist.javax.sip.CACHE_SERVER_CONNECTIONS", "false");
-			prop.setProperty("gov.nist.javax.sip.CACHE_CLIENT_CONNECTIONS", "false");
-			prop.setProperty("gov.nist.javax.sip.TCP_POST_PARSING_THREAD_POOL_SIZE", sipNode.getMaxConnections());
-		}
-*/
 		
 		prop.setProperty("gov.nist.javax.sip.CACHE_SERVER_CONNECTIONS", System.getProperty("gov.nist.javax.sip.CACHE_SERVER_CONNECTIONS","true"));
 		prop.setProperty("gov.nist.javax.sip.CACHE_CLIENT_CONNECTIONS", System.getProperty("gov.nist.javax.sip.CACHE_CLIENT_CONNECTIONS","true"));
@@ -275,12 +228,6 @@ public class SipNodeContext implements SipListener {
 
 		prop.setProperty("gov.nist.javax.sip.PASS_INVITE_NON_2XX_ACK_TO_LISTENER", "true");
 		prop.setProperty("gov.nist.javax.sip.AUTOMATIC_DIALOG_ERROR_HANDLING","false");
-		///        prop.setProperty("gov.nist.javax.sip.TCP_POST_PARSING_THREAD_POOL_SIZE", "10");
-
-		// charles CR23357 : gives access to four SIP ri properties 
-		// put same default value as OCCP
-
-		// _logger.info("TCP_NODELAY = " + System.getProperty("gov.nist.javax.sip.TCP_NODELAY","true"));
 		prop.setProperty("gov.nist.javax.sip.TCP_NODELAY", System.getProperty("gov.nist.javax.sip.TCP_NODELAY","false"));
 		prop.setProperty("gov.nist.javax.sip.TCP_RESET", System.getProperty("gov.nist.javax.sip.TCP_RESET","false"));
 		prop.setProperty("gov.nist.javax.sip.sctp.message.ENABLE_ORDERED_DELIVERY", System.getProperty("gov.nist.javax.sip.sctp.message.ENABLE_ORDERED_DELIVERY","false"));
@@ -315,11 +262,6 @@ public class SipNodeContext implements SipListener {
 		_logger.debug("javax.net.ssl.trustStore" + System.getProperty("javax.net.ssl.trustStore","NOTHING"));
 		_logger.debug("javax.net.ssl.trustStorePassword" + System.getProperty("javax.net.ssl.trustStorePassword","NOTHING"));
 
-		//prop.setProperty("gov.nist.javax.sip.CACHE_SERVER_CONNECTIONS", "false");
-		//prop.setProperty("gov.nist.javax.sip.CACHE_CLIENT_CONNECTIONS", "false");
-		//prop.setProperty("gov.nist.javax.sip.MAX_CONNECTIONS", "-1");
-		//prop.setProperty("gov.nist.javax.sip.AGGRESSIVE_CLEANUP", "false"); 
-
 		try {
 			sipStack = sipFactory.createSipStack(prop);
 		} catch (PeerUnavailableException e) {
@@ -334,6 +276,7 @@ public class SipNodeContext implements SipListener {
 			}
 			if (sipNode.getLocalIP() != null && !"".equals(sipNode.getLocalIP())){
 				try {
+					_logger.debug("createListeningPoint for " + sipNode.getLocalIP()+ ":" + Integer.parseInt(sipNode.getLocalPort())+ ":" +  sipNode.getLocalTransport());
 					sipListening = sipStack.createListeningPoint(sipNode.getLocalIP(), Integer.parseInt(sipNode.getLocalPort()), sipNode.getLocalTransport());
 					if (sipListening == null) {
 						_logger.error("createListeningPoint FAILED for " + sipNode.getLocalIP()+ ":" + Integer.parseInt(sipNode.getLocalPort())+ ":" +  sipNode.getLocalTransport());
@@ -473,7 +416,7 @@ public class SipNodeContext implements SipListener {
 
 	public void startMessagesQueuesCleaner() {
 		_logger.debug("startMessagesQueuesCleaner : " + cleanPeriod);
-		getExecutor().schedule(new ClearMessagesQueues(this),//, msgRequestsQueues, msgResponsesQueues),
+		getExecutor().schedule(new ClearMessagesQueues(this),
 				cleanPeriod, TimeUnit.MILLISECONDS);
 	}
 
@@ -495,7 +438,7 @@ public class SipNodeContext implements SipListener {
 		
 		RequestEvent reqEvt;
 		
-		public ProcessIncomingRequestMessage(SipNodeContext node, RequestEvent arg0) //, LinkedHashMap<String, ArrayBlockingQueue<SipRequestTransaction>> msgRequestsQueues, LinkedHashMap<String, ArrayBlockingQueue<SipResponseTransaction>> msgResponsesQueues )
+		public ProcessIncomingRequestMessage(SipNodeContext node, RequestEvent arg0) 
 		{
 			this.sipnodectx = node;
 			this.reqEvt = arg0;
@@ -514,7 +457,7 @@ public class SipNodeContext implements SipListener {
 		
 		ResponseEvent resEvt;
 		
-		public ProcessIncomingResponseMessage(SipNodeContext node, ResponseEvent arg0) //, LinkedHashMap<String, ArrayBlockingQueue<SipRequestTransaction>> msgRequestsQueues, LinkedHashMap<String, ArrayBlockingQueue<SipResponseTransaction>> msgResponsesQueues )
+		public ProcessIncomingResponseMessage(SipNodeContext node, ResponseEvent arg0) 
 		{
 			this.sipnodectx = node;
 			this.resEvt = arg0;
@@ -533,15 +476,11 @@ public class SipNodeContext implements SipListener {
 	
 	public class ClearMessagesQueues extends TimerTask
 	{
-		//        private LinkedHashMap<String, ArrayBlockingQueue<SipRequestTransaction>> msgRequestsQueuesToClean;
-		//       private LinkedHashMap<String, ArrayBlockingQueue<SipResponseTransaction>> msgResponsesQueuesToClean;
 		private SipNodeContext sipnode;
 
-		public ClearMessagesQueues(SipNodeContext node) //, LinkedHashMap<String, ArrayBlockingQueue<SipRequestTransaction>> msgRequestsQueues, LinkedHashMap<String, ArrayBlockingQueue<SipResponseTransaction>> msgResponsesQueues )
+		public ClearMessagesQueues(SipNodeContext node) 
 		{
 			this.sipnode = node;
-			//      	this.msgRequestsQueuesToClean = msgRequestsQueues;
-			//     	this.msgResponsesQueuesToClean = msgResponsesQueues;
 		}
 
 
@@ -562,18 +501,12 @@ public class SipNodeContext implements SipListener {
 		long limitDialogTime = curTime - cleanDialogPeriod;
 		_logger.debug("Start ClearMessagesQueues for " + sipNode.getName() + " at " + curTime + ", for limit " + limitTime + ", and limitDialog " + limitDialogTime);
 		printQueueSize();
-		//_logger.info("isAutomaticCleanup = " + isAutomaticCleanup);
-		//    	printQueueTime();
-		//int a = 0; int b = 0; int c = 0; int d = 0; int e = 0; int f = 0;
 
 		long start = dateToString();
 
 		try
 		{ 
 			StringLong current;
-			//synchronized(msgRequestsIdList) {
-				
-			//_logger.error("ClearMessagesQueues 1" );
 				if (!msgRequestsIdList.isEmpty()) {
 					current = msgRequestsIdList.get(0);
 					while (current == null && !msgRequestsIdList.isEmpty()) {
@@ -583,7 +516,7 @@ public class SipNodeContext implements SipListener {
 					}        	
 
 					try {
-						while (current!= null && current.getaLong() <limitTime) { //(msgRequestsQueues.get(current.getaString()) == null || current.getaLong() <limitTime)) {
+						while (current!= null && current.getaLong() <limitTime) { 
 							resetRequestQueues(current.getaString());
 							//  		a++;
 							msgRequestsIdList.remove(0);
@@ -599,13 +532,10 @@ public class SipNodeContext implements SipListener {
 							_logger.debug("current is NULL");
 						}
 					} catch (IndexOutOfBoundsException iobe) {
-						// msgRequestsIdList empty. Do nothing.
 						//_logger.error("IndexOutOfBoundsException ", e);
 					}
 				}
 			
-			//synchronized(msgResponsesIdList) {
-				//_logger.error("ClearMessagesQueues 2" );
 				if (!msgResponsesIdList.isEmpty()) {
 					current = msgResponsesIdList.get(0);
 					while (current == null && !msgResponsesIdList.isEmpty()) {
@@ -614,11 +544,9 @@ public class SipNodeContext implements SipListener {
 						current = msgResponsesIdList.get(0);
 					}        	
 					try {
-						while (current != null && current.getaLong() <limitTime) { //(msgResponsesQueues.get(current.getaString()) == null || current.getaLong() <limitTime)) {
+						while (current != null && current.getaLong() <limitTime) { 
 							resetResponseQueues(current.getaString());
-							//	c++;
 							msgResponsesIdList.remove(0);
-							//d++;
 							current = msgResponsesIdList.get(0);
 							while (current == null && !msgResponsesIdList.isEmpty()) {
 								_logger.debug("msgResponsesIdList : current is null but list is not empty !");
@@ -635,7 +563,6 @@ public class SipNodeContext implements SipListener {
 					}
 				}
 			
-			//	_logger.error("ClearMessagesQueues 3" );
 			if (isAutomaticCleanup) {
 				_logger.debug("automatic dialogue cleanup");
 				
@@ -652,41 +579,6 @@ public class SipNodeContext implements SipListener {
 							current = null;
 						}        			
 					}
-				
-
-				/*            	if (!dialogsIdList.isEmpty()) {
-	            	current = dialogsIdList.get(0);
-	            	boolean notdone = true;
-	            	try {
-	    	        	while (notdone) { //dialogList.get(current.getaString()) == null || current.getaLong() <limitDialogTime) {
-	    	        		if (current != null) { 
-	    	        			if (dialogList.get(current.getaString()) == null || current.getaLong() <limitDialogTime) {
-		    	        			_logger.error("resetSessionData for " + sipNode.getName() + " for " + current.getaString() + " : " + current.getaLong() + ", for limit " + limitDialogTime);
-		    	        			resetSessionData(current.getaString());
-			    	        		dialogsIdList.remove(0);
-			    	        		if (dialogsIdList.isEmpty()) {
-			    	        			notdone = false;
-			    	        		} else {
-			    	        			current = dialogsIdList.get(0);
-			    	        		}
-	    	        			} else {
-	    	        				notdone = false;
-	    	        			}
-	    	        		} else {
-		    	        		dialogsIdList.remove(0);
-		    	        		if (dialogsIdList.isEmpty()) {
-		    	        			notdone = false;
-		    	        		} else {
-		    	        			current = dialogsIdList.get(0);
-		    	        		}
-    	        			}
-	    	        	}
-	            	} catch (IndexOutOfBoundsException e) {
-	            		// msgRequestsIdList empty. Do nothing.
-	            		//_logger.error("IndexOutOfBoundsException ", e);
-	            	}
-            	}
-				 */
 			}
 
 		} catch (Exception ex)
@@ -696,13 +588,11 @@ public class SipNodeContext implements SipListener {
 
 		curTime = System.currentTimeMillis();
 		_logger.debug("End ClearMessagesQueues for " + sipNode.getName() + " at " + curTime);
-		//_logger.error("End ClearMessagesQueues for " + sipNode.getName() + " : " + a + " : " + b + " : " + c + " : " + d + " : " + e + " : " + f );
 		printQueueSize();
 		long diff = dateToString() - start;
 		if (diff > 5) _logger.debug("ClearMessagesQueues for node name " + sipNode.getSipNodeName() + " -> SYNC took " + diff);
 
 		    _logger.debug("End CleanQueues");
-		//        printQueueTime();
 		startMessagesQueuesCleaner();
 
 	}
@@ -721,13 +611,6 @@ public class SipNodeContext implements SipListener {
 		return null;
 	}
 
-	/*	while (dialogList.get(current.getaString()) == null || current.getaLong() <limitDialogTime) {
-		//resetRequestQueues(current.getaString());
-		_logger.error("resetSessionData for " + sipNode.getName() + " for " + current.getaString() + " : " + current.getaLong() + ", for limit " + limitDialogTime);
-		resetSessionData(current.getaString());
-		dialogsIdList.remove(0);
-		current = dialogsIdList.get(0);
-	 */    
 	public boolean isNodeReady() {
 		return isNodeReady;
 	}
@@ -767,7 +650,6 @@ public class SipNodeContext implements SipListener {
 			_logger.error("cleanup FAILED for " + sipNode.getLocalIP()+ ":" + Integer.parseInt(sipNode.getLocalPort())+ ":" +  sipNode.getLocalTransport(), e);
 		}
 
-		//_logger.error("SIP Port validation :  cleanUp");
 		testPortStatus(sipNode.getSipNodeName() + " cleanup", Integer.parseInt(sipNode.getLocalPort()));
 
 	}
@@ -793,7 +675,6 @@ public class SipNodeContext implements SipListener {
 	
 	public void processRequest_v1(RequestEvent arg0) {
 		if (_logger.isDebugEnabled()) _logger.debug("processRequest: " + arg0.getRequest().getMethod() + " identified by " + this.sipNode.getIdentificationHeader() + " = " + arg0.getRequest().getHeader(this.sipNode.getIdentificationHeader()));
-		//printQueueSize();
 		SimonManager.getCounter(
 				SipCounters.SIP_NODE_INBOUND_REQUEST.toString() + SipCounters.SUCCESS_SUFFIX.toString() + "."
 						+ arg0.getRequest().getMethod()
@@ -801,7 +682,6 @@ public class SipNodeContext implements SipListener {
 				).increase();
 
 		if (arg0 != null && arg0.getRequest() != null && "INVITE".equals(arg0.getRequest().getMethod())) {
-//			if( _logger.isWarnEnabled()) _logger.warn("RCV INVITE : " + arg0.getRequest().getHeader("Call-ID").toString().substring("Call-ID: ".length()).replaceAll("\\r|\\n", "")+ ", From = " + arg0.getRequest().getHeader("From").toString().replaceAll("\\r|\\n", "")+ ", From = " + arg0.getRequest().getHeader("To").toString().replaceAll("\\r|\\n", "") + "," + LocalDateTime.now().format(formatter));
 		}
 		if (SipNodeElement.FUNCTIONAL_TRAFIC.equals(sipNode.getTraficType())) {
 			processRequestFunctional(arg0);
@@ -832,18 +712,7 @@ public class SipNodeContext implements SipListener {
 			CallIdHeader callid = (CallIdHeader) req.getHeader("Call-ID");
 			id = SipString.cleanString(callid.getCallId());
 		}
-		//_logger.debug("getIdHeader: id " + id);
-		//		if (id.contains(";")) {
-		//			id = id.substring(0, id.indexOf(";"));
-		//		}
 		id = SipString.extractAddress(id);
-
-		// Remove uri-params 
-		/*		if (b.contains(";")) {
-			b = b.substring(0, b.indexOf(";"));
-			b= b + ">";
-		}
-		 */		
 
 		if (_logger.isDebugEnabled()) _logger.debug("getIdHeader: " + req.getMethod() + " identified by " + this.sipNode.getIdentificationHeader() + " = " + id);
 		return id;
@@ -856,10 +725,6 @@ public class SipNodeContext implements SipListener {
 		String method = arg0.getRequest().getMethod();
 		if (_logger.isDebugEnabled()) _logger.debug("processRequestFunctional: " + method + " identified by " + this.sipNode.getIdentificationHeader() + " = " + id);
 		
-//		if (Request.INVITE.equals(method) || Request.BYE.equals(method)){
-///		if (_logger.isDebugEnabled()) _logger.debug("RCV "+ method + " : " + arg0.getRequest().getHeader("Call-ID").toString().substring("Call-ID: ".length()).replaceAll("\\r|\\n", "") + ", From = " + arg0.getRequest().getHeader("From").toString().replaceAll("\\r|\\n", "")+ ", From = " + arg0.getRequest().getHeader("To").toString().replaceAll("\\r|\\n", "")+ "," + LocalDateTime.now().format(formatter));
-//		} 
-
 		try {
 			if (arg0.getServerTransaction() == null) {
 				if (_logger.isDebugEnabled()) _logger.debug("processRequestFunctional: no server transaction for id " + id);
@@ -876,9 +741,6 @@ public class SipNodeContext implements SipListener {
 			SipRequestTransaction reqTrans = new SipRequestTransaction((SIPServerTransactionImpl)st, arg0.getRequest());
 
 			reqQueue.add(reqTrans);
-			//			synchronized(msgRequestsQueues) {
-			//			msgRequestsQueues.put(id, reqQueue);
-			//	}
 		} catch (IllegalStateException ise) {
 			_logger.error("processRequestFunctional: IllegalStateException for id " + id, ise);			
 		} catch (IllegalArgumentException iae) {
@@ -897,15 +759,11 @@ public class SipNodeContext implements SipListener {
 	@Override
 	public void processResponse(ResponseEvent responseReceivedEvent) {
 		CSeqHeader cseH = (CSeqHeader) responseReceivedEvent.getResponse().getHeader("CSeq");
-///		if (_logger.isDebugEnabled()) _logger.debug("RCV "+ responseReceivedEvent.getResponse().getStatusCode() + " : " + cseH.toString().replaceAll("\\r|\\n", "") + " : " + responseReceivedEvent.getResponse().getHeader("Call-ID").toString().substring("Call-ID: ".length()).replaceAll("\\r|\\n", "") + ", From = " + responseReceivedEvent.getResponse().getHeader("From").toString().replaceAll("\\r|\\n", "")+ ", From = " + responseReceivedEvent.getResponse().getHeader("To").toString().replaceAll("\\r|\\n", "")+ "," + LocalDateTime.now().format(formatter));
 
 		threadsPool.execute(new ProcessIncomingResponseMessage(this, responseReceivedEvent));		
 	}
 
 	public void processResponse_v1(ResponseEvent responseReceivedEvent) {
-		
-		//printQueueSize();
-
 		Response response = (Response) responseReceivedEvent.getResponse();
 		if (_logger.isDebugEnabled()) {
 			_logger.debug("processResponse: " + response.getStatusCode());
@@ -950,17 +808,6 @@ public class SipNodeContext implements SipListener {
 						+ "." + getSipNode().getSipNodeName().replace(".", "_")
 				).increase();
 
-		// stop split related to response time statistics when response is at least 180.
-		/*	if (response.getStatusCode() > 100) {
-			try {
-				if (responseReceivedEvent != null || responseReceivedEvent.getClientTransaction() !=null || responseReceivedEvent.getClientTransaction().getApplicationData() != null || ((Split) responseReceivedEvent.getClientTransaction().getApplicationData()).isRunning()) {
-					((Split) responseReceivedEvent.getClientTransaction().getApplicationData()).stop();				
-				}
-			} catch (Exception e) {
-				//_logger.error("Cannot stop the split response time measure for response " + response.getStatusCode() + ":" + response.getHeader("To") + ":" + response.getHeader("CSeq"), e);
-			}
-		}
-		 */
 		if (SipNodeElement.FUNCTIONAL_TRAFIC.equals(sipNode.getTraficType())) {
 			processResponseFunctional(responseReceivedEvent);
 		} else {
@@ -974,7 +821,6 @@ public class SipNodeContext implements SipListener {
 		if (_logger.isDebugEnabled()) _logger.debug("processResponseFunctional: " + response.getStatusCode());
 		CSeqHeader cseH = (CSeqHeader) response.getHeader("CSeq");
 		String method = cseH.getMethod();
-		//_logger.error("RCV "+ cseH.toString() + " : " + responseReceivedEvent.getResponse().getHeader("Call-ID").toString().substring("Call-ID: ".length()).replaceAll("\\r|\\n", "") + ", From = " + responseReceivedEvent.getResponse().getHeader("From").toString().replaceAll("\\r|\\n", "")+ ", From = " + responseReceivedEvent.getResponse().getHeader("To").toString().replaceAll("\\r|\\n", "")+ "," + LocalDateTime.now().format(formatter));
 
 		String dialId = SipString.cleanString(responseReceivedEvent.getResponse().getHeader("Call-ID").toString().substring("Call-ID".length() + 2)); //ClientTransaction().getDialog().getDialogId();
 		ArrayBlockingQueue<SipResponseTransaction> respQueue;
@@ -990,21 +836,6 @@ public class SipNodeContext implements SipListener {
 		if (respQueue != null && respQueue.peek() != null) {
 			SipResponseTransaction clientTrans = respQueue.peek();
 			Response lastStoredResp = clientTrans.getTheResponse();//clientTrans.getTheTransaction().getLastResponse();
-			/*			if (lastStoredResp != null) {
-				if (lastStoredResp.toString().equals(response.toString())) {
-//				if ((lastStoredResp.getStatusCode() == response.getStatusCode()) &&
-//						(lastStoredResp.getHeader("Call-ID").toString().equals(response.getHeader("Call-ID").toString())) &&
-//						(lastStoredResp.getHeader("From").toString().equals(response.getHeader("From").toString())) &&
-//						(lastStoredResp.getHeader("To").toString().equals(response.getHeader("To").toString()))) {
-					// _logger.debug("response already received: should be retransmission " + lastStoredResp.getStatusCode() + ":" + response.getStatusCode());
-					_logger.debug("response already received: should be retransmission " + lastStoredResp.toString() + ":" + response.toString());
-					return;
-				} else {
-					_logger.debug("response not already received: it seems no to be a retransmission " + lastStoredResp.toString() + ":" + response.toString());
-				}
-			} else {
-				_logger.debug("No lastStored response. response received: " + response.toString());
-			} */
 		} else {
 			if (_logger.isDebugEnabled()) _logger.debug("resQueue empty. response received: " + response.toString());
 		}
@@ -1050,32 +881,8 @@ public class SipNodeContext implements SipListener {
 
 		if (terminationEvt.isServerTransaction()) {
 			ServerTransaction sT = terminationEvt.getServerTransaction();
-			/*			_logger.debug("processTransactionTerminated: ServerTransaction " + sT.getState()+ ":" + sT.getRequest().getMethod());
-			_logger.debug("processTransactionTerminated: ServerTransaction request " + sT.getRequest().toString());
-			_logger.debug("processTransactionTerminated: ServerTransaction Dialog dialogid, local, remote tag, and local Seq nb " 
-					+ sT.getDialog().getDialogId() + ":" + sT.getDialog().getLocalTag() 
-					+ ":"+ sT.getDialog().getRemoteTag() + ":" + sT.getDialog().getLocalSeqNumber());
-			_logger.debug("processTransactionTerminated: ServerTransaction Dialog 2 " + sT.getDialog().getRemoteSeqNumber() + ":"+ sT.getDialog().getRemoteParty() + ":"+ sT.getDialog().getRemoteTarget() );
-			 */
 			String id = getIdHeader(sT.getRequest());
 
-			/*			try {
-				ArrayBlockingQueue<SipRequestTransaction> reqQueue = checkRequestQueue(id + "_" + sT.getRequest().getMethod());
-
-
-				SipRequestTransaction reqTrans = new SipRequestTransaction((SIPServerTransactionImpl)sT, sT.getRequest());
-
-				reqQueue.add(reqTrans);
-
-				msgRequestsQueues.put(id, reqQueue);
-			} catch (IllegalStateException ise) {
-				_logger.error("processTransactionTerminated: IllegalStateException for id " + id, ise);			
-			} catch (IllegalArgumentException iae) {
-				_logger.error("processTransactionTerminated: IllegalArgumentException for id " + id, iae);
-			} catch (Throwable t) {
-				_logger.error("processTransactionTerminated: Throwable for id " + id, t);
-			}
-			 */			
 		}
 
 	}
@@ -1085,17 +892,11 @@ public class SipNodeContext implements SipListener {
 	}
 
 	public ArrayBlockingQueue<SipRequestTransaction> checkRequestQueue(String id) throws Exception{
-		//_logger.error("checkRequestQueue for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> START " + dateToString());
 		long start = dateToString();
-		//"Req_" + id){
 		try {
 			ArrayBlockingQueue<SipRequestTransaction> reqQueue = msgRequestsQueues.get(id);
-//			long diff = dateToString() - start;
-	//		if (diff > 5) _logger.error("checkRequestQueue for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> SYNC took " + diff);			
-
 
 			if (reqQueue != null) {
-				//	    			_logger.debug("checkRequestQueue for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> END");
 				return reqQueue;
 			}
 			reqQueue = new ArrayBlockingQueue<SipRequestTransaction>(queueSize);
@@ -1119,11 +920,7 @@ public class SipNodeContext implements SipListener {
 		//_logger.debug("clearQueue for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> START. " + reqQueue +":"+respQueue);
 
 		if (reqQueue) {
-			//_logger.error("clearQueue Req for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> START  " + dateToString() + ".");
 			long start = dateToString();
-			 //"Req_" + id){
-				//long diff = dateToString() - start;
-				//if (diff > 5) _logger.error("clearQueue Req for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> SYNC took  " + diff + ".");
 				ArrayBlockingQueue<SipRequestTransaction> queueReq = msgRequestsQueues.get(id);
 				if (queueReq != null) {
 					for (SipRequestTransaction sipRequestTransaction : queueReq) {
@@ -1145,11 +942,7 @@ public class SipNodeContext implements SipListener {
 		}
 
 		if (respQueue) {
-			//_logger.error("clearQueue Resp for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> START  " + dateToString() + ".");
 			long start = dateToString();
-			 //"Resp_" + id){
-				//long diff = dateToString() - start;
-				//if (diff > 5) _logger.error("clearQueue Resp for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> SYNC took  " + diff + ".");
 				ArrayBlockingQueue<SipResponseTransaction> queueResp = msgResponsesQueues.get(id);
 				if ( queueResp != null ) {
 					for (SipResponseTransaction sipResponseTransaction : queueResp) {
@@ -1169,18 +962,13 @@ public class SipNodeContext implements SipListener {
 				}
 			
 		}
-		//		_logger.debug("clearQueue for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> END");
 	}
 
 	public ArrayBlockingQueue<SipResponseTransaction> checkResponseQueue(String id) throws Exception{
 		if (_logger.isDebugEnabled()) _logger.debug("checkResponseQueue for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> START " + dateToString());
 		long start = dateToString();
-		 //"Resp_" + id){
 			try {
 				ArrayBlockingQueue<SipResponseTransaction> respQueue = msgResponsesQueues.get(id);
-//				long diff = dateToString() - start;
-	//			if (diff > 5) _logger.error("checkResponseQueue for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> SYNC took " + diff);
-
 
 				if (respQueue != null) {
 					if (_logger.isDebugEnabled()) _logger.debug("checkResponseQueue for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> END with existing queue");
@@ -1193,7 +981,7 @@ public class SipNodeContext implements SipListener {
 				long diff = dateToString() - start;
 				if (diff > 5) _logger.debug("checkResponseQueue msgResponsesQueues.get for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> SEARCH took " + diff); }
 
-				return msgResponsesQueues.get(id);//respQueue;
+				return msgResponsesQueues.get(id);
 			}
 			catch ( Exception e){
 				_logger.error("checkResponseQueue for id " + id + ": Exception occurred ", e);
@@ -1206,9 +994,6 @@ public class SipNodeContext implements SipListener {
 	public void resetQueues(String id) {
 		//_logger.error("resetQueues Resp for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> START " + dateToString());
 		long start = dateToString();
-		 //"Resp_" + id){
-			//long diff = dateToString() - start;
-			//if (diff > 5) _logger.error("resetQueues Resp for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> SYNC took " + diff);
 			ArrayBlockingQueue<SipResponseTransaction> queueResp = msgResponsesQueues.get(id);
 			if (queueResp != null) {
 				queueResp.clear();
@@ -1216,53 +1001,37 @@ public class SipNodeContext implements SipListener {
 			msgResponsesQueues.remove(id);
 		
 
-		//_logger.error("resetQueues Req for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> START " + dateToString());
 		start = dateToString();
-		 //"Req_" + id){
-			//long diff = dateToString() - start;
-			//if (diff > 5) _logger.error("resetQueues Req for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> SYNC took " + diff);
 			ArrayBlockingQueue<SipRequestTransaction> queueReq = msgRequestsQueues.get(id);
 			if (queueReq != null) {
 				queueReq.clear();
 			}
 			msgRequestsQueues.remove(id);
 		
-		//		_logger.debug("resetQueues for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> END");
 	}
 
 	public void resetRequestQueues(String id) {
 		//_logger.error("resetQueues Req for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> START " + dateToString());
 		long start = dateToString();
-		//		synchronized(msgRequestsQueues) { //"Req_" + id){
-		//long diff = dateToString() - start;
-		//if (diff > 5) _logger.error("resetQueues Req for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> SYNC took " + diff);
 		ArrayBlockingQueue<SipRequestTransaction> queueReq = msgRequestsQueues.get(id);
 		if (queueReq != null) {
-			//_logger.error("resetQueues Req remove for id " + id );
 			queueReq.clear();
 			msgRequestsQueues.remove(id);
 		} else {
 			// _logger.error("resetQueues Req NULL for id " + id );
 		}
 		msgRequestsQueues.remove(id);
-		//		}
-		//		_logger.debug("resetQueues for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> END");
 	}
 
 	public void resetResponseQueues(String id) {
 		//_logger.error("resetQueues Resp for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> START " + dateToString());
 		long start = dateToString();
-		//		synchronized(msgResponsesQueues) { //"Resp_" + id){
-		//long diff = dateToString() - start;
-		//if (diff > 5) _logger.error("resetQueues Resp for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> SYNC took " + diff);
 		ArrayBlockingQueue<SipResponseTransaction> queueResp = msgResponsesQueues.get(id);
 		if (queueResp != null) {
 			queueResp.clear();
 			msgResponsesQueues.remove(id);
 		}
 		msgResponsesQueues.remove(id);
-		//		}
-		//		_logger.debug("resetQueues for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> END");
 	}
 
 	public SipNodeElement getSipNode() {
@@ -1321,7 +1090,7 @@ public class SipNodeContext implements SipListener {
 	public void resetSessionData(String id) {
 		//_logger.error("resetSessionData for " + sipNodeName +"." + dialogueNb + ", with identification = " + identification);
 		
-			dialogList.remove(id); //.clearSipDialogs();
+			dialogList.remove(id);
 		
 
 	}
@@ -1353,10 +1122,4 @@ public class SipNodeContext implements SipListener {
 	}
 
 
-	/*    public Split getSplitAndStart(String id) {
-        // create a Simon split for responsetime statisticts. Put it in the session application data
-        Split split = SimonManager.getStopwatch(id).start();
-        return split;
-    }
-	 */
 }

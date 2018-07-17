@@ -7,6 +7,7 @@ import gov.nist.javax.sip.Utils;
 ////import gov.nist.javax.sip.address.AddressFactoryEx;
 ////import gov.nist.javax.sip.address.AddressImpl;
 import gov.nist.javax.sip.message.SIPRequest;
+import gov.nist.javax.sip.parser.ViaParser;
 import gov.nist.javax.sip.stack.SIPServerTransactionImpl;
 
 import java.io.UnsupportedEncodingException;
@@ -125,14 +126,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
     @Override
     public void testStarted() {
         _logger.debug("testStarted.");
-        /*		sipNodeName = getPropertyAsString("sip.node.name");
-		sipNodeContext = getSipNodeContext(sipNodeName);
-
-		if (sipNodeContext == null) {
-			_logger.error("sipNodeContext is null");
-		}
-		direction = getPropertyAsString("sip.message.direction");
-         */
     }
 
     @Override
@@ -146,7 +139,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
     }
 
     private void readSessionData() {
-        //_logger.error("readSessionData for " + sipNodeName +"." + dialogueNb + ", with identification = " + identification);
         int threadnb = getThreadContext().getThreadNum();
         if (identification == null || "".equals(identification)) {
             theSessionData = sipNodeContext.readSessionData("SipSessionData." + sipNodeName +"." +dialogueNb + "." + threadnb);
@@ -159,7 +151,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
     }
 
     private void resetSessionData() {
-        //_logger.error("resetSessionData for " + sipNodeName +"." + dialogueNb + ", with identification = " + identification);
         int threadnb = getThreadContext().getThreadNum();
         if (identification == null || "".equals(identification)) {
             theSessionData = sipNodeContext.readSessionData( "SipSessionData." + sipNodeName +"." +dialogueNb + "." + threadnb);
@@ -167,18 +158,12 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             theSessionData = sipNodeContext.readSessionData( "SipSessionData." + sipNodeName +"." + identification +"." +dialogueNb);
         }
 
-        ///theSessionData = (SipDialogData) variables.remove("SipSessionData." + sipNodeName +"." +dialogueNb);
-
         if (theSessionData != null) {
             theSessionData.clearSipDialogs();
             theSessionData = null;
             if (identification == null || "".equals(identification)) {
-                //variables.putObject( "SipSessionData." + sipNodeName +"." +getPropertyAsString("sip.message.dialnb"), theSessionData);
-            	///// sipNodeContext.resetSessionData("SipSessionData." + sipNodeName +"." +getPropertyAsString("sip.message.dialnb") + "." + threadnb);
             	sipNodeContext.resetSessionData("SipSessionData." + sipNodeName +"." +dialogueNb + "." + threadnb);
             } else {
-                //variables.putObject( "SipSessionData." + sipNodeName +"." + identification +"." +getPropertyAsString("sip.message.dialnb"), theSessionData);
-            	///// sipNodeContext.resetSessionData("SipSessionData." + sipNodeName +"." + identification +"." +getPropertyAsString("sip.message.dialnb"));
             	sipNodeContext.resetSessionData("SipSessionData." + sipNodeName +"." + identification +"." +dialogueNb);
             }
         }
@@ -193,21 +178,16 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
 
     private void storeSessionData() {
         int threadnb = getThreadContext().getThreadNum();
-        //_logger.error("storeSessionData for " + sipNodeName +"." + dialogueNb + ", with identification = " + identification);
 
-        ///		variables.putObject( "SipSessionData." + sipNodeName +"." +getPropertyAsString("sip.message.dialnb"), theSessionData);		
         if (identification == null || "".equals(identification)) {
-        	///// sipNodeContext.storeSessionData("SipSessionData." + sipNodeName +"." +getPropertyAsString("sip.message.dialnb") + "." + threadnb, theSessionData);
         	sipNodeContext.storeSessionData("SipSessionData." + sipNodeName +"." +dialogueNb + "." + threadnb, theSessionData);
         } else {
-        	///// sipNodeContext.storeSessionData( "SipSessionData." + sipNodeName +"." + identification +"." +getPropertyAsString("sip.message.dialnb"), theSessionData);
         	sipNodeContext.storeSessionData( "SipSessionData." + sipNodeName +"." + identification +"." +dialogueNb, theSessionData);
         }
     }
 
     
     private void readSessionDataFirst() {
-        //_logger.error("readSessionData for " + sipNodeName +"." + dialogueNb + ", with identification = " + identification);
         JMeterVariables variables = getThreadContext().getVariables();
         int threadnb = getThreadContext().getThreadNum();
         if (identification == null || "".equals(identification)) {
@@ -221,7 +201,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
     }
 
     private void resetSessionDataFirst() {
-        //_logger.error("resetSessionData for " + sipNodeName +"." + dialogueNb + ", with identification = " + identification);
         JMeterVariables variables = getThreadContext().getVariables();
         int threadnb = getThreadContext().getThreadNum();
         if (identification == null || "".equals(identification)) {
@@ -230,16 +209,12 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             theSessionData = (SipDialogData) variables.getObject( "SipSessionData." + sipNodeName +"." + identification +"." +dialogueNb);
         }
 
-        ///theSessionData = (SipDialogData) variables.remove("SipSessionData." + sipNodeName +"." +dialogueNb);
-
         if (theSessionData != null) {
             theSessionData.clearSipDialogs();
             theSessionData = null;
             if (identification == null || "".equals(identification)) {
-                //variables.putObject( "SipSessionData." + sipNodeName +"." +getPropertyAsString("sip.message.dialnb"), theSessionData);
                 variables.remove("SipSessionData." + sipNodeName +"." +getPropertyAsString("sip.message.dialnb") + "." + threadnb);
             } else {
-                //variables.putObject( "SipSessionData." + sipNodeName +"." + identification +"." +getPropertyAsString("sip.message.dialnb"), theSessionData);
                 variables.remove( "SipSessionData." + sipNodeName +"." + identification +"." +getPropertyAsString("sip.message.dialnb"));
             }
         }
@@ -250,19 +225,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             sipNodeContext.resetQueues(dialogueNb);            	
         }
 
-    }
-
-    private void storeSessionDataFirst() {
-        JMeterVariables variables = getThreadContext().getVariables();
-        int threadnb = getThreadContext().getThreadNum();
-        //_logger.error("storeSessionData for " + sipNodeName +"." + dialogueNb + ", with identification = " + identification);
-
-        ///		variables.putObject( "SipSessionData." + sipNodeName +"." +getPropertyAsString("sip.message.dialnb"), theSessionData);		
-        if (identification == null || "".equals(identification)) {
-            variables.putObject( "SipSessionData." + sipNodeName +"." +getPropertyAsString("sip.message.dialnb") + "." + threadnb, theSessionData);
-        } else {
-            variables.putObject( "SipSessionData." + sipNodeName +"." + identification +"." +getPropertyAsString("sip.message.dialnb"), theSessionData);
-        }
     }
 
     private void resetHeaderMap() {
@@ -307,7 +269,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
     }
 
     private void readFactories() throws Exception {
-        //sipFactory = sipNodeContext.getSipFactory();
         headerFactory = sipNodeContext.getHeaderFactory();
         addressFactory = sipNodeContext.getAddressFactory();
         messageFactory = sipNodeContext.getMessageFactory();
@@ -365,21 +326,14 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             }
         }
         if (_logger.isDebugEnabled()) _logger.debug("identification " + identification + ":" + sipNodeContext.getSipNode().getIdentificationHeader());
-        //_.debug.error("DAV: identification " + identification + ":" + sipNodeContext.getSipNode().getIdentificationHeader());
 
         if (reset) {
             resetSessionData();
         }		
         readSessionData();
         isRequest = "request".equals(getPropertyAsString("sip.message.type"));
-        // Done before		resetHeaderMap();
-        //		if (sipNodeContext == null) {
-        //			sipNodeContext = getSipNodeContext(getPropertyAsString("sip.node.name"));
-        //		}
 
         if (_logger.isDebugEnabled()) _logger.debug("sample: " + direction + ":" + isRequest +":" + ":" + dialogueNb +":" + transactionNb +":" + relatedTransactionNb);		
-        //_logger.error("DAV: sample: " + direction + ":" + isRequest +":" + ":" + dialogueNb +":" + transactionNb +":" + relatedTransactionNb + ":" + getPropertyAsString("sip.message.command") + ":" + getPropertyAsString("sip.message.response.code"));		
-
 
     	long start = dateToString();
         if ("send".equals(direction)) {
@@ -510,31 +464,12 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                     result = result + "Request-URI badly formated.\n";        			
                 }
             }
-            /*	      	if (reqUri != null) {
-	      		String[] req = GuiHeadersParser.decodeReqUri(reqUri);
-	      		if (req != null && req.length == 2) {
-	      			requestURI = addressFactory.createSipURI(req[0], req[1] );
-	      		} else {
-		      		_logger.debug("Request-URI badly formated.");
-		      		result = result + "Request-URI badly formated.\n";
-	      		}
-	      	} else {
-	      		_logger.debug("Request-URI header not set.");
-	      		result = result + "Request-URI header not set.\n";
-	      	}
-             */
 
             // From header
             FromHeader fromHeader = null;
             String from = extractOneValue(headersMap.removeHeaders("From"));
             String tag;
             if (from != null) {
-                //tag = SipString.extractTag(from);
-                //Address address = addressFactory.createAddress(SipString.extractAddress(from));
-                //if (tag == null) {
-                //	tag = new Integer((int) (Math.random() * 10000)).toString();
-                //}
-                //fromHeader = headerFactory.createFromHeader(address, tag);
                 fromHeader = createFromHeader(from);
                 tag = fromHeader.getTag();
                 if (tag == null || "".equals(tag)) {
@@ -550,9 +485,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             ToHeader toHeader = null;
             String to = extractOneValue(headersMap.removeHeaders("To"));
             if (to != null) {
-                //tag = null; tag = SipString.extractTag(to);
-                //Address address = addressFactory.createAddress(SipString.extractAddress(to));
-                //toHeader = headerFactory.createToHeader(address, tag);
                 toHeader = createToHeader(to);
             } else {
                 result = result + "To header not set.\n";
@@ -563,27 +495,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             if (viaHeaders == null) {
                 viaHeaders = new ArrayList<ViaHeader>();
             }
-            /*            new ArrayList<ViaHeader>();
-            String transport = sipNodeContext.getSipNode().getLocalTransport();
-        	String ipAddress = udpListeningPoint.getIPAddress();
-        	int ipPort = sipProvider.getListeningPoint(transport ).getPort();
-        	String branch = null;
-        	List<String> viaString = headersMap.removeHeaders("Via");
-        	for (String oneViaString : viaString) {
-            	if (oneViaString != null && !"".equals(oneViaString)) {
-                	String[] via = GuiHeadersParser.decodeVia(oneViaString);
-                	if (via != null) {
-                		ipAddress = via[0];
-                		ipPort = Integer.parseInt(via[1]);
-                		if (via.length == 3) {
-                			branch = via[2];
-                		}
-                	ViaHeader viaHeader = headerFactory.createViaHeader(ipAddress, ipPort, transport, branch);
-                	viaHeaders.add(viaHeader);
-                	}
-            	}
-			}
-             */
             // Cseq header
             String cseqString = extractOneValue(headersMap.removeHeaders("CSeq"));
             CSeqHeader cSeqHeader = null;
@@ -823,8 +734,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             } else {
                 theDial = ct.getDialog();
             }
-            theSessionData.setTheDialog(theDial);//ct.getDialog());
-            //theSessionData.setPreviousTransaction(transactionNb);
+            theSessionData.setTheDialog(theDial);
             storeSessionData();
 
             // set sampler result
@@ -904,12 +814,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                     String from = extractOneValue(headersMap.removeHeaders("From"));
                     String tag;
                     if (from != null) {
-                        //tag = SipString.extractTag(from);
-                        //Address address = addressFactory.createAddress(SipString.extractAddress(from));
-                        //if (tag == null) {
-                        //   tag = new Integer((int) (Math.random() * 10000)).toString();
-                        //}
-                        //fromHeader = headerFactory.createFromHeader(address, tag);
                         fromHeader = createFromHeader(from);
                         tag = fromHeader.getTag();
                         if (tag == null || "".equals(tag)) {
@@ -923,9 +827,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                     ToHeader toHeader = null;
                     String to = extractOneValue(headersMap.removeHeaders("To"));
                     if (to != null) {
-                        //tag = null; tag = SipString.extractTag(to);
-                        //Address address = addressFactory.createAddress(SipString.extractAddress(to));
-                        //toHeader = headerFactory.createToHeader(address, tag);
                         toHeader = createToHeader(to);
                         ackRequest.removeHeader("To");
                         ackRequest.setHeader(toHeader);
@@ -1132,27 +1033,14 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
 
             } else {
                 request = dialog.createRequest(command);
-         ////   }
-
             
-            //// DAV: To and From headers to force if related transaction not enough ! create Client transaction before or after ////
+                //// DAV: To and From headers to force if related transaction not enough ! create Client transaction before or after ////
             // From header
             FromHeader fromHeader = null;
             String from = extractOneValue(headersMap.removeHeaders("From"));
             String tag;
             if (from != null) {
-                //tag = SipString.extractTag(from);
-                //Address address = addressFactory.createAddress(SipString.extractAddress(from));
-                //if (tag == null) {
-                //   tag = new Integer((int) (Math.random() * 10000)).toString();
-                //}
-                //fromHeader = headerFactory.createFromHeader(address, tag);
                 fromHeader = createFromHeader(from);
-/*                tag = fromHeader.getTag();
-                if (tag == null || "".equals(tag)) {
-                    tag = new Integer((int) (Math.random() * 10000)).toString();
-                    fromHeader.setTag(tag);
-                }*/
                 request.removeHeader("From");
                 request.setHeader(fromHeader);
             } 
@@ -1160,9 +1048,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             ToHeader toHeader = null;
             String to = extractOneValue(headersMap.removeHeaders("To"));
             if (to != null) {
-                //tag = null; tag = SipString.extractTag(to);
-                //Address address = addressFactory.createAddress(SipString.extractAddress(to));
-                //toHeader = headerFactory.createToHeader(address, tag);
                 toHeader = createToHeader(to);
                 request.removeHeader("To");
                 request.setHeader(toHeader);
@@ -1198,10 +1083,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                 request.setRequestURI(requestURI);
             }
 
-////            // Create the client transaction.
-////            ClientTransaction ct = sipProvider.getNewClientTransaction(request);
-            
-            /////////            extractOneValue(headersMap.removeHeaders("Via", 1));
             // Via headers
             ArrayList<ViaHeader> viaHeaders = createViaHeader();
             if (viaHeaders == null) {
@@ -1245,7 +1126,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
 
             // send the request out.
             if (relatedTransactionNb != null && !"".equals(relatedTransactionNb) && !"None".equals(relatedTransactionNb)) {
-            //if (!"None".equals(relatedTransactionNb)) {
             	sipProvider.sendRequest(request);
             } else {
                 // Create the client transaction.
@@ -1263,8 +1143,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             theSessionData.setLastRequest(request);
             theSessionData.setTheCallId(callid );
             if (relatedTransactionNb != null && !"".equals(relatedTransactionNb) && !"None".equals(relatedTransactionNb)) {
-            //if (!"None".equals(relatedTransactionNb)) {
-            	
+           	
             } else {
             	theSessionData.setTheDialog(ct.getDialog());
             }
@@ -1318,10 +1197,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             // To header
             String toString = extractOneValue(headersMap.removeHeaders("To"));
             if (toString != null && !"".equals(toString)) {
-                //String tag = null; 
-                //tag = SipString.extractTag(toString);
-                //Address toA = addressFactory.createAddress(SipString.extractAddress(toString)); 
-                //ToHeader toH = headerFactory.createToHeader(toA, tag);
                 ToHeader toH = createToHeader(toString);
                 // cancelRequest.removeHeader("To");
                 cancelRequest.setHeader(toH);
@@ -1340,8 +1215,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
 
             // Create the client transaction.
             ClientTransaction ct = sipProvider.getNewClientTransaction(cancelRequest);
-
-            /////////            headersMap.removeHeaders("Via");
 
             // add other headers
             addHeaders(cancelRequest);
@@ -1391,9 +1264,17 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
         SIPServerTransactionImpl aReq = (SIPServerTransactionImpl) theSessionData.getATransaction(transactionNb).getTheTransaction();
         if (aReq == null) {
         	if (_logger.isDebugEnabled()) _logger.debug("sendAnswerMessage error : no stored SIPServerTransactionImpl");
-            res.setResponseMessage("sendAnswerMessage error : no stored SIPServerTransactionImpl");
-            res.setSuccessful(false);
-            return;
+        	
+        	if (relatedTransactionNb != null && !"".equals(relatedTransactionNb)) {
+        		aReq = (SIPServerTransactionImpl) theSessionData.getATransaction(relatedTransactionNb).getTheTransaction();
+                if (aReq == null) {
+                	if (_logger.isDebugEnabled()) _logger.debug("sendAnswerMessage error : no stored SIPServerTransactionImpl");
+                    res.setResponseMessage("sendAnswerMessage error : no stored SIPServerTransactionImpl");
+                    res.setSuccessful(false);
+                    return;
+                }
+        	}
+        	
         }
         
         String prevReqDialId = null;
@@ -1401,7 +1282,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
         try {
 
             // Get the Request to answer.
-////            Request previousRequest = (Request) aReq.getRequest().clone();
             Request previousRequest = (Request) aReq.getRequest();
             
             if (previousRequest !=null && previousRequest.getHeader("Call-ID") != null) {
@@ -1425,23 +1305,14 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                 // Reliable response
 
                 // Create the response
-                //        		sipProvider.setAutomaticDialogSupportEnabled(false);
             	Dialog newDialog = sipProvider.getNewDialog(aReq);
-                Response sessionProgress = newDialog.createReliableProvisionalResponse(respCode);//theSessionData.getTheDialog().createReliableProvisionalResponse(respCode );
-                //        		sipProvider.setAutomaticDialogSupportEnabled(true);
+                Response sessionProgress = newDialog.createReliableProvisionalResponse(respCode);
 
                 // To header
                 ToHeader toHeader = (ToHeader) sessionProgress.getHeader("To");
                 String to = extractOneValue(headersMap.removeHeaders("To"));
                 if (to != null) {
                     toHeader = createToHeader(to);
-                    /*	        		String tag = SipString.extractTag(to);
-		        	if (tag != null) {
-		                toHeader.setTag(tag);
-		        	} else {
-		        		_logger.debug("To header tag not set.");
-		        	}
-                     */		        	
                 }
 
                 if (toHeader.getTag() == null || "".equals(toHeader.getTag())) {
@@ -1498,8 +1369,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                 // add other headers
                 addHeaders(sessionProgress);
 
-                //	        	_logger.debug("RSeq header after addHeaders :" + sessionProgress.getHeader("RSeq") + " test");
-
                 // send the answer out.
                 // It is essential to use this API here!
                 theSessionData.getTheDialog().sendReliableProvisionalResponse(sessionProgress);//(Response) sessionProgress.clone());
@@ -1546,7 +1415,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                         ct2 = contType.substring(contType.indexOf("/") + 1);
                     }	                
                     ContentTypeHeader contentTypeHeader = headerFactory.createContentTypeHeader(ct1, ct2);
-                    theResponse.setContent(body.getBytes(), contentTypeHeader);//theResponse.setContent(contents, contentTypeHeader);        		
+                    theResponse.setContent(body.getBytes(), contentTypeHeader);        		
 
                 }
 
@@ -1555,44 +1424,11 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
 
                 // send the answer out.
                 try {
-                	// Charles 22/02/2017  : add enableRetransmissionAlerts() so as to make application (SIMULAP) responsible to retransmit in case of retransmission alerts
-                	// trial to fix CR26039
-                /*	if (aReq.getDialog() == null) {
-                		_logger.debug("aReq.enableRetransmissionAlerts()");
-                		aReq.enableRetransmissionAlerts();
-                	}
-                	_logger.debug("aReq.disableRetransmissionTimer()");
-                	aReq.disableRetransmissionTimer();
-                	_logger.debug("aReq.disableTimeoutTimer()");
-                	aReq.disableTimeoutTimer();
-                	_logger.debug("aReq.disableRetransmissionAlerts()");
-                	aReq.disableRetransmissionAlerts();
-                	_logger.debug("SipStack()).removeTransactionPendingAck(aReq)");
-                	((SipStackImpl)sipNodeContext.getSipStack()).removeTransactionPendingAck(aReq);
-                */	
                     aReq.sendResponse(theResponse);
-                    ////((SIPServerTransactionImpl) previousRequest).sendResponse(theResponse);
-                /*	_logger.debug("aReq.disableRetransmissionTimer() 2");
-                	aReq.disableRetransmissionTimer();
-                	_logger.debug("aReq.disableTimeoutTimer() 2");
-                	aReq.disableTimeoutTimer();
-                	_logger.debug("aReq.disableRetransmissionTimer() 2");
-                	aReq.disableRetransmissionTimer();
-                	_logger.debug("SipStack()).removeTransactionPendingAck(aReq) 2");
-                	((SipStackImpl)sipNodeContext.getSipStack()).removeTransactionPendingAck(aReq);
-                */	
                 } catch (SipException e) {
                     _logger.debug("Send response message exception : ", e);
                     _logger.debug("Send response message exception : Try to create a new transaction ");
-                    // test 1 try to create a new Server transaction
-                    //ServerTransaction st = sipProvider.getNewServerTransaction(previousRequest);
-                    //st.sendResponse(theResponse);
-
-                    // test 2 try to change the ForkId
-                    //aReq.setForkId(aReq.getForkId()+ "_2");
-                    //aReq.sendResponse(theResponse);
-
-                    // test 3 try to clone the request, then create a new ServerTransaction
+                    // try to clone the request, then create a new ServerTransaction
                     SIPRequest clonedRequest = (SIPRequest) previousRequest.clone();
 
                     ServerTransaction st = (ServerTransaction) clonedRequest.getTransaction(); //sipProvider.getNewServerTransaction(clonedRequest);
@@ -1616,8 +1452,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                     addHeaders(theClonedResponse);
 
                     // send the answer out.
-                    // Charles 22/02/2017  : add enableRetransmissionAlerts() so as to make application (SIMULAP) responsible to retransmit in case of retransmission alerts
-                	// trial to fix CR26039
                 	if (st.getDialog() == null) {
                 		if (_logger.isDebugEnabled()) _logger.debug("st.enableRetransmissionAlerts()");
                         st.enableRetransmissionAlerts();
@@ -1693,9 +1527,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             // Get identification header
             String id = SipString.cleanString(extractOneValue(headersMap.removeHeaders(this.sipNodeContext.getSipNode().getIdentificationHeader())));
             if (_logger.isDebugEnabled()) _logger.debug("receiveRequestMessage idHeader name = " + this.sipNodeContext.getSipNode().getIdentificationHeader() + ", and value = " + id);
-            //			if (id.contains(";")) {
-            //				id = id.substring(0, id.indexOf(";"));
-            //			}
             id = SipString.extractAddress(id);
 
             
@@ -1768,7 +1599,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                     checkReceivedRequest(aReq.getTheRequest(),res);
                 }
             }
-            //sipNodeContext.clearQueue(id + "_" + getProperty("sip.message.command").getStringValue(), true, false);
         } catch (Exception e) {
         	if (_logger.isDebugEnabled()) _logger.debug("receiveRequestMessage exception : ", e);
             res.setResponseMessage("receiveRequestMessage exception : " + e.toString());
@@ -1791,7 +1621,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             
             // Forking case: if relatedTransactionNb != null
             if (relatedTransactionNb != null && !"".equals(relatedTransactionNb) && !"None".equals(relatedTransactionNb)) {
-            //if (!"None".equals(relatedTransactionNb)) {
             	if (_logger.isDebugEnabled()) _logger.debug("receiveAnswerMessage with relatedTransactionNb =  "+ relatedTransactionNb +".");
             	try {
             	theSessionData.setADialog(relatedTransactionNb, sipProvider.getNewDialog(theSessionData.getATransaction(relatedTransactionNb).getTheTransaction()));
@@ -1800,10 +1629,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             	}
             }            
 
-//            _logger.debug("receiveAnswerMessage 1 : " + theSessionData);
-//            _logger.debug("receiveAnswerMessage 2 : " + theSessionData.getATransaction(transactionNb));
-//            _logger.debug("receiveAnswerMessage 3 : " + theSessionData.getATransaction(transactionNb).getLastRequest());
-//            _logger.debug("receiveAnswerMessage 4 : " + theSessionData.getATransaction(transactionNb).getLastRequest().getMethod());
             String method = theSessionData.getATransaction(transactionNb).getLastRequest().getMethod();//getTheTransaction().getRequest().getMethod();
             // Get response queue
             ArrayBlockingQueue<SipResponseTransaction> respQueue = sipNodeContext.checkResponseQueue(id+"_" + getProperty("sip.message.response.code").getStringValue() + "_" + method);
@@ -1819,9 +1644,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             	while (retry) {
             		retry = false;
                 // Wait for a message
-//                _logger.debug("resp queue size before poll = " + respQueue.size());
                 SipResponseTransaction aResp = respQueue.poll(timeout, TimeUnit.MILLISECONDS);
-//                _logger.debug("resp queue size after poll = " + respQueue.size());
                 if ( aResp == null){
                     // No message received
                 	if (_logger.isDebugEnabled()) _logger.debug("incoming response for id "+id+ " not received within timeout "+timeout,null);
@@ -1834,8 +1657,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                     }
                 }
                 else {
-                    // Message received
-                	
+                    // Message received                	
                 	if (_logger.isDebugEnabled()) _logger.debug("receiveAnswerMessage: poll in responsesQeueues for id = " + id +". remaining queue size =" + respQueue.size());
 
                     // Get the answer
@@ -1874,26 +1696,12 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                     }
                     storeSessionData();
 
-                    /*			            if (aResp.getTheTransaction() == null) {
-			            	_logger.debug("aResp.getTheTransaction() == null");
-			            } else if (aResp.getTheTransaction().getRequest() == null) {
-			            	_logger.debug("aResp.getTheTransaction().getRequest() == null)");
-			            } else {
-			            	_logger.info("incoming response for id "+id+ " received " + aResp.getTheTransaction().getRequest().toString());
-			            }
-                     */			            
-                    //					} else {
-                    //					_logger.info("incoming response is a retry ! Do not store session data");
-                    //				
-                    //		}
-
                     // Check received headers
                     checkReceivedResponse(aResp.getTheResponse(),res);
                     }
                 }
             }
             }
-//            sipNodeContext.clearQueue(id+"_" + getProperty("sip.message.response.code").getStringValue() + "_" + method, false, true);
         } catch (Exception e) {
             _logger.debug("receiveAnswerMessage exception : ", e);
             res.setResponseMessage("receiveAnswerMessage exception : " + e.toString());
@@ -2032,19 +1840,11 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                             if (i >= eVL.size()) {
                                 String valRcv = iterator.next().toString(); // to consum the data from the list
 
-                                // IS IT AN ERROR ???            			// Error : not enough values in Request
-                                //	            		diff = diff + entry.getKey() + " check failed: one more value in request " +  iterator.next() + ".\n";
-                                //	            		res.setSuccessful(false);
                             } else {
 
                                 String eVLi = eVL.get(i);
-                                //		            			String valRcv = iterator.next().toString();
                                 String valRcv ;
-                                /////		            			if ("Via".equals(entry.getKey())) {
-                                /////		            				valRcv = ((ViaHeader) iterator.next()).
-                                /////		            			} else {
                                 valRcv = iterator.next().toString(); // to consum the data from the list
-                                /////		            			}
                                 String aH = SipString.cleanString(valRcv);
                                 if (eVLi.startsWith("STORE:")) {
                                     // Store one value
@@ -2130,8 +1930,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
     private boolean checkOneHeader (String receivedValue, String comparisonValue) {
         String tagrcv = SipString.extractTag(receivedValue);
         String tagcomp = SipString.extractTag(comparisonValue);
-        //    	String valrcv = SipString.removeTag(receivedValue);
-        //    	String valcomp = SipString.removeTag(comparisonValue);
         String valrcv = SipString.removeTag2(receivedValue, ";tag="+tagrcv);
         String valcomp = SipString.removeTag2(comparisonValue, ";tag="+tagcomp);
         if (_logger.isDebugEnabled()) _logger.debug("checkOneHeader " + tagrcv + ":" + tagcomp + ":" + valrcv + ":" + valcomp);
@@ -2177,8 +1975,10 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
         }
         for (String oneViaString : viaString) {
             if (oneViaString != null && !"".equals(oneViaString)) {
+            	
                 String[] via = GuiHeadersParser.decodeVia(oneViaString);
                 if (via != null) {
+                    _logger.debug("createViaHeader via  " + via[0] + ":" + via[1]);
                     ipAddress = via[0];
                     ipPort = Integer.parseInt(via[1]);
                     if (via.length == 3) {
@@ -2186,8 +1986,10 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                     }
                     if (_logger.isDebugEnabled()) _logger.debug("createViaHeader add " + ipAddress + ":" + ipPort + ":" + transport + ":" + branch);
                     ViaHeader viaHeader = headerFactory.createViaHeader(ipAddress, ipPort, transport, branch);
+                    
                     viaHeaders.add(viaHeader);
                 }
+                
             }
         }
         return viaHeaders;
@@ -2203,18 +2005,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                 if (_logger.isDebugEnabled()) _logger.debug("createToHeader extTo = " + extTo);
                 address = addressFactory.createAddress(extTo);
                 toHeader = headerFactory.createToHeader(address, null);
-                /*				if (extTo.startsWith("\"") || extTo.startsWith("<")) {
-					// name-addr case
-					toHeader = headerFactory.createToHeader(address, null);
-				} else {
-					// addr-spec case 
-					AddressImpl addSpec = new AddressImpl();
-					addSpec.setAddressType(AddressImpl.ADDRESS_SPEC);
-					addSpec.setAddess(address.getURI());
-					toHeader = headerFactory.createToHeader(addSpec, null);
-				}
-                 */				
-                ///	            toHeader = headerFactory.createToHeader(address, null);
                 String[] params = SipString.extractParams(toString.substring(extTo.length()));
                 if (params != null && params.length != 0) {
                     for (String oneParam : params) {

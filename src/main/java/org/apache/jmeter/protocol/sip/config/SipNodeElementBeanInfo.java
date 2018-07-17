@@ -18,13 +18,11 @@ import com.hp.simulap.sip.headers.Header;
 
 public class SipNodeElementBeanInfo extends BeanInfoSupport {
 	Logger _logger = LoggingManager.getLoggerForClass();
-//	private List<Header> dico = null;
 	
 
 	public SipNodeElementBeanInfo() {
 		super(SipNodeElement.class);
 		
-	//	dico = SipDico.loadDico();
 		createPropertyGroup("chooseNodeName", new String[] { 
 				"sipNodeName",
 		});
@@ -50,7 +48,6 @@ public class SipNodeElementBeanInfo extends BeanInfoSupport {
 		p.setValue(TAGS,new String[]{				
 				SipNodeElement.FUNCTIONAL_TRAFIC,
 				SipNodeElement.PERFORMANCE_TRAFIC,
-//				SipNodeElement.SAMPLING_TRAFIC,
 		});		
 				
 		p = property("autoAnswerTimeout");
