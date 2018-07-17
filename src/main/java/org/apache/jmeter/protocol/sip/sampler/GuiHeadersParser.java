@@ -42,6 +42,9 @@ public class GuiHeadersParser {
 	}
 
 	public static String[] decodeVia(String theViaString) {
+		if (theViaString.contains("[") && theViaString.contains("]")) {
+			return decodeViav6(theViaString);
+		}
 		/// String[] reqparts = theViaString.split("(sip:)|(sip:)*(:)|(:)*(>)");
 		String[] reqparts = theViaString.split("(sip:)|(sip:)*(:)|(:)*(>)|(;branch=)");
 		if (reqparts.length >= 2) {
@@ -51,6 +54,25 @@ public class GuiHeadersParser {
 		return null;
 	}
 
+	public static String[] decodeViav6(String theViaString) {
+
+		String ipv6 = theViaString.substring(theViaString.indexOf("["), theViaString.indexOf("]")+1);
+
+		/// String[] reqparts = theViaString.split("(sip:)|(sip:)*(:)|(:)*(>)");
+		String[] subreqparts = theViaString.substring(theViaString.indexOf("]")+2).split("(sip:)|(sip:)*(:)|(:)*(>)|(;branch=)");
+		if (subreqparts.length == 1) {
+			String[] reqparts = {ipv6, subreqparts[0]};
+			return reqparts;
+		}			
+		if (subreqparts.length == 2) {
+			String[] reqparts = {ipv6, subreqparts[0], subreqparts[1]};
+			return reqparts;
+		}			
+		
+		return null;
+	}
+
+	
 	public static String[] decodeCseq(String theCseqString) {
 		String[] reqparts = theCseqString.split("(sip:)|(sip:)*( )|( )*(>)");
 		if (reqparts.length == 2) {
