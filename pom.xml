@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- © Copyright 2018 Hewlett Packard Enterprise Development LP -->
 <!-- Licensed under Apache License version 2.0: http://www.apache.org/licenses/LICENSE-2.0 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<apache.jmeter.version>3.3</apache.jmeter.version>
+		<apache.jmeter.version>4.0</apache.jmeter.version>
 		<plugin.version>1.8.0</plugin.version>
 		<jain.sip.api.version>1.2.0-3</jain.sip.api.version>
 		<jain.sip.ri.version>1.2.234.2-hpe-1</jain.sip.ri.version>
@@ -217,22 +216,7 @@
 				</executions>
 				<configuration>
 					<artifactItems>
-						<artifactItem>
-							<groupId>javax.sip</groupId>
-							<artifactId>jain-sip-api</artifactId>
-							<version>${jain.sip.api.version}</version>
-							<type>jar</type>
-							<overWrite>false</overWrite>
-							<outputDirectory>${project.build.directory}/dependencies</outputDirectory>
-						</artifactItem>
-						<artifactItem>
-							<groupId>javax.sip</groupId>
-							<artifactId>jain-sip-ri</artifactId>
-							<version>${jain.sip.ri.version}</version>
-							<type>jar</type>
-							<overWrite>false</overWrite>
-							<outputDirectory>${project.build.directory}/dependencies</outputDirectory>
-						</artifactItem>
+						
 						<artifactItem>
 							<groupId>org.javasimon</groupId>
 							<artifactId>javasimon-core</artifactId>
@@ -262,9 +246,8 @@
 					<arguments>
 						<argument>-j</argument>
 						<argument>${project.build.directory}/jmeter.log</argument>
-						<argument>-j ${project.build.directory}/jmeter.log</argument>
 						<argument>-Jsearch_paths=${project.build.directory}</argument>
-						<argument>-Jplugin_dependency_paths=${project.build.directory}/dependencies</argument>
+						<argument>"-Jplugin_dependency_paths=${project.build.directory}/dependencies;${project.basedir}/sys/lib"</argument>
 						<argument>-Dsimulap.sip.dictionary.path=${project.basedir}/resources/opt/simulap_manager/simulap/simulap-jmeter-sip/dictionnaries</argument>
 						<argument>-Duser.dir=${project.basedir}/resources/opt/simulap_manager/simulap/simulap-jmeter-sip/test </argument>
 						<argument>-t</argument>
@@ -297,18 +280,23 @@
 			<version>${javasimon.core.version}</version>
 			<scope>compile</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>javax.sip</groupId>
-			<artifactId>jain-sip-api</artifactId>
+			<artifactId>jainsip-api</artifactId>
 			<version>${jain.sip.api.version}</version>
-			<scope>compile</scope>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/sys/lib/jain-sip-api-${jain.sip.api.version}.jar</systemPath>
 		</dependency>
+
 		<dependency>
 			<groupId>javax.sip</groupId>
 			<artifactId>jain-sip-ri</artifactId>
 			<version>${jain.sip.ri.version}</version>
-			<scope>compile</scope>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/sys/lib/jain-sip-ri-${jain.sip.ri.version}.jar</systemPath>
 		</dependency>
+
 	</dependencies>
 	<issueManagement>
 		<system>GitHub</system>
