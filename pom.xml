@@ -155,6 +155,10 @@
 						<require>simulap-jmeter-manager</require>
 					</requires>
 
+					<prefixes>
+						<prefix>/opt/simulap_manager/simulap</prefix>
+					</prefixes>
+
 					<mappings>
 						<mapping>
 							<directory>/opt/simulap_manager/simulap/simulap-jmeter-sip/lib/ext</directory>
