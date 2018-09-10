@@ -155,7 +155,7 @@
 					</requires>
 
 					<prefixes>
-						<prefix>/opt/simulap_manager/simulap</prefix>
+						<prefix>/opt</prefix>
 					</prefixes>
 
 					<mappings>
