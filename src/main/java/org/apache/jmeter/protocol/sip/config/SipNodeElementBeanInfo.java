@@ -5,15 +5,10 @@
 package org.apache.jmeter.protocol.sip.config;
 
 import java.beans.PropertyDescriptor;
-import java.util.List;
-
 import org.apache.jmeter.protocol.sip.config.SipNodeElement;
-import org.apache.jmeter.protocol.sip.utils.SipDico;
 import org.apache.jmeter.testbeans.BeanInfoSupport;
 import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
-
-import com.hp.simulap.sip.headers.Header;
 
 
 public class SipNodeElementBeanInfo extends BeanInfoSupport {

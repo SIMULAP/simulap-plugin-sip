@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -31,6 +32,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.TreePath;
+import javax.xml.bind.JAXBException;
 
 import org.apache.jmeter.gui.util.HorizontalPanel;
 import org.apache.jmeter.gui.util.VerticalPanel;
@@ -128,7 +130,18 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 	 **************************************************************************/
 	protected void init() {
 		_logger.debug("init ");
-		dico = SipDico.loadDico();		
+		try {
+			dico = SipDico.loadDico();	
+		}
+		catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			_logger.info("load dico failed: File parsing issue ");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			_logger.info("load dico failed: File not found ");
+		}
 
 		setName("name2");
 		setComment("Comment2");
@@ -409,6 +422,7 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
         
         sipHeaderSelector.setEditable(false);
         sipHeaderSelector.addItem("");
+        if (dico != null)
         for (Header item : dico) {
             sipHeaderSelector.addItem(item.getHeaderName());
 		}
