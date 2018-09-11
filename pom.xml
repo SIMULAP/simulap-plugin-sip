@@ -8,7 +8,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<apache.jmeter.version>4.0</apache.jmeter.version>
-		<plugin.version>1.8.0</plugin.version>
+		<plugin.version>0.0</plugin.version>
 		<jain.sip.api.version>1.2.0-3</jain.sip.api.version>
 		<jain.sip.ri.version>1.2.234.2-hpe-1</jain.sip.ri.version>
 		<javasimon.core.version>3.5.2</javasimon.core.version>
