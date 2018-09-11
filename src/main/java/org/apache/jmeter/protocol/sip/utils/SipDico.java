@@ -19,7 +19,7 @@ import com.hp.simulap.sip.headers.ObjectFactory;
 public class SipDico {
 
 	@SuppressWarnings("unchecked")
-	public static List<Header> loadDico() {
+	public static List<Header> loadDico() throws JAXBException, FileNotFoundException {
 		
 		List<Header> readList = null;
 		String dictionaryPath = System.getProperty("simulap.sip.dictionary.path", "/etc/opt/OC/hpocsip/");
@@ -27,7 +27,6 @@ public class SipDico {
 		//1. We need to create JAXContext instance
 		JAXBContext jaxbContext;
 		JAXBElement<HeaderList> unmarshalledObject = null;
-		try {
 			jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 			//2. Use JAXBContext instance to create the Unmarshaller.
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
@@ -44,13 +43,6 @@ public class SipDico {
 			for ( Header item : listHeadersObj.getHeaderelem()){
 				readList.add(item);
 			}
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
 		return readList;
 	}
