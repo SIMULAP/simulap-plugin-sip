@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- © Copyright 2018 Hewlett Packard Enterprise Development LP -->
 <!-- Licensed under Apache License version 2.0: http://www.apache.org/licenses/LICENSE-2.0 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -185,6 +186,7 @@
 								</includes>
 							</dependency>
 						</mapping>
+
 						<mapping>
 							<directory>/opt/simulap_manager/simulap/simulap-jmeter-sip/lib</directory>
 							<sources>
@@ -220,7 +222,22 @@
 				</executions>
 				<configuration>
 					<artifactItems>
-						
+						<artifactItem>
+							<groupId>javax.sip</groupId>
+							<artifactId>jain-sip-api</artifactId>
+							<version>${jain.sip.api.version}</version>
+							<type>jar</type>
+							<overWrite>false</overWrite>
+							<outputDirectory>${project.build.directory}/dependencies</outputDirectory>
+						</artifactItem>
+						<artifactItem>
+							<groupId>javax.sip</groupId>
+							<artifactId>jain-sip-ri</artifactId>
+							<version>${jain.sip.ri.version}</version>
+							<type>jar</type>
+							<overWrite>false</overWrite>
+							<outputDirectory>${project.build.directory}/dependencies</outputDirectory>
+						</artifactItem>
 						<artifactItem>
 							<groupId>org.javasimon</groupId>
 							<artifactId>javasimon-core</artifactId>
