@@ -181,12 +181,26 @@
 							<dependency>
 								<includes>
 									<include>org.javasimon:javasimon-core</include>
-									<include>javax.sip:jain-sip-api</include>
-									<include>javax.sip:jain-sip-ri</include>
 								</includes>
 							</dependency>
 						</mapping>
-
+                        <mapping>
+                            <directory>/opt/simulap_manager/simulap/simulap-jmeter-sip/sys/lib</directory>
+                            <dependency>
+                                <includes>
+                                    <include>javax.sip:jain-sip-api</include>
+                                    <include>javax.sip:jain-sip-ri</include>
+                                </includes>
+                            </dependency>
+                            <sources>
+                                <source>
+                                    <location>${project.basedir}/sys/lib/jain-sip-api-${jain.sip.api.version}.jar</location>
+                                </source>
+                                <source>
+                                    <location>${project.basedir}/sys/lib/jain-sip-ri-${jain.sip.ri.version}.jar</location>
+                                </source>
+                            </sources>
+                        </mapping>
 						<mapping>
 							<directory>/opt/simulap_manager/simulap/simulap-jmeter-sip/lib</directory>
 							<sources>
