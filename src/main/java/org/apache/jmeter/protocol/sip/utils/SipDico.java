@@ -22,7 +22,8 @@ public class SipDico {
 	public static List<Header> loadDico() throws JAXBException, FileNotFoundException {
 		
 		List<Header> readList = null;
-		String dictionaryPath = System.getProperty("simulap.sip.dictionary.path", "/etc/opt/OC/hpocsip/");
+		String localClassLocation = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+		String dictionaryPath = System.getProperty("simulap.sip.dictionary.path", localClassLocation + "/../../../dictionnaries");
 
 		//1. We need to create JAXContext instance
 		JAXBContext jaxbContext;
