@@ -283,7 +283,6 @@
 						<argument>${project.build.directory}/jmeter.log</argument>
 						<argument>-Jsearch_paths=${project.build.directory}</argument>
 						<argument>"-Jplugin_dependency_paths=${project.build.directory}/dependencies;${project.basedir}/sys/lib"</argument>
-						<argument>-Dsimulap.sip.dictionary.path=${project.basedir}/resources/opt/simulap_manager/simulap/simulap-jmeter-sip/dictionnaries</argument>
 						<argument>-Duser.dir=${project.basedir}/resources/opt/simulap_manager/simulap/simulap-jmeter-sip/test </argument>
 						<argument>-t</argument>
 						<argument>${project.basedir}/resources/opt/simulap_manager/simulap/simulap-jmeter-sip/tests/SIPtestsGlobal.jmx</argument>
