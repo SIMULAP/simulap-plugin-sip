@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- © Copyright 2018 Hewlett Packard Enterprise Development LP -->
 <!-- Licensed under Apache License version 2.0: http://www.apache.org/licenses/LICENSE-2.0 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<apache.jmeter.version>4.0</apache.jmeter.version>
-		<plugin.version>1.8.0</plugin.version>
+		<plugin.version>0.0</plugin.version>
 		<jain.sip.api.version>1.2.0-3</jain.sip.api.version>
 		<jain.sip.ri.version>1.2.234.2-hpe-1</jain.sip.ri.version>
 		<javasimon.core.version>3.5.2</javasimon.core.version>
@@ -180,11 +181,26 @@
 							<dependency>
 								<includes>
 									<include>org.javasimon:javasimon-core</include>
-									<include>javax.sip:jain-sip-api</include>
-									<include>javax.sip:jain-sip-ri</include>
 								</includes>
 							</dependency>
 						</mapping>
+                        <mapping>
+                            <directory>/opt/simulap_manager/simulap/simulap-jmeter-sip/sys/lib</directory>
+                            <dependency>
+                                <includes>
+                                    <include>javax.sip:jain-sip-api</include>
+                                    <include>javax.sip:jain-sip-ri</include>
+                                </includes>
+                            </dependency>
+                            <sources>
+                                <source>
+                                    <location>${project.basedir}/sys/lib/jain-sip-api-${jain.sip.api.version}.jar</location>
+                                </source>
+                                <source>
+                                    <location>${project.basedir}/sys/lib/jain-sip-ri-${jain.sip.ri.version}.jar</location>
+                                </source>
+                            </sources>
+                        </mapping>
 						<mapping>
 							<directory>/opt/simulap_manager/simulap/simulap-jmeter-sip/lib</directory>
 							<sources>
@@ -220,7 +236,22 @@
 				</executions>
 				<configuration>
 					<artifactItems>
-						
+						<artifactItem>
+							<groupId>javax.sip</groupId>
+							<artifactId>jain-sip-api</artifactId>
+							<version>${jain.sip.api.version}</version>
+							<type>jar</type>
+							<overWrite>false</overWrite>
+							<outputDirectory>${project.build.directory}/dependencies</outputDirectory>
+						</artifactItem>
+						<artifactItem>
+							<groupId>javax.sip</groupId>
+							<artifactId>jain-sip-ri</artifactId>
+							<version>${jain.sip.ri.version}</version>
+							<type>jar</type>
+							<overWrite>false</overWrite>
+							<outputDirectory>${project.build.directory}/dependencies</outputDirectory>
+						</artifactItem>
 						<artifactItem>
 							<groupId>org.javasimon</groupId>
 							<artifactId>javasimon-core</artifactId>
@@ -252,7 +283,6 @@
 						<argument>${project.build.directory}/jmeter.log</argument>
 						<argument>-Jsearch_paths=${project.build.directory}</argument>
 						<argument>"-Jplugin_dependency_paths=${project.build.directory}/dependencies;${project.basedir}/sys/lib"</argument>
-						<argument>-Dsimulap.sip.dictionary.path=${project.basedir}/resources/opt/simulap_manager/simulap/simulap-jmeter-sip/dictionnaries</argument>
 						<argument>-Duser.dir=${project.basedir}/resources/opt/simulap_manager/simulap/simulap-jmeter-sip/test </argument>
 						<argument>-t</argument>
 						<argument>${project.basedir}/resources/opt/simulap_manager/simulap/simulap-jmeter-sip/tests/SIPtestsGlobal.jmx</argument>
