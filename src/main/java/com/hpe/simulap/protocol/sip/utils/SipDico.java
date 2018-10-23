@@ -2,8 +2,12 @@
 //Licensed under Apache License version 2.0: http://www.apache.org/licenses/LICENSE-2.0
 package com.hpe.simulap.protocol.sip.utils;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,14 +16,29 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.hpe.simulap.sip.headers.Header;
 import com.hpe.simulap.sip.headers.HeaderList;
 import com.hpe.simulap.sip.headers.ObjectFactory;
 
 public class SipDico {
+	private static final Logger log = LoggerFactory.getLogger(SipDico.class);
 	
 	String getLocalClassLocation() {
-		return this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+		String localClassLocation = "";
+		try {
+			File jarFile = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+			String jarPath = jarFile.getParentFile().getPath();
+			localClassLocation = URLDecoder.decode(jarPath, "UTF-8");
+		} catch (URISyntaxException e) {
+			log.error("URISyntaxException: {}", e);
+		} catch (UnsupportedEncodingException e) {
+			log.error("UnsupportedEncodingException: {}", e);
+		} finally {
+			return localClassLocation;
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -28,7 +47,7 @@ public class SipDico {
 		List<Header> readList = null;
 		SipDico dico = new SipDico();
 		String localClassLocation = dico.getLocalClassLocation();
-		String dictionaryPath = System.getProperty("simulap.sip.dictionary.path", localClassLocation + "/../../../dictionnaries");
+		String dictionaryPath = System.getProperty("simulap.sip.dictionary.path", localClassLocation + "/../../dictionnaries");
 
 		//1. We need to create JAXContext instance
 		JAXBContext jaxbContext;
