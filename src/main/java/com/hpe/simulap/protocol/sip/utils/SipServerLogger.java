@@ -6,15 +6,15 @@ import java.util.Properties;
 
 import javax.sip.SipStack;
 
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import gov.nist.core.ServerLogger;
 import gov.nist.javax.sip.message.SIPMessage;
 
 public class SipServerLogger implements ServerLogger {
 
-	private static final Logger _logger = LoggingManager.getLoggerForClass();
+	private static final Logger _logger = LoggerFactory.getLogger(SipServerLogger.class);
 
 	@Override
 	public void closeLogFile() {

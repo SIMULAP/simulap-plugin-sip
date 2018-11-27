@@ -17,8 +17,9 @@ import javax.sip.message.Request;
 import javax.sip.message.Response;
 
 import org.apache.commons.collections.map.HashedMap;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.javasimon.Split;
 
 import com.hpe.simulap.protocol.sip.config.SipNodeContext;
@@ -26,7 +27,7 @@ import com.hpe.simulap.protocol.sip.config.SipTransactionData;
 
 public class SipDialogData {
 
-	private static final Logger _logger = LoggingManager.getLoggerForClass();
+	private static final Logger _logger = LoggerFactory.getLogger(SipDialogData.class);
 
 	String theCallId = null;
 	Dialog theDialog = null;

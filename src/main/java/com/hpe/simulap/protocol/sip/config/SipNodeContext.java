@@ -72,8 +72,9 @@ import javax.sip.message.Request;
 import javax.sip.message.Response;
 
 import org.apache.jmeter.threads.JMeterVariables;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.javasimon.SimonManager;
 
 import com.hpe.simulap.protocol.sip.performance.SimpleCallWithPrack;
@@ -88,7 +89,8 @@ import com.hpe.simulap.protocol.sip.utils.SipString;
 public class SipNodeContext implements SipListener {
 
 	private SipNodeElement sipNode = null;
-	private static final Logger _logger = LoggingManager.getLoggerForClass();
+
+	private static final Logger _logger = LoggerFactory.getLogger(SipNodeContext.class);
 	private boolean isNodeReady = false;
 	private boolean isNonReliableResponseRetransmissionIgnored = true ;
 	private boolean isReliableResponseRetransmissionIgnored = true ;

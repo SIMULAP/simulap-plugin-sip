@@ -61,8 +61,7 @@ import org.apache.jmeter.testelement.TestIterationListener;
 import org.apache.jmeter.testelement.TestStateListener;
 import org.apache.jmeter.threads.JMeterVariables;
 //import org.apache.jmeter.threads.JMeterVariables;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
+
 import org.javasimon.SimonManager;
 //import org.javasimon.Split;
 
@@ -78,6 +77,9 @@ import com.hpe.simulap.protocol.sip.utils.SipString;
 
 import java.security.SecureRandom;
 import java.math.BigInteger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SipSampler extends AbstractSampler implements TestStateListener, TestIterationListener {
 
@@ -110,7 +112,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
 
     private SipDialogData theSessionData = null;
 
-    private static final Logger _logger = LoggingManager.getLoggerForClass();
+    private static final Logger _logger = LoggerFactory.getLogger(SipSampler.class);
     private long timeout = 5000;
     private SecureRandom random = new SecureRandom();
 
@@ -1554,7 +1556,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             ArrayBlockingQueue<SipRequestTransaction> reqQueue = sipNodeContext.checkRequestQueue(id + "_" + getProperty("sip.message.command").getStringValue());
 
             if (reqQueue == null) {
-            	if (_logger.isDebugEnabled()) _logger.debug("req queue not created for id "+id ,null);
+		if (_logger.isDebugEnabled()) _logger.debug("req queue not created for id "+id ,"");
                 res.setResponseMessage("req queue not created for id "+id +".");
                 res.setSuccessful(false);						
             } else {
@@ -1566,7 +1568,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
 
                 if ( aReq == null){
                     // No message received
-                	if (_logger.isDebugEnabled()) _logger.debug("incoming request for id "+id+ " not received within timeout "+timeout,null);
+			if (_logger.isDebugEnabled()) _logger.debug("incoming request for id "+id+ " not received within timeout "+timeout,"");
                     if (isOptional) {
                         res.setResponseMessage("Optional: no message received for id "+id + " within timeout "+timeout);
                         res.setSuccessful(true);
@@ -1655,7 +1657,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
 
 
             if (respQueue == null) {
-            	if (_logger.isDebugEnabled()) _logger.debug("resp queue not created for id "+id +".",null);				
+		if (_logger.isDebugEnabled()) _logger.debug("resp queue not created for id "+id +".","");
                 res.setResponseMessage("resp queue not created for id "+id +".");
                 res.setSuccessful(false);						
             } else {
@@ -1667,7 +1669,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                 SipResponseTransaction aResp = respQueue.poll(timeout, TimeUnit.MILLISECONDS);
                 if ( aResp == null){
                     // No message received
-                	if (_logger.isDebugEnabled()) _logger.debug("incoming response for id "+id+ " not received within timeout "+timeout,null);
+			if (_logger.isDebugEnabled()) _logger.debug("incoming response for id "+id+ " not received within timeout "+timeout,"");
                     if (isOptional) {
                         res.setResponseMessage("Optional: no response message received for id "+id + " within timeout "+timeout);
                         res.setSuccessful(true);

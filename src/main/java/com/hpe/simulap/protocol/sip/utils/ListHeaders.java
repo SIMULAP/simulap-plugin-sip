@@ -10,8 +10,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.collections.map.HashedMap;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ListHeaders implements Serializable {
 
@@ -20,7 +21,8 @@ public class ListHeaders implements Serializable {
 	 */
 	private static final long serialVersionUID = 1397797659478992271L;
 	private Map<String, List<String>> headersMap = new HashedMap();
-	private static final Logger _logger = LoggingManager.getLoggerForClass();
+
+	private static final Logger _logger =LoggerFactory.getLogger(ListHeaders.class);
 
 	public ListHeaders() {		
 	}

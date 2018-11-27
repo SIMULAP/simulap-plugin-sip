@@ -39,12 +39,14 @@ import org.apache.jmeter.gui.util.VerticalPanel;
 import org.apache.jmeter.samplers.gui.AbstractSamplerGui;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jorphan.gui.GuiUtils;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
+
 
 import com.hpe.simulap.protocol.sip.sampler.SipSampler;
 import com.hpe.simulap.protocol.sip.utils.SipDico;
 import com.hpe.simulap.sip.headers.Header;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*******************************************************************************
  * This class MmeSamplerConfigGui is user interface gui for getting all the
@@ -105,7 +107,7 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
     private JLabel bodyLabel = new JLabel("Sip Body part");
 	private JTextArea bodyText = new JTextArea(10, 20);
 	
-    private static final Logger _logger = LoggingManager.getLoggerForClass();
+    private static final Logger _logger = LoggerFactory.getLogger(SipSamplerConfigGui.class);
 
 	/**
 	 * new introduced elements

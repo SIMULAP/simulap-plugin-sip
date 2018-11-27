@@ -20,8 +20,6 @@ import javax.sip.header.RouteHeader;
 import javax.sip.message.Request;
 import javax.sip.message.Response;
 
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
 import org.javasimon.SimonManager;
 
 import com.hpe.simulap.protocol.sip.config.SipNodeContext;
@@ -33,10 +31,13 @@ import gov.nist.javax.sip.message.SIPRequest;
 import gov.nist.javax.sip.stack.SIPClientTransactionImpl;
 import gov.nist.javax.sip.stack.SIPServerTransactionImpl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class SimpleCallWithPrack implements SipListener {
 	
 	private SipNodeContext sipNodeCtx;
-	private static final Logger _logger = LoggingManager.getLoggerForClass();
+	private static final Logger _logger = LoggerFactory.getLogger(SimpleCallWithPrack.class);
 
 	
 	public SimpleCallWithPrack (SipNodeContext sipNodeC) {

@@ -14,12 +14,12 @@ import javax.sip.address.Hop;
 import javax.sip.address.Router;
 import javax.sip.message.Request;
 
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 public class SipRouterProxy extends DefaultRouter { //implements Router {
 
-	private static final Logger _logger = LoggingManager.getLoggerForClass();
+	private static final Logger _logger = LoggerFactory.getLogger(SipRouterProxy.class);
 
 	private SIPTransactionStack sipStack;
 	private String outpx = null;

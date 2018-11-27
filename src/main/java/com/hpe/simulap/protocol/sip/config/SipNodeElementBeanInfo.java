@@ -7,14 +7,14 @@ package com.hpe.simulap.protocol.sip.config;
 import java.beans.PropertyDescriptor;
 
 import org.apache.jmeter.testbeans.BeanInfoSupport;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.hpe.simulap.protocol.sip.config.SipNodeElement;
 
 
 public class SipNodeElementBeanInfo extends BeanInfoSupport {
-	Logger _logger = LoggingManager.getLoggerForClass();
+	Logger _logger = LoggerFactory.getLogger(SipNodeElementBeanInfo.class);
 	
 
 	public SipNodeElementBeanInfo() {
