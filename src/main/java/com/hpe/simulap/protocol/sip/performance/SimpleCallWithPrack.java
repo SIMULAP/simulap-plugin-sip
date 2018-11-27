@@ -20,8 +20,6 @@ import javax.sip.header.RouteHeader;
 import javax.sip.message.Request;
 import javax.sip.message.Response;
 
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
 import org.javasimon.SimonManager;
 
 import com.hpe.simulap.protocol.sip.config.SipNodeContext;
@@ -32,11 +30,13 @@ import com.hpe.simulap.protocol.sip.utils.SipString;
 import gov.nist.javax.sip.message.SIPRequest;
 import gov.nist.javax.sip.stack.SIPClientTransactionImpl;
 import gov.nist.javax.sip.stack.SIPServerTransactionImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SimpleCallWithPrack implements SipListener {
 	
 	private SipNodeContext sipNodeCtx;
-	private static final Logger _logger = LoggingManager.getLoggerForClass();
+	private static final Logger _logger = LoggerFactory.getLogger(SimpleCallWithPrack.class);
 
 	
 	public SimpleCallWithPrack (SipNodeContext sipNodeC) {
@@ -57,13 +57,13 @@ public class SimpleCallWithPrack implements SipListener {
 
 	@Override
 	public void processRequest(RequestEvent arg0) {
-		if (_logger.isDebugEnabled()) _logger.debug("processRequestPerformance: " + arg0.getRequest().getMethod() + " identified by " + this.sipNodeCtx.getSipNode().getIdentificationHeader() + " = " + arg0.getRequest().getHeader(this.sipNodeCtx.getSipNode().getIdentificationHeader()));
+		if (_logger.isDebugEnabled()) _logger.debug("processRequestPerformance: {} identified by {} = {}", arg0.getRequest().getMethod(), this.sipNodeCtx.getSipNode().getIdentificationHeader(), arg0.getRequest().getHeader(this.sipNodeCtx.getSipNode().getIdentificationHeader()));
 
 		ServerTransaction st = null;
 		String id = sipNodeCtx.getIdHeader(arg0.getRequest());
 		try {
 			if (arg0.getServerTransaction() == null) {
-				if (_logger.isDebugEnabled()) _logger.debug("processRequestPerformance: no server transaction for id " + id);
+				if (_logger.isDebugEnabled()) _logger.debug("processRequestPerformance: no server transaction for id {}", id);
 				st = sipNodeCtx.getSipProvider().getNewServerTransaction(arg0.getRequest());
 			} else {
 				st = arg0.getServerTransaction();
@@ -163,7 +163,7 @@ public class SimpleCallWithPrack implements SipListener {
 			}
 
 		} catch (IllegalStateException ise) {
-			_logger.error("processRequestPerformance: IllegalStateException for id " + id, ise);
+			_logger.error("processRequestPerformance: IllegalStateException for id {} {}", id, ise);
 			SimonManager.getCounter(
 					SipCounters.SIP_NODE_OUTBOUND_ANSWER.toString() + SipCounters.ERROR_SUFFIX.toString() + "."
 							+ arg0.getRequest().getMethod()
@@ -171,14 +171,14 @@ public class SimpleCallWithPrack implements SipListener {
 					).increase();
 
 		} catch (IllegalArgumentException iae) {
-			_logger.error("processRequestPerformance: IllegalArgumentException for id " + id, iae);
+			_logger.error("processRequestPerformance: IllegalArgumentException for id {} {}", id, iae);
 			SimonManager.getCounter(
 					SipCounters.SIP_NODE_OUTBOUND_ANSWER.toString() + SipCounters.ERROR_SUFFIX.toString() + "."
 							+ arg0.getRequest().getMethod()
 							+ "." + sipNodeCtx.getSipNode().getSipNodeName().replace(" ", "_")
 					).increase();
 		} catch (Throwable t) {
-			_logger.error("processRequestPerformance: Throwable for id " + id, t);
+			_logger.error("processRequestPerformance: Throwable for id {} {}", id, t);
 			SimonManager.getCounter(
 					SipCounters.SIP_NODE_OUTBOUND_ANSWER.toString() + SipCounters.ERROR_SUFFIX.toString() + "."
 							+ arg0.getRequest().getMethod()
@@ -192,7 +192,7 @@ public class SimpleCallWithPrack implements SipListener {
 	public void processResponse(ResponseEvent responseReceivedEvent) {
 		//printQueueSize();
 		Response response = (Response) responseReceivedEvent.getResponse();
-		if (_logger.isDebugEnabled()) _logger.debug("processResponsePerformance: " + response.getStatusCode());
+		if (_logger.isDebugEnabled()) _logger.debug("processResponsePerformance: {}", response.getStatusCode());
 		CSeqHeader cseH = (CSeqHeader) response.getHeader("CSeq");
 		String method = cseH.getMethod();
 
@@ -212,12 +212,12 @@ public class SimpleCallWithPrack implements SipListener {
 		CSeqHeader cs = (CSeqHeader) response.getHeader("CSeq");
 		if (Request.INVITE.equals(cs.getMethod())) {
 			// _logger.debug("processResponsePerformance: " + response.getStatusCode() + " ! Invite ");
-			_logger.error("processResponsePerformance: " + response.getStatusCode() + " ! Invite ");
+			_logger.error("processResponsePerformance: {} ! Invite ", response.getStatusCode());
 			int respCode = response.getStatusCode();
 			if (respCode > 180 && respCode <200) {
 				// early media.
 				// Send Prack
-				_logger.error("processResponsePerformance: " + response.getStatusCode() + " ! send Prack ");
+				_logger.error("processResponsePerformance: {} ! send Prack ",response.getStatusCode());
 				try {
 					// Create PRACK
 					Request	prackRequest = ct.getDialog().createPrack(response);
@@ -247,12 +247,12 @@ public class SimpleCallWithPrack implements SipListener {
 									+ "PRACK"
 									+ "." + this.sipNodeCtx.getSipNode().getSipNodeName().replace(".", "_")
 							).increase();
-					_logger.error("processResponsePerformance: " + response.getStatusCode() + " ! send Prack exception " , e);
+					_logger.error("processResponsePerformance: {} ! send Prack exception {}",response.getStatusCode(),  e);
 					e.printStackTrace();					
 				}
 			} else if (respCode >=200) {
-				if (_logger.isDebugEnabled()) _logger.debug("processResponsePerformance: " + response.getStatusCode() + " ! send Ack ");
-				_logger.error("processResponsePerformance: " + response.getStatusCode() + " ! send Ack ");
+				if (_logger.isDebugEnabled()) _logger.debug("processResponsePerformance: {} ! send Ack ", response.getStatusCode());
+				_logger.error("processResponsePerformance: {} ! send Ack ", response.getStatusCode());
 				// Send ACK in case of final answer (for now 3xx redirect not processed)
 				try {
 					Request ackRequest = ct.createAck();
@@ -282,9 +282,9 @@ public class SimpleCallWithPrack implements SipListener {
 				}
 			}
 		} else if (Request.BYE.equals(cs.getMethod())) {
-			_logger.error("processResponsePerformance: " + response.getStatusCode() + " ! BYE ");
+			_logger.error("processResponsePerformance: {} ! BYE ", response.getStatusCode());
 		} else {
-			if (_logger.isDebugEnabled()) _logger.debug("processResponsePerformance: " + response.getStatusCode() + " ! Not an Invite, nor a BYE ");
+			if (_logger.isDebugEnabled()) _logger.debug("processResponsePerformance: {} ! Not an Invite, nor a BYE ", response.getStatusCode());
 		}		
 	}
 

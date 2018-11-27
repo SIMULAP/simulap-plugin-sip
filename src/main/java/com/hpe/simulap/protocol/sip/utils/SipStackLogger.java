@@ -4,14 +4,14 @@ package com.hpe.simulap.protocol.sip.utils;
 
 import java.util.Properties;
 
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import gov.nist.core.StackLogger;
 
 public class SipStackLogger implements StackLogger {
 
-	private static final Logger _logger = LoggingManager.getLoggerForClass();
+	private static final Logger _logger = LoggerFactory.getLogger(SipStackLogger.class);
 
 	@Override
 	public void logStackTrace() {
@@ -23,7 +23,7 @@ public class SipStackLogger implements StackLogger {
 	@Override
 	public void logStackTrace(int traceLevel) {
 		// TODO Auto-generated method stub
-		_logger.info("logStackTrace " + traceLevel);
+		_logger.info("logStackTrace {}", traceLevel);
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class SipStackLogger implements StackLogger {
 	@Override
 	public void logException(Throwable ex) {
 		// TODO Auto-generated method stub
-		_logger.error("logException ", ex);
+		_logger.error("logException {}", ex);
 	}
 
 	@Override

@@ -39,12 +39,13 @@ import org.apache.jmeter.gui.util.VerticalPanel;
 import org.apache.jmeter.samplers.gui.AbstractSamplerGui;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jorphan.gui.GuiUtils;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
 
 import com.hpe.simulap.protocol.sip.sampler.SipSampler;
 import com.hpe.simulap.protocol.sip.utils.SipDico;
 import com.hpe.simulap.sip.headers.Header;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*******************************************************************************
  * This class MmeSamplerConfigGui is user interface gui for getting all the
@@ -105,7 +106,7 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
     private JLabel bodyLabel = new JLabel("Sip Body part");
 	private JTextArea bodyText = new JTextArea(10, 20);
 	
-    private static final Logger _logger = LoggingManager.getLoggerForClass();
+    private static final Logger _logger = LoggerFactory.getLogger(SipSamplerConfigGui.class);
 
 	/**
 	 * new introduced elements
@@ -216,7 +217,7 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 	public void configure(TestElement element) {
 		
 	    if (_logger.isDebugEnabled())
-		_logger.debug("configure: element " + element.getName());
+		_logger.debug("configure: element {}", element.getName());
 
 		super.configure(element);
 		
@@ -262,7 +263,7 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 		
 		int j = dataModel.getColumnCount();
 		if (j != 2 ) {
-			_logger.error("Sip Headers data model should have 2 columns instead of " + j);
+			_logger.error("Sip Headers data model should have 2 columns instead of {}", j);
 		}
 		dataModel.setRowCount(0);
 		
@@ -298,7 +299,7 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 		int j = rowModel.getColumnCount();
 		int i = rowModel.getRowCount();
 		if (j != 2 ) {
-			_logger.error("Sip Headers data model should have 2 columns instead of " + j);
+			_logger.error("Sip Headers data model should have 2 columns instead of {}", j);
 		}
 		
         element.setProperty("sip.node.name", sipNodeName.getText());
@@ -550,7 +551,7 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 	}
 
 	public void valueChanged(TreeSelectionEvent e) {
-		_logger.debug("valueChanged " + e.toString());
+		_logger.debug("valueChanged {}", e.toString());
 		saveTreeValue = false;
 		
 		TreePath oldPath = e.getOldLeadSelectionPath();
@@ -567,7 +568,7 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 
 	public void actionPerformed(ActionEvent e) {
 		String actionCommand = e.getActionCommand();
-		_logger.debug("actionPerformed " + actionCommand);
+		_logger.debug("actionPerformed {}", actionCommand);
 		
 		if ("Add".equals(actionCommand)) {
 			DefaultTableModel rowModel = (DefaultTableModel)table.getModel();

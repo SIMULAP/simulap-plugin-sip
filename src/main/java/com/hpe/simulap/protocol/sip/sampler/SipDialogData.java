@@ -17,8 +17,8 @@ import javax.sip.message.Request;
 import javax.sip.message.Response;
 
 import org.apache.commons.collections.map.HashedMap;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.javasimon.Split;
 
 import com.hpe.simulap.protocol.sip.config.SipNodeContext;
@@ -26,7 +26,7 @@ import com.hpe.simulap.protocol.sip.config.SipTransactionData;
 
 public class SipDialogData {
 
-	private static final Logger _logger = LoggingManager.getLoggerForClass();
+	private static final Logger _logger = LoggerFactory.getLogger(SipDialogData.class);
 
 	String theCallId = null;
 	Dialog theDialog = null;
@@ -54,7 +54,7 @@ public class SipDialogData {
 		return theCallId;
 	}
 	public void setTheCallId(String theCallId) {
-		if (_logger.isDebugEnabled()) _logger.debug("setTheCallId : " + theCallId);
+		if (_logger.isDebugEnabled()) _logger.debug("setTheCallId : {} ", theCallId);
 		this.theCallId = theCallId;
 	}
 	public Dialog getTheDialog() {
@@ -77,12 +77,12 @@ public class SipDialogData {
 		return lastResponse;
 	}
 	public void setLastResponse(Response lastResponse) {
-		_logger.info("setLastResponse " +lastResponse.getStatusCode());// + ":" +  theCallId + ":" + theDialog.getDialogId() );
+		_logger.info("setLastResponse {}",lastResponse.getStatusCode());// + ":" +  theCallId + ":" + theDialog.getDialogId() );
 		this.lastResponse = lastResponse;
 	}
 
 	public SipTransactionData getATransaction(String transactionId) {
-		if (_logger.isDebugEnabled()) _logger.debug("getATransaction " + transactionId);
+		if (_logger.isDebugEnabled()) _logger.debug("getATransaction {}", transactionId);
 		if (theTransactions == null) {
 			theTransactions = new HashedMap();
 		}
@@ -97,7 +97,7 @@ public class SipDialogData {
 	}
 	
 	public void setATransaction(String transactionId, SipTransactionData aTransaction) {
-		if (_logger.isDebugEnabled()) _logger.debug("setATransaction " + transactionId);
+		if (_logger.isDebugEnabled()) _logger.debug("setATransaction {}", transactionId);
 		if (theTransactions == null) {
 			theTransactions = new HashedMap();
 		}
@@ -106,37 +106,37 @@ public class SipDialogData {
 
 	
 	public Dialog getADialog(String transactionId) {
-		if (_logger.isDebugEnabled()) _logger.debug("getADialog " + transactionId);
+		if (_logger.isDebugEnabled()) _logger.debug("getADialog {}", transactionId);
 		Dialog theDial = theDialogs.get(transactionId);
 		return theDial;
 	}
 	
 	public void setADialog(String transactionId, Dialog aDialog) {
-		if (_logger.isDebugEnabled()) _logger.debug("setADialog " + transactionId);
+		if (_logger.isDebugEnabled()) _logger.debug("setADialog {}", transactionId);
 		theDialogs.put(transactionId, aDialog);
 	}	
 
 	
 	public void clearSipDialogs() {
-		if (_logger.isDebugEnabled()) _logger.debug("clearSipDialogs for callId = " + theCallId);
+		if (_logger.isDebugEnabled()) _logger.debug("clearSipDialogs for callId = {}", theCallId);
 		for (SipTransactionData sipTransactionData : theTransactions.values()) {
 			try {
 				if (sipTransactionData != null && sipTransactionData.getTheTransaction() != null) {
 					sipTransactionData.getTheTransaction().terminate();
 				}
 			} catch (ObjectInUseException e) {
-				_logger.debug("clearSipDialogs ObjectInUseException ", e);
+				_logger.debug("clearSipDialogs ObjectInUseException {}", e);
 			}
 		}
 		if (theDialog != null) {
 			endCall();
 			try {
-				if (_logger.isDebugEnabled()) _logger.debug("theDialog.terminateOnBye " + theDialog.getDialogId());
+				if (_logger.isDebugEnabled()) _logger.debug("theDialog.terminateOnBye {}", theDialog.getDialogId());
 				theDialog.terminateOnBye(true);
 			} catch (SipException e) {
 				_logger.debug("theDialog.terminateOnBye ", e);
 			}
-			if (_logger.isDebugEnabled()) _logger.debug("theDialog.delete " + theDialog.getDialogId());
+			if (_logger.isDebugEnabled()) _logger.debug("theDialog.delete {}", theDialog.getDialogId());
 			theDialog.delete();
 		}
 
