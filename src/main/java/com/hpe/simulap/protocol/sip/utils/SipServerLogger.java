@@ -6,15 +6,15 @@ import java.util.Properties;
 
 import javax.sip.SipStack;
 
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import gov.nist.core.ServerLogger;
 import gov.nist.javax.sip.message.SIPMessage;
 
 public class SipServerLogger implements ServerLogger {
 
-	private static final Logger _logger = LoggingManager.getLoggerForClass();
+	private static final Logger _logger = LoggerFactory.getLogger(SipServerLogger.class);
 
 	@Override
 	public void closeLogFile() {
@@ -26,7 +26,7 @@ public class SipServerLogger implements ServerLogger {
 	public void logMessage(SIPMessage message, String from, String to,
 			boolean sender, long time) {
 		// TODO Auto-generated method stub
-		_logger.info("LogMessage: " + message.toString() + ":" + from +":" + to +":" + sender +":" + time);
+		_logger.info("LogMessage: {} : {} : {} : {} : {}", message.toString(), from, to, sender, time);
 		
 	}
 
@@ -34,7 +34,7 @@ public class SipServerLogger implements ServerLogger {
 	public void logMessage(SIPMessage message, String from, String to,
 			String status, boolean sender, long time) {
 		// TODO Auto-generated method stub
-		_logger.info("LogMessage with status: " + message.toString() + ":" + from +":" + to +":" + status +":" + sender +":" + time);
+		_logger.info("LogMessage with status: {} : {} : {} : {} : {} : {}", message.toString(), from, to, status, sender, time);
 		
 	}
 
@@ -42,14 +42,14 @@ public class SipServerLogger implements ServerLogger {
 	public void logMessage(SIPMessage message, String from, String to,
 			String status, boolean sender) {
 		// TODO Auto-generated method stub
-		_logger.info("LogMessage with status: " + message.toString() + ":" + from +":" + to +":" + status +":" + sender);
+		_logger.info("LogMessage with status: {} : {} : {} : {} : {}", message.toString(), from, to, status, sender);
 		
 	}
 
 	@Override
 	public void logException(Exception ex) {
 		// TODO Auto-generated method stub
-		_logger.info("logException: ", ex);
+		_logger.info("logException: {}", ex);
 
 	}
 

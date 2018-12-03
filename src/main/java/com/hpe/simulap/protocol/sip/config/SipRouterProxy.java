@@ -14,12 +14,12 @@ import javax.sip.address.Hop;
 import javax.sip.address.Router;
 import javax.sip.message.Request;
 
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 public class SipRouterProxy extends DefaultRouter { //implements Router {
 
-	private static final Logger _logger = LoggingManager.getLoggerForClass();
+	private static final Logger _logger = LoggerFactory.getLogger(SipRouterProxy.class);
 
 	private SIPTransactionStack sipStack;
 	private String outpx = null;
@@ -31,7 +31,7 @@ public class SipRouterProxy extends DefaultRouter { //implements Router {
 
 	public SipRouterProxy ( SipStack sipStack, String outboundProxy) {		
 		super(sipStack,outboundProxy);
-		_logger.debug("SipRouterProxy with outboundproxy = " + outboundProxy);
+		_logger.debug("SipRouterProxy with outboundproxy = {}", outboundProxy);
 		this.sipStack = (SIPTransactionStack) sipStack;
 		this.outpx = outboundProxy; 
 		this.outHop = (Hop) this.sipStack.getAddressResolver()
@@ -68,12 +68,12 @@ public class SipRouterProxy extends DefaultRouter { //implements Router {
 
 		}
 		catch(Exception e) {
-            _logger.error("Problem while parsing hop IP address <"+hopDef+">",e);
+            _logger.error("Problem while parsing hop IP address <{}> {}", hopDef,e);
             return null ;
 		}
 
-		_logger.debug("extractHopFromString from " + hopDef + "-> " + ipAddress + "#" 
-				+ port + "#" + transportType);
+		_logger.debug("extractHopFromString from {} -> {} # {} # {}", hopDef, ipAddress,
+				port, transportType);
 
 		return new HopImpl(ipAddress, port, transportType);
 	}
@@ -86,7 +86,7 @@ public class SipRouterProxy extends DefaultRouter { //implements Router {
 
 	@Override
 	public Hop getNextHop(Request arg0) throws SipException {
-		_logger.debug("getNextHop from DefaultRouter for " + arg0.getMethod());
+		_logger.debug("getNextHop from DefaultRouter for {}", arg0.getMethod());
 		Hop nextH = super.getNextHop(arg0);
 
 		//			Hop localH = this.sipStack.getAddressResolver().resolveAddress(new HopImpl(nodeIP, Integer.parseInt(nodePort), nextH.getTransport()));
