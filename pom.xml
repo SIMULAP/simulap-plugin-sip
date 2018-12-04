@@ -172,7 +172,7 @@
 							<directory>/</directory>
 							<sources>
 								<source>
-									<location>${project.basedir}/resources/</location>
+									<location>${project.basedir}/rpm/</location>
 								</source>
 							</sources>
 						</mapping>
@@ -283,9 +283,9 @@
 						<argument>${project.build.directory}/jmeter.log</argument>
 						<argument>-Jsearch_paths=${project.build.directory}</argument>
 						<argument>"-Jplugin_dependency_paths=${project.build.directory}/dependencies;${project.basedir}/sys/lib"</argument>
-						<argument>-Duser.dir=${project.basedir}/resources/opt/simulap_manager/simulap/simulap-jmeter-sip/test </argument>
+						<argument>-Duser.dir=${project.basedir}/rpm/opt/simulap_manager/simulap/simulap-jmeter-sip/test </argument>
 						<argument>-t</argument>
-						<argument>${project.basedir}/resources/opt/simulap_manager/simulap/simulap-jmeter-sip/tests/SIPtestsGlobal.jmx</argument>
+						<argument>${project.basedir}/rpm/opt/simulap_manager/simulap/simulap-jmeter-sip/tests/SIPtestsGlobal.jmx</argument>
 					</arguments>
 				</configuration>
 			</plugin>
