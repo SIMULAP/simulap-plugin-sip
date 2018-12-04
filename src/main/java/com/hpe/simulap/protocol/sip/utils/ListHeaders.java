@@ -27,7 +27,7 @@ public class ListHeaders implements Serializable {
 	}
 	
 	public void addHeader(String name, String value) {
-		if (_logger.isDebugEnabled()) _logger.debug("addHeader name = {}, value = ", name, value);
+		if (_logger.isDebugEnabled()) _logger.debug("addHeader name = {}, value = {}", name, value);
 		List<String> theValues = headersMap.get(name);
 		if (theValues == null) {
 			theValues = new ArrayList<String>();

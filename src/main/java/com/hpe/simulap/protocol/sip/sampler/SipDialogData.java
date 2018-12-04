@@ -54,7 +54,7 @@ public class SipDialogData {
 		return theCallId;
 	}
 	public void setTheCallId(String theCallId) {
-		if (_logger.isDebugEnabled()) _logger.debug("setTheCallId : {} ", theCallId);
+		if (_logger.isDebugEnabled()) _logger.debug("setTheCallId : {}", theCallId);
 		this.theCallId = theCallId;
 	}
 	public Dialog getTheDialog() {
@@ -62,7 +62,7 @@ public class SipDialogData {
 	}
 	public void setTheDialog(Dialog theDialog) {
 		if (theDialog == null) {
-			if (_logger.isDebugEnabled()) _logger.debug("setTheDialog : Dialog is NULL ");
+			if (_logger.isDebugEnabled()) _logger.debug("setTheDialog : Dialog is NULL");
 		}
 		this.theDialog = theDialog;
 	}
@@ -125,7 +125,7 @@ public class SipDialogData {
 					sipTransactionData.getTheTransaction().terminate();
 				}
 			} catch (ObjectInUseException e) {
-				_logger.debug("clearSipDialogs ObjectInUseException {}", e);
+				_logger.debug("clearSipDialogs ObjectInUseException : {}", e);
 			}
 		}
 		if (theDialog != null) {
@@ -134,7 +134,7 @@ public class SipDialogData {
 				if (_logger.isDebugEnabled()) _logger.debug("theDialog.terminateOnBye {}", theDialog.getDialogId());
 				theDialog.terminateOnBye(true);
 			} catch (SipException e) {
-				_logger.debug("theDialog.terminateOnBye ", e);
+				_logger.debug("theDialog.terminateOnBye : {}", e);
 			}
 			if (_logger.isDebugEnabled()) _logger.debug("theDialog.delete {}", theDialog.getDialogId());
 			theDialog.delete();

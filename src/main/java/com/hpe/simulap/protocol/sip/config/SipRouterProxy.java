@@ -13,10 +13,9 @@ import javax.sip.SipStack;
 import javax.sip.address.Hop;
 import javax.sip.address.Router;
 import javax.sip.message.Request;
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 public class SipRouterProxy extends DefaultRouter { //implements Router {
 
 	private static final Logger _logger = LoggerFactory.getLogger(SipRouterProxy.class);
@@ -68,12 +67,12 @@ public class SipRouterProxy extends DefaultRouter { //implements Router {
 
 		}
 		catch(Exception e) {
-            _logger.error("Problem while parsing hop IP address <{}> {}", hopDef,e);
+            _logger.error("Problem while parsing hop IP address <{}> : {}", hopDef,e);
             return null ;
 		}
 
-		_logger.debug("extractHopFromString from {} -> {} # {} # {}", hopDef, ipAddress,
-				port, transportType);
+		_logger.debug("extractHopFromString from {} -> {} # {} # {}", new Object[]{ hopDef, ipAddress,
+				port, transportType});
 
 		return new HopImpl(ipAddress, port, transportType);
 	}

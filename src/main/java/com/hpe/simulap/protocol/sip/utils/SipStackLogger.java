@@ -35,7 +35,7 @@ public class SipStackLogger implements StackLogger {
 	@Override
 	public void logException(Throwable ex) {
 		// TODO Auto-generated method stub
-		_logger.error("logException {}", ex);
+		_logger.error("logException :{}", ex);
 	}
 
 	@Override

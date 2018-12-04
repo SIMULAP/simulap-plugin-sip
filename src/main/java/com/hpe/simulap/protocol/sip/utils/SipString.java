@@ -66,7 +66,7 @@ public class SipString {
 		if (b.startsWith(";")) {
 			b = b.substring(1);
 		}
-		if (_logger.isDebugEnabled()) _logger.debug("extractParams b = {} .", b);
+		if (_logger.isDebugEnabled()) _logger.debug("extractParams b = {}.", b);
 		return b.split(";");
     }
     

@@ -57,7 +57,7 @@ public class SimpleCallWithPrack implements SipListener {
 
 	@Override
 	public void processRequest(RequestEvent arg0) {
-		if (_logger.isDebugEnabled()) _logger.debug("processRequestPerformance: {} identified by {} = {}", arg0.getRequest().getMethod(), this.sipNodeCtx.getSipNode().getIdentificationHeader(), arg0.getRequest().getHeader(this.sipNodeCtx.getSipNode().getIdentificationHeader()));
+		if (_logger.isDebugEnabled()) _logger.debug("processRequestPerformance: {} identified by {} = {}", new Object[]{ arg0.getRequest().getMethod(), this.sipNodeCtx.getSipNode().getIdentificationHeader(), arg0.getRequest().getHeader(this.sipNodeCtx.getSipNode().getIdentificationHeader())});
 
 		ServerTransaction st = null;
 		String id = sipNodeCtx.getIdHeader(arg0.getRequest());
@@ -87,7 +87,7 @@ public class SimpleCallWithPrack implements SipListener {
 
 				// Add Contact header (mandatory)
 				Address address = this.sipNodeCtx.getAddressFactory().createAddress(SipString.extractAddress("sip:" +sipNodeCtx.getSipNode().getLocalIP()+":"+sipNodeCtx.getSipNode().getLocalPort()));
-				_logger.error(sipNodeCtx.getSipNode().getSipNodeName() + "Set Contact header with : " + "sip:" +sipNodeCtx.getSipNode().getLocalIP()+":"+sipNodeCtx.getSipNode().getLocalPort());				
+				_logger.error("{} Set Contact header with sip: {} : {}", sipNodeCtx.getSipNode().getSipNodeName(), sipNodeCtx.getSipNode().getLocalIP(), sipNodeCtx.getSipNode().getLocalPort());
 				ContactHeader autoContact = this.sipNodeCtx.getHeaderFactory().createContactHeader(address);
 				theResponse.removeHeader("Contact");
 				theResponse.setHeader(autoContact);
@@ -98,7 +98,7 @@ public class SimpleCallWithPrack implements SipListener {
 					theResponse.removeHeader("RSeq");
 					theResponse.setHeader(rseqHeader);
 				} catch (NumberFormatException nfe) {
-					_logger.debug("Rseq header tag not set. Input badly formated ");
+					_logger.debug("Rseq header tag not set. Input badly formated");
 				}
 				
 				theResponse.setHeader(this.sipNodeCtx.getHeaderFactory().createHeader("Require", "100rel"));
@@ -163,7 +163,7 @@ public class SimpleCallWithPrack implements SipListener {
 			}
 
 		} catch (IllegalStateException ise) {
-			_logger.error("processRequestPerformance: IllegalStateException for id {} {}", id, ise);
+			_logger.error("processRequestPerformance: IllegalStateException for id {} : {}", id, ise);
 			SimonManager.getCounter(
 					SipCounters.SIP_NODE_OUTBOUND_ANSWER.toString() + SipCounters.ERROR_SUFFIX.toString() + "."
 							+ arg0.getRequest().getMethod()
@@ -171,14 +171,14 @@ public class SimpleCallWithPrack implements SipListener {
 					).increase();
 
 		} catch (IllegalArgumentException iae) {
-			_logger.error("processRequestPerformance: IllegalArgumentException for id {} {}", id, iae);
+			_logger.error("processRequestPerformance: IllegalArgumentException for id {} : {}", id, iae);
 			SimonManager.getCounter(
 					SipCounters.SIP_NODE_OUTBOUND_ANSWER.toString() + SipCounters.ERROR_SUFFIX.toString() + "."
 							+ arg0.getRequest().getMethod()
 							+ "." + sipNodeCtx.getSipNode().getSipNodeName().replace(" ", "_")
 					).increase();
 		} catch (Throwable t) {
-			_logger.error("processRequestPerformance: Throwable for id {} {}", id, t);
+			_logger.error("processRequestPerformance: Throwable for id {} : {}", id, t);
 			SimonManager.getCounter(
 					SipCounters.SIP_NODE_OUTBOUND_ANSWER.toString() + SipCounters.ERROR_SUFFIX.toString() + "."
 							+ arg0.getRequest().getMethod()
@@ -212,12 +212,12 @@ public class SimpleCallWithPrack implements SipListener {
 		CSeqHeader cs = (CSeqHeader) response.getHeader("CSeq");
 		if (Request.INVITE.equals(cs.getMethod())) {
 			// _logger.debug("processResponsePerformance: " + response.getStatusCode() + " ! Invite ");
-			_logger.error("processResponsePerformance: {} ! Invite ", response.getStatusCode());
+			_logger.error("processResponsePerformance: {} ! Invite", response.getStatusCode());
 			int respCode = response.getStatusCode();
 			if (respCode > 180 && respCode <200) {
 				// early media.
 				// Send Prack
-				_logger.error("processResponsePerformance: {} ! send Prack ",response.getStatusCode());
+				_logger.error("processResponsePerformance: {} ! send Prack",response.getStatusCode());
 				try {
 					// Create PRACK
 					Request	prackRequest = ct.getDialog().createPrack(response);
@@ -247,12 +247,12 @@ public class SimpleCallWithPrack implements SipListener {
 									+ "PRACK"
 									+ "." + this.sipNodeCtx.getSipNode().getSipNodeName().replace(".", "_")
 							).increase();
-					_logger.error("processResponsePerformance: {} ! send Prack exception {}",response.getStatusCode(),  e);
+					_logger.error("processResponsePerformance: {} ! send Prack exception : {}",response.getStatusCode(), e);
 					e.printStackTrace();					
 				}
 			} else if (respCode >=200) {
-				if (_logger.isDebugEnabled()) _logger.debug("processResponsePerformance: {} ! send Ack ", response.getStatusCode());
-				_logger.error("processResponsePerformance: {} ! send Ack ", response.getStatusCode());
+				if (_logger.isDebugEnabled()) _logger.debug("processResponsePerformance: {} ! send Ack", response.getStatusCode());
+				_logger.error("processResponsePerformance: {} ! send Ack", response.getStatusCode());
 				// Send ACK in case of final answer (for now 3xx redirect not processed)
 				try {
 					Request ackRequest = ct.createAck();
@@ -282,9 +282,9 @@ public class SimpleCallWithPrack implements SipListener {
 				}
 			}
 		} else if (Request.BYE.equals(cs.getMethod())) {
-			_logger.error("processResponsePerformance: {} ! BYE ", response.getStatusCode());
+			_logger.error("processResponsePerformance: {} ! BYE", response.getStatusCode());
 		} else {
-			if (_logger.isDebugEnabled()) _logger.debug("processResponsePerformance: {} ! Not an Invite, nor a BYE ", response.getStatusCode());
+			if (_logger.isDebugEnabled()) _logger.debug("processResponsePerformance: {} ! Not an Invite, nor a BYE", response.getStatusCode());
 		}		
 	}
 

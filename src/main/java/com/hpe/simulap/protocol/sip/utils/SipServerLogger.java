@@ -26,7 +26,7 @@ public class SipServerLogger implements ServerLogger {
 	public void logMessage(SIPMessage message, String from, String to,
 			boolean sender, long time) {
 		// TODO Auto-generated method stub
-		_logger.info("LogMessage: {} : {} : {} : {} : {}", message.toString(), from, to, sender, time);
+		_logger.info("LogMessage: {} : {} : {} : {} : {}", new Object[]{ message.toString(), from, to, sender, time});
 		
 	}
 
@@ -34,7 +34,7 @@ public class SipServerLogger implements ServerLogger {
 	public void logMessage(SIPMessage message, String from, String to,
 			String status, boolean sender, long time) {
 		// TODO Auto-generated method stub
-		_logger.info("LogMessage with status: {} : {} : {} : {} : {} : {}", message.toString(), from, to, status, sender, time);
+		_logger.info("LogMessage with status: {} : {} : {} : {} : {} : {}", new Object[]{ message.toString(), from, to, status, sender, time});
 		
 	}
 
@@ -42,14 +42,14 @@ public class SipServerLogger implements ServerLogger {
 	public void logMessage(SIPMessage message, String from, String to,
 			String status, boolean sender) {
 		// TODO Auto-generated method stub
-		_logger.info("LogMessage with status: {} : {} : {} : {} : {}", message.toString(), from, to, status, sender);
+		_logger.info("LogMessage with status: {} : {} : {} : {} : {}", new Object[]{ message.toString(), from, to, status, sender});
 		
 	}
 
 	@Override
 	public void logException(Exception ex) {
 		// TODO Auto-generated method stub
-		_logger.info("logException: {}", ex);
+		_logger.info("logException : {}", ex);
 
 	}
 

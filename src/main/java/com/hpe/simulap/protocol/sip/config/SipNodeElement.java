@@ -81,7 +81,7 @@ TestStateListener, TestIterationListener, TestBean {
 		_logger.info("testStarted() {}", stackLog);
 
 		if (variables.getObject(getSipNodeName()) != null) {
-			_logger.warn("Sip node context already defined ");
+			_logger.warn("Sip node context already defined");
 		} else {
 			synchronized (this) {
 				try {
@@ -90,7 +90,7 @@ TestStateListener, TestIterationListener, TestBean {
 					variables.putObject(getSipNodeName(), new SipNodeContext(this));
 					
 				} catch (Exception e) {
-					_logger.error("cannot initialize SIP node {}", e);
+					_logger.error("cannot initialize SIP node : {}", e);
 				}
 			}
 		}

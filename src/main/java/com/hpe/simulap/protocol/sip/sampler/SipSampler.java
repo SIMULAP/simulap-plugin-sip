@@ -312,7 +312,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
         relatedTransactionNb = getPropertyAsString("sip.message.relatedtransnb");
         reset = getPropertyAsBoolean("sip.message.reset");
 
-        if (_logger.isDebugEnabled()) _logger.debug("sampler sample {} start for node name {} : {} : {} : {} :: {} : {}", getName(), sipNodeName, direction, isRequest, dialogueNb, transactionNb );
+        if (_logger.isDebugEnabled()) _logger.debug("sampler sample {} start for node name {} : {} : {} : {} :: {} : {}", new Object[]{ getName(), sipNodeName, direction, isRequest, dialogueNb, transactionNb});
 
         resetHeaderMap();
         if (sipNodeContext == null) {
@@ -335,7 +335,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
         readSessionData();
         isRequest = "request".equals(getPropertyAsString("sip.message.type"));
 
-        if (_logger.isDebugEnabled()) _logger.debug("sample: {} : {} :: {} : {}: {}", direction, isRequest, dialogueNb, transactionNb, relatedTransactionNb);
+        if (_logger.isDebugEnabled()) _logger.debug("sample: {} : {} :: {} : {}: {}", new Object[]{ direction, isRequest, dialogueNb, transactionNb, relatedTransactionNb});
     	long start = dateToString();
         if ("send".equals(direction)) {
             sendMessage(res);
@@ -345,7 +345,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             if (_logger.isDebugEnabled()) _logger.debug("sample unknown {}", direction);
         }
         if (_logger.isDebugEnabled()) {long diff = dateToString() - start;
-	if (diff > 10 && _logger.isWarnEnabled()) _logger.warn("sampler sample for node name  {} : {} : {} :: {} {} -> RUN took {}", sipNodeName, direction, isRequest, dialogueNb, transactionNb, diff); }
+	if (diff > 10 && _logger.isWarnEnabled()) _logger.warn("sampler sample for node name  {} : {} : {} :: {} {} -> RUN took {}", new Object[]{ sipNodeName, direction, isRequest, dialogueNb, transactionNb, diff}); }
         res.sampleEnd();
 //        if (reset) {
 //            resetSessionData();
@@ -688,9 +688,9 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
 	                prackRequest.setHeader(rackHeader);
 			if (_logger.isDebugEnabled()) _logger.debug("Rack header tag set : {}", rack);
 	            	} catch (NumberFormatException nfe) {
-				if (_logger.isDebugEnabled()) _logger.debug("Rack header tag not set. Input badly formated : {} {}", rack, nfe);
+				if (_logger.isDebugEnabled()) _logger.debug("Rack header tag not set. Input badly formated : {} : {}", rack, nfe);
 	            	} catch (InvalidArgumentException iae) {
-				if (_logger.isDebugEnabled()) _logger.debug("Rack header tag not set. Invalid argument : {} {}", rack, iae);
+				if (_logger.isDebugEnabled()) _logger.debug("Rack header tag not set. Invalid argument : {} : {}", rack, iae);
 			}
 	            }
             }
@@ -879,15 +879,15 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                     res.setResponseMessage(ackRequest.toString());
                     res.setSuccessful(true);
                 } catch (InvalidArgumentException ex) {
-                    _logger.debug("Cannot send Ack, InvalidArgumentException {}", ex);
+                    _logger.debug("Cannot send Ack, InvalidArgumentException : {}", ex);
                     res.setResponseMessage("Cannot send Ack, InvalidArgumentException :" + ex.toString());
                     res.setSuccessful(false);
                 } catch (SipException e) {
-                    _logger.debug("Cannot send Ack, SipException {}", e);
+                    _logger.debug("Cannot send Ack, SipException : {}", e);
                     res.setResponseMessage("Cannot send Ack, SipException :" + e.toString());
                     res.setSuccessful(false);
                 } catch (ParseException e) {
-                    _logger.debug("Cannot send Ack, ParseException :{}", e);
+                    _logger.debug("Cannot send Ack, ParseException : {}", e);
                     res.setResponseMessage("Cannot send Ack, ParseException :" + e.toString());
                     res.setSuccessful(false);
                 }
@@ -897,7 +897,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                 res.setSuccessful(false);
             }
         } catch (Exception e) {
-            _logger.debug("send Ack exception {}", e);
+            _logger.debug("send Ack exception : {}", e);
             res.setResponseMessage("send Ack exception " + e.toString());
             res.setSuccessful(false);
         }
@@ -914,7 +914,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             if (inviteTid == null) {
                 if (_logger.isInfoEnabled())
                 {
-                    _logger.info("transaction is null ");
+                    _logger.info("transaction is null");
                 }
             }
          // Forking case: if relatedTransactionNb != null
@@ -927,11 +927,11 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             // Get the Dialog.
             Dialog theDialog = (relatedDialog!= null) ? relatedDialog :theSessionData.getTheDialog();         
             if (theDialog == null) {
-            	if (_logger.isDebugEnabled()) _logger.debug("dialog is null ");
+                if (_logger.isDebugEnabled()) _logger.debug("dialog is null");
             }
             Dialog dialog = (theDialog!= null) ? theDialog : inviteTid.getDialog();            
             if (dialog == null) {
-            	if (_logger.isDebugEnabled()) _logger.debug("dialog is null ");
+                if (_logger.isDebugEnabled()) _logger.debug("dialog is null");
                 res.setResponseMessage("dialog is null, cannot create " + command);
                 res.setSuccessful(false);
                 return;
@@ -1173,7 +1173,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             res.setResponseMessage(request.toString());
             res.setSuccessful(true);
         } catch (Exception ex) {
-            _logger.error("Send message in dialog exception : {} {}", theSessionData.getTheCallId() , ex);
+            _logger.error("Send message in dialog exception : {} : {}", theSessionData.getTheCallId() , ex);
             res.setResponseMessage("Send message in dialog exception : " + ex.toString());
             res.setSuccessful(false);
         }
@@ -1446,7 +1446,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                     aReq.sendResponse(theResponse);
                 } catch (SipException e) {
 		    _logger.debug("Send response message exception : {}", e);
-		    _logger.debug("Send response message exception : Try to create a new transaction ");
+		    _logger.debug("Send response message exception : Try to create a new transaction");
                     // try to clone the request, then create a new ServerTransaction
                     SIPRequest clonedRequest = (SIPRequest) previousRequest.clone();
 
@@ -1489,7 +1489,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
         	if (aReq.getDialog() != null) {
         		dialId =  aReq.getDialog().getDialogId();
         	}
-		if (_logger.isDebugEnabled()) _logger.debug("Send response message exception for {} : {} : {} : {}",getName(), dialId, prevReqDialId, ex);
+		if (_logger.isDebugEnabled()) _logger.debug("Send response message exception for {} : {} : {} : {}", new Object[]{ getName(), dialId, prevReqDialId, ex});
             res.setResponseMessage("Send response message exception for " + getName() +":" + dialId +":"+ prevReqDialId + " : " + ex.toString());
             res.setSuccessful(false);
         }
@@ -1584,7 +1584,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                     // Get Call-ID
                     String callid = rcvReq.getHeader("Call-ID").toString().substring("Call-ID".length() + 2);
                     callid = SipString.cleanString(callid);
-                    if (_logger.isDebugEnabled()) _logger.debug("incoming request callid {} .", callid);
+                    if (_logger.isDebugEnabled()) _logger.debug("incoming request callid {}.", callid);
                     
                     if ("INVITE".equals(rcvReq.getMethod())) {
 //                    	if ( _logger.isWarnEnabled()) _logger.warn("RCV INVITE : " + rcvReq.getHeader("Call-ID").toString().substring("Call-ID: ".length()).replaceAll("\\r|\\n", "")+ ", From = " + rcvReq.getHeader("From").toString().replaceAll("\\r|\\n", "")+ ", From = " + rcvReq.getHeader("To").toString().replaceAll("\\r|\\n", "") + "," + LocalDateTime.now().format(formatter));
@@ -1598,7 +1598,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                     theSessionData.setATransaction(transactionNb, theTransData);
                     theSessionData.setTheCallId(callid);
                     Dialog theDial = null;
-		    if (_logger.isDebugEnabled()) _logger.debug("is Dialog exist for method {} , callid ={}", rcvReq.getMethod(), callid);
+		    if (_logger.isDebugEnabled()) _logger.debug("is Dialog exist for method {}, callid ={}", rcvReq.getMethod(), callid);
                     if (aReq.getTheTransaction() != null) {
 	                    if (aReq.getTheTransaction().getDialog() == null  && DialogCreatingRequests.isCreating(rcvReq.getMethod())) {
 	                    	if (_logger.isDebugEnabled()) _logger.debug("Dialog does not exist, try to create it");
@@ -1636,15 +1636,15 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             if (callidStored != null && !"".equals(callidStored)) {
                 id = callidStored;
             }
-            if (_logger.isDebugEnabled()) _logger.debug("resp queue for id {} .", id);
+            if (_logger.isDebugEnabled()) _logger.debug("resp queue for id {}.", id);
             
             // Forking case: if relatedTransactionNb != null
             if (relatedTransactionNb != null && !"".equals(relatedTransactionNb) && !"None".equals(relatedTransactionNb)) {
-		if (_logger.isDebugEnabled()) _logger.debug("receiveAnswerMessage with relatedTransactionNb =  {} .", relatedTransactionNb);
+		if (_logger.isDebugEnabled()) _logger.debug("receiveAnswerMessage with relatedTransactionNb =  {}.", relatedTransactionNb);
             	try {
             	theSessionData.setADialog(relatedTransactionNb, sipProvider.getNewDialog(theSessionData.getATransaction(relatedTransactionNb).getTheTransaction()));
             	} catch (Throwable t) {
-			if (_logger.isDebugEnabled()) _logger.debug("receiveAnswerMessage with relatedTransactionNb =  {}  throwable {}", relatedTransactionNb, t.getMessage());
+			if (_logger.isDebugEnabled()) _logger.debug("receiveAnswerMessage with relatedTransactionNb = {}  throwable {}", relatedTransactionNb, t.getMessage());
             	}
             }            
 
@@ -1654,7 +1654,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
 
 
             if (respQueue == null) {
-		if (_logger.isDebugEnabled()) _logger.debug("resp queue not created for id {} .", id);
+		if (_logger.isDebugEnabled()) _logger.debug("resp queue not created for id {}.", id);
                 res.setResponseMessage("resp queue not created for id "+id +".");
                 res.setSuccessful(false);						
             } else {
@@ -1666,7 +1666,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                 SipResponseTransaction aResp = respQueue.poll(timeout, TimeUnit.MILLISECONDS);
                 if ( aResp == null){
                     // No message received
-                    if (_logger.isDebugEnabled()) _logger.debug("incoming response for id {}  not received within timeout {}", id, timeout);
+                    if (_logger.isDebugEnabled()) _logger.debug("incoming response for id {} not received within timeout {}", id, timeout);
                     if (isOptional) {
                         res.setResponseMessage("Optional: no response message received for id "+id + " within timeout "+timeout);
                         res.setSuccessful(true);
@@ -1677,7 +1677,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                 }
                 else {
                     // Message received                	
-			if (_logger.isDebugEnabled()) _logger.debug("receiveAnswerMessage: poll in responsesQeueues for id = {} . remaining queue size ={}", id, respQueue.size());
+			if (_logger.isDebugEnabled()) _logger.debug("receiveAnswerMessage: poll in responsesQeueues for id = {}. remaining queue size = {}", id, respQueue.size());
 
                     // Get the answer
                     Response rcvResp = aResp.getTheResponse();
@@ -1734,7 +1734,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
 					if (_logger.isDebugEnabled()) _logger.debug("response already received: should be retransmission {} : {}", lastStoredResp.toString(), rcvResp.toString());
 					return true;
 				} else {
-					if (_logger.isDebugEnabled()) _logger.debug("response not already received: it seems no to be a retransmission {} : {} ", lastStoredResp.toString(), rcvResp.toString());
+					if (_logger.isDebugEnabled()) _logger.debug("response not already received: it seems no to be a retransmission {} : {}", lastStoredResp.toString(), rcvResp.toString());
 					return false;
 				}
 			} else {
@@ -1771,7 +1771,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
 
 
     private void checkReceivedResponse(Response rcvResp, SampleResult res) {
-    	if (_logger.isDebugEnabled()) _logger.debug("checkReceivedResponse ");
+        if (_logger.isDebugEnabled()) _logger.debug("checkReceivedResponse");
         String diff = "";
         String expectedRespCode = getProperty("sip.message.response.code").getStringValue();
         res.setSuccessful(true);
@@ -1779,7 +1779,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
         res.setResponseMessage(rcvResp.toString());
         if (rcvResp.getStatusCode() != Integer.parseInt(expectedRespCode)) {
             diff = diff + "Response code check failed: " + expectedRespCode +":" + rcvResp.getStatusCode() + ".\n";
-            if (_logger.isDebugEnabled()) _logger.debug("checkReceivedResponse Response code check failed: {} : {} . ", expectedRespCode, rcvResp.getStatusCode());
+            if (_logger.isDebugEnabled()) _logger.debug("checkReceivedResponse Response code check failed: {} : {}.", expectedRespCode, rcvResp.getStatusCode());
         }
 
         diff = checkHeaders(rcvResp, diff);
@@ -1809,7 +1809,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                         if (entry.getValue().size() != 1) {
                             // Error : two different values
                             diff = diff + entry.getKey() + " check failed: Request-URI has 1 value, not " + entry.getValue().size() + ".\n";
-                            if (_logger.isDebugEnabled()) _logger.debug("checkReceivedMessage {} check failed: Request-URI has 1 value, not {} .",entry.getKey(),entry.getValue().size() );
+                            if (_logger.isDebugEnabled()) _logger.debug("checkReceivedMessage {} check failed: Request-URI has 1 value, not {}.",entry.getKey(),entry.getValue().size() );
                         } else {
                             String reqURIrcv = ((Request)rcvMsg).getRequestURI().toString();
                             String compVal = entry.getValue().get(0);
@@ -1823,13 +1823,13 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                                 if (!checkOneHeaderWithPattern(aH, eV)) { //eV.equals(aH)) {
                                     // Error : value does not match the pattern
                                     diff = diff + entry.getKey() + " check with pattern failed: " + eV +":" + aH + ".\n";
-                                    if (_logger.isDebugEnabled()) _logger.debug("checkReceivedMessage {} check with pattern failed: {} : {} .",entry.getKey(), eV, aH );
+                                    if (_logger.isDebugEnabled()) _logger.debug("checkReceivedMessage {} check with pattern failed: {} : {}.",entry.getKey(), eV, aH );
                                 }
                             } else  {
                                 if (!checkOneHeader(reqURIrcv, compVal)) { //eV.equals(aH)) {
                                     // Error : two different values
                                     diff = diff + entry.getKey() + " check failed: " + reqURIrcv +":" + compVal + ".\n";
-                                    if (_logger.isDebugEnabled()) _logger.debug("checkReceivedMessage {} check failed: {} : {} .", entry.getKey(), reqURIrcv, compVal);
+                                    if (_logger.isDebugEnabled()) _logger.debug("checkReceivedMessage {} check failed: {} : {}.", entry.getKey(), reqURIrcv, compVal);
                                 }       
                             }
                         }
@@ -1874,7 +1874,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                                     if (!checkOneHeaderWithPattern(aH, eV)) { //eV.equals(aH)) {
                                         // Error : value does not match the pattern
                                         diff = diff + entry.getKey() + " check with pattern failed: " + eV +":" + aH + ".\n";
-                                        if (_logger.isDebugEnabled()) _logger.debug("checkReceivedMessage {}  check with pattern failed: {} : {} .", entry.getKey(),eV, aH );
+                                        if (_logger.isDebugEnabled()) _logger.debug("checkReceivedMessage {}  check with pattern failed: {} : {}.", entry.getKey(),eV, aH );
                                     }
                                 }
 
@@ -1886,7 +1886,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                                         if (!checkOneHeader(aH, eV)) { //eV.equals(aH)) {
                                             // Error : two different values
                                             diff = diff + entry.getKey() + " check failed: " + eV +":" + aH + ".\n";
-                                            if (_logger.isDebugEnabled()) _logger.debug("checkReceivedMessage {} check failed: {} : {} .", entry.getKey(), eV, aH );
+                                            if (_logger.isDebugEnabled()) _logger.debug("checkReceivedMessage {} check failed: {} : {}.", entry.getKey(), eV, aH );
                                         } 
                                     }
                                 }
@@ -1913,7 +1913,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                 try {
                     bodyToValidate = new String(rcvMsg.getRawContent(), CharEncoding.UTF_8);	//StandardCharsets.UTF_8);
                 } catch (UnsupportedEncodingException e) {
-			if (_logger.isDebugEnabled()) _logger.debug("checkHeaders: body decoding exception  {}", e);
+			if (_logger.isDebugEnabled()) _logger.debug("checkHeaders: body decoding exception : {}", e);
                 }
             }
             //replaceAll("[\n\r]", "");
@@ -1926,7 +1926,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                 if (!checkOneHeaderWithPattern(bodyToValidate, bodyValueToCheck)) { //eV.equals(aH)) {
                     // Error : value does not match the pattern
                     diff = diff + " body check with pattern failed: " + bodyValueToCheck +":" + bodyToValidate + ".\n";
-                    if (_logger.isDebugEnabled()) _logger.debug("checkReceivedMessage body check with pattern failed: {} : {} .", bodyValueToCheck, bodyToValidate);
+                    if (_logger.isDebugEnabled()) _logger.debug("checkReceivedMessage body check with pattern failed: {} : {}.", bodyValueToCheck, bodyToValidate);
                 }
             } else {        	
                 if (!bodyValueToCheck.replaceAll("[\n\r]", "").equals(bodyToValidate.replaceAll("[\n\r]", ""))){
@@ -1951,7 +1951,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
         String tagcomp = SipString.extractTag(comparisonValue);
         String valrcv = SipString.removeTag2(receivedValue, ";tag="+tagrcv);
         String valcomp = SipString.removeTag2(comparisonValue, ";tag="+tagcomp);
-        if (_logger.isDebugEnabled()) _logger.debug("checkOneHeader {} : {} : {} : {}", tagrcv, tagcomp, valrcv, valcomp);
+        if (_logger.isDebugEnabled()) _logger.debug("checkOneHeader {} : {} : {} : {}", new String[]{tagrcv, tagcomp, valrcv, valcomp});
         if (tagcomp != null && !tagcomp.equals(tagrcv)) {
             return false;
         }
@@ -1966,7 +1966,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
          * Pattern syntax definition
          * https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html
          */
-	if (_logger.isDebugEnabled()) _logger.debug("checkOneHeaderWithPattern {}  with pattern : {} ", receivedValue, pattern);
+	if (_logger.isDebugEnabled()) _logger.debug("checkOneHeaderWithPattern {} with pattern : {}", receivedValue, pattern);
         String extractedPattern = pattern.substring("PATTERN:".length());
         if (extractedPattern == null || "".equals(extractedPattern)) {
             return false;
@@ -2003,7 +2003,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                     if (via.length == 3) {
                         branch = via[2];
                     }
-                    if (_logger.isDebugEnabled()) _logger.debug("createViaHeader add {} : {} : {} : {}", ipAddress, ipPort, transport, branch);
+                    if (_logger.isDebugEnabled()) _logger.debug("createViaHeader add {} : {} : {} : {}", new Object[]{ ipAddress, ipPort, transport, branch});
                     ViaHeader viaHeader = headerFactory.createViaHeader(ipAddress, ipPort, transport, branch);
                     
                     viaHeaders.add(viaHeader);
@@ -2024,7 +2024,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
         for (String oneRouteString : routeString) {
             if (oneRouteString != null && !"".equals(oneRouteString)) {
             	
-                    _logger.debug("createRouteHeader one route  {}", oneRouteString);
+                    _logger.debug("createRouteHeader one route {}", oneRouteString);
                     if (_logger.isDebugEnabled()) _logger.debug("createRouteHeader add {}", oneRouteString);
                     RouteHeader routeHeader = headerFactory.createRouteHeader(addressFactory.createAddress(oneRouteString));
                     
@@ -2060,7 +2060,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                 }
 
             } catch (ParseException e) {
-		if (_logger.isDebugEnabled()) _logger.debug("ParseException when creating To header {}", e);
+		if (_logger.isDebugEnabled()) _logger.debug("ParseException when creating To header : {}", e);
             }
         } else {
         	if (_logger.isDebugEnabled()) _logger.debug("To is null...");
@@ -2093,7 +2093,7 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                 }
 
             } catch (ParseException e) {
-		if (_logger.isDebugEnabled()) _logger.debug("ParseException when creating From header {}", e);
+		if (_logger.isDebugEnabled()) _logger.debug("ParseException when creating From header : {}", e);
             }
         } else {
         	if (_logger.isDebugEnabled()) _logger.debug("From is null...");
