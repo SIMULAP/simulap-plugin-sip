@@ -39,12 +39,13 @@ import org.apache.jmeter.gui.util.VerticalPanel;
 import org.apache.jmeter.samplers.gui.AbstractSamplerGui;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jorphan.gui.GuiUtils;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
 
 import com.hpe.simulap.protocol.sip.sampler.SipSampler;
 import com.hpe.simulap.protocol.sip.utils.SipDico;
 import com.hpe.simulap.sip.headers.Header;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*******************************************************************************
  * This class MmeSamplerConfigGui is user interface gui for getting all the
@@ -105,7 +106,7 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
     private JLabel bodyLabel = new JLabel("Sip Body part");
 	private JTextArea bodyText = new JTextArea(10, 20);
 	
-    private static final Logger _logger = LoggingManager.getLoggerForClass();
+    private static final Logger _logger = LoggerFactory.getLogger(SipSamplerConfigGui.class);
 
 	/**
 	 * new introduced elements
@@ -128,18 +129,18 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 	 * This will initalize all the panel in the SipSamplerConfigGui
 	 **************************************************************************/
 	protected void init() {
-		_logger.debug("init ");
+		_logger.debug("init");
 		try {
 			dico = SipDico.loadDico();	
 		}
 		catch (JAXBException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
-			_logger.info("load dico failed: File parsing issue ");
+			_logger.info("load dico failed: File parsing issue");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
-			_logger.info("load dico failed: File not found ");
+			_logger.info("load dico failed: File not found");
 		}
 
 		setName("name2");
@@ -216,7 +217,7 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 	public void configure(TestElement element) {
 		
 	    if (_logger.isDebugEnabled())
-		_logger.debug("configure: element " + element.getName());
+		_logger.debug("configure: element {}", element.getName());
 
 		super.configure(element);
 		
@@ -262,7 +263,7 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 		
 		int j = dataModel.getColumnCount();
 		if (j != 2 ) {
-			_logger.error("Sip Headers data model should have 2 columns instead of " + j);
+			_logger.error("Sip Headers data model should have 2 columns instead of {}", j);
 		}
 		dataModel.setRowCount(0);
 		
@@ -298,7 +299,7 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 		int j = rowModel.getColumnCount();
 		int i = rowModel.getRowCount();
 		if (j != 2 ) {
-			_logger.error("Sip Headers data model should have 2 columns instead of " + j);
+			_logger.error("Sip Headers data model should have 2 columns instead of {}", j);
 		}
 		
         element.setProperty("sip.node.name", sipNodeName.getText());
@@ -435,7 +436,7 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 	 * This will create the Add test panel in the LdapConfigGui.
 	 */
 	private void createTreePanel(DynamicVerticalPanel vertPanel) {
-		_logger.debug("createTreePanel ");
+		_logger.debug("createTreePanel");
 
 		// Set some callbacks
 		
@@ -486,7 +487,7 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 
 
 	private void createResponseCodePanel(HorizontalPanel vertPanel) {
-		_logger.debug("createresponseCodePanel ");
+		_logger.debug("createresponseCodePanel");
 	    responseCodePanel.setBorder(BorderFactory.createTitledBorder("Which response code"));
 	    responseCodePanel.add(responseCodeValue);
         vertPanel.add(responseCodePanel);
@@ -494,7 +495,7 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 	
 	
 	private void createCommandPanel(DynamicVerticalPanel vertPanel) {
-		_logger.debug("createCommandPanel ");
+		_logger.debug("createCommandPanel");
 		//DynamicVerticalPanel commandPanel = new DynamicVerticalPanel();
 		HorizontalPanel commandPanel = new HorizontalPanel();
 		
@@ -546,11 +547,11 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 	}
 
 	private void onSipCommandChange(JComboBox cbxCommand) {
-		_logger.debug("onSipCommandChange ");
+		_logger.debug("onSipCommandChange");
 	}
 
 	public void valueChanged(TreeSelectionEvent e) {
-		_logger.debug("valueChanged " + e.toString());
+		_logger.debug("valueChanged : {}", e.toString());
 		saveTreeValue = false;
 		
 		TreePath oldPath = e.getOldLeadSelectionPath();
@@ -567,7 +568,7 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 
 	public void actionPerformed(ActionEvent e) {
 		String actionCommand = e.getActionCommand();
-		_logger.debug("actionPerformed " + actionCommand);
+		_logger.debug("actionPerformed {}", actionCommand);
 		
 		if ("Add".equals(actionCommand)) {
 			DefaultTableModel rowModel = (DefaultTableModel)table.getModel();
@@ -691,7 +692,7 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
     }
 
     public void tableChanged(TableModelEvent e) {
-    	_logger.debug("tableChanged ");
+        _logger.debug("tableChanged");
 		table.repaint();
     }
 

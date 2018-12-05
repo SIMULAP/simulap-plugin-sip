@@ -11,8 +11,8 @@ import org.apache.jmeter.testelement.AbstractTestElement;
 import org.apache.jmeter.testelement.TestIterationListener;
 import org.apache.jmeter.testelement.TestStateListener;
 import org.apache.jmeter.threads.JMeterVariables;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SipNodeElement extends AbstractTestElement implements ConfigElement,
 TestStateListener, TestIterationListener, TestBean {
@@ -21,7 +21,7 @@ TestStateListener, TestIterationListener, TestBean {
 	
 	private static final long serialVersionUID = -1521562608694035895L;
 			
-	private static final Logger _logger = LoggingManager.getLoggerForClass();
+	private static final Logger _logger = LoggerFactory.getLogger(SipNodeElement.class);
 
 	public static String TRANSPORT_TCP="TCP";
 	public static String TRANSPORT_UDP="UDP";
@@ -78,19 +78,19 @@ TestStateListener, TestIterationListener, TestBean {
 			stackLog = debugStack;
 		}
 		
-		_logger.info("testStarted()" + stackLog);
+		_logger.info("testStarted() {}", stackLog);
 
 		if (variables.getObject(getSipNodeName()) != null) {
-			_logger.warn("Sip node context already defined ", null);
+			_logger.warn("Sip node context already defined");
 		} else {
 			synchronized (this) {
 				try {
-					_logger.info("create Sip node  context with name " + getSipNodeName());
+					_logger.info("create Sip node  context with name {}", getSipNodeName());
 					// create a SIP link
 					variables.putObject(getSipNodeName(), new SipNodeContext(this));
 					
 				} catch (Exception e) {
-					_logger.error("cannot initialize SIP node ", e);
+					_logger.error("cannot initialize SIP node : {}", e);
 				}
 			}
 		}

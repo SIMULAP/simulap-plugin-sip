@@ -1,14 +1,12 @@
 //© Copyright 2018 Hewlett Packard Enterprise Development LP
 //Licensed under Apache License version 2.0: http://www.apache.org/licenses/LICENSE-2.0
 package com.hpe.simulap.protocol.sip.utils;
-
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SipString {
 
-    private static final Logger _logger = LoggingManager.getLoggerForClass();
-
+    private static final Logger _logger =LoggerFactory.getLogger(SipString.class);
     public static String cleanString (String a) {
     	if (a==null) {
     		return null; 
@@ -68,7 +66,7 @@ public class SipString {
 		if (b.startsWith(";")) {
 			b = b.substring(1);
 		}
-		if (_logger.isDebugEnabled()) _logger.debug("extractParams b =" + b + ".");
+		if (_logger.isDebugEnabled()) _logger.debug("extractParams b = {}.", b);
 		return b.split(";");
     }
     

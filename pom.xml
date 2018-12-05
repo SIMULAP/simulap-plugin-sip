@@ -15,7 +15,7 @@
 		<javasimon.core.version>3.5.2</javasimon.core.version>
 		<src.version>0.0</src.version>
 		<jmeter.command>/opt/simulap_manager/simulap/apache-jmeter/apache-jmeter-${apache.jmeter.version}/bin/jmeter</jmeter.command>
-
+		<slf4j.version>1.7.25</slf4j.version>
 	</properties>
 	<modelVersion>4.0.0</modelVersion>
 
@@ -307,6 +307,11 @@
 					<artifactId>commons-pool2</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.javasimon</groupId>
