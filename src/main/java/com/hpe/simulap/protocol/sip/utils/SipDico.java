@@ -47,7 +47,7 @@ public class SipDico {
 		List<Header> readList = null;
 		SipDico dico = new SipDico();
 		String localClassLocation = dico.getLocalClassLocation();
-		String dictionaryPath = System.getProperty("simulap.sip.dictionary.path", localClassLocation + "/../../dictionnaries");
+		String dictionaryPath = System.getProperty("simulap.sip.dictionary.path", localClassLocation + "/../../dictionaries");
 
 		//1. We need to create JAXContext instance
 		JAXBContext jaxbContext;
