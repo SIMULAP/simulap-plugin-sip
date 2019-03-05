@@ -415,13 +415,21 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
         } else if ("OPTIONS".equals(command)) {
             sendRequestInDialog(res, command);
         } else if ("NOTIFY".equals(command)) {
-            sendRequestNewDialog(res, command);
+                if (theSessionData.getTheDialog() == null) {
+                    sendRequestNewDialog(res, command);
+                } else {
+                    sendRequestInDialog(res, command);
+                }
         } else if ("SUBSCRIBE".equals(command)) {
             sendRequestNewDialog(res, command);
         } else if ("MESSAGE".equals(command)) {
             sendRequestInDialog(res, command);
         } else if ("REFER".equals(command)) {
-            sendRequestNewDialog(res, command);
+                if (theSessionData.getTheDialog() == null) {
+                    sendRequestNewDialog(res, command);
+                } else {
+                    sendRequestInDialog(res, command);
+                }
         } else if ("PUBLISH".equals(command)) {
             sendRequestNewDialog(res, command);
         } else if ("CANCEL".equals(command)) {
