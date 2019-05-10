@@ -30,7 +30,6 @@ TestStateListener, TestIterationListener, TestBean {
 	public static String FUNCTIONAL_TRAFIC = "FUNCTIONAL";
 	public static String PERFORMANCE_TRAFIC = "PERFORMANCE";
 	public static String SAMPLING_TRAFIC = "SAMPLING";
-	private String stackLog = "NONE";
 	
 	public static String YES = "yes";
 	public static String NO = "no";
@@ -73,19 +72,15 @@ TestStateListener, TestIterationListener, TestBean {
 		
 		TestBeanHelper.prepare(this);
 		JMeterVariables variables = getThreadContext().getVariables();
-		String debugStack = variables.get("stackloglevel");
-		if (debugStack != null && !debugStack.equals("")) {
-			stackLog = debugStack;
-		}
 		
-		_logger.info("testStarted() {}", stackLog);
+		_logger.info("testStarted() {}", getStackLog());
 
 		if (variables.getObject(getSipNodeName()) != null) {
 			_logger.warn("Sip node context already defined");
 		} else {
 			synchronized (this) {
 				try {
-					_logger.info("create Sip node  context with name {}", getSipNodeName());
+					_logger.info("create Sip node context with name {}", getSipNodeName());
 					// create a SIP link
 					variables.putObject(getSipNodeName(), new SipNodeContext(this));
 					
@@ -201,10 +196,23 @@ TestStateListener, TestIterationListener, TestBean {
 	public String getDebuglevel() {
 		JMeterVariables variables = getThreadContext().getVariables();
 
-		return variables.get("debugLevel");
+		String debugLevel = variables.get("debugLevel");
+		if (debugLevel == null) {
+			debugLevel = "ERROR";
+			_logger.debug("debugLevel forced to 'ERROR'");
+		}
+		
+		return debugLevel;
 	}
 
 	public String getStackLog() {
+		JMeterVariables variables = getThreadContext().getVariables();
+
+		String stackLog = variables.get("stackloglevel");
+		if (stackLog == null) {
+			stackLog = "NONE";
+		}
+		
 		return stackLog;
 	}
 
