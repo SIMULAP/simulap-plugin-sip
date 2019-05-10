@@ -196,18 +196,15 @@ public class SipNodeContext implements SipListener {
 		//		prop.setProperty("gov.nist.javax.sip.MESSAGE_PROCESSOR_FACTORY",  "gov.nist.javax.sip.stack.NioMessageProcessorFactory");
 
 		// Set SIP stack logging properties
-		String sipStackLogLevel = System.getProperty("gov.nist.javax.sip.TRACE_LEVEL","NONE"); 
 		if (!"NONE".equals(sipNode.getStackLog())) {
-			_logger.debug("SipNodeContext(SipNodeElement) SIP stack logging enabled : {}", sipNode.getDebuglevel());
+			_logger.debug("SipNodeContext(SipNodeElement) SIP stack logging enabled: {}", sipNode.getDebuglevel());
 			prop.setProperty("gov.nist.javax.sip.STACK_LOGGER", SipStackLogger.class.getName());
 			prop.setProperty("gov.nist.javax.sip.SERVER_LOGGER", SipServerLogger.class.getName());
-			if (sipNode.getDebuglevel() != null) {
-				prop.setProperty("gov.nist.javax.sip.TRACE_LEVEL", sipNode.getDebuglevel());
-			} else {
-				prop.setProperty("gov.nist.javax.sip.TRACE_LEVEL", "ERROR");
-			}
-		} if (!"NONE".equals(sipStackLogLevel)){
-			_logger.debug("SipNodeContext(SipNodeElement) SIP stack logging enabled by property : {}", sipStackLogLevel);
+			prop.setProperty("gov.nist.javax.sip.TRACE_LEVEL", sipNode.getDebuglevel());
+		} 
+		String sipStackLogLevel = System.getProperty("gov.nist.javax.sip.TRACE_LEVEL", "NONE"); 
+		if (!"NONE".equals(sipStackLogLevel)){
+			_logger.debug("SipNodeContext(SipNodeElement) SIP stack logging enabled by property: {}", sipStackLogLevel);
 			prop.setProperty("gov.nist.javax.sip.STACK_LOGGER", SipStackLogger.class.getName());
 			prop.setProperty("gov.nist.javax.sip.SERVER_LOGGER", SipServerLogger.class.getName());
 			prop.setProperty("gov.nist.javax.sip.TRACE_LEVEL", sipStackLogLevel);
@@ -259,6 +256,7 @@ public class SipNodeContext implements SipListener {
 			System.clearProperty("javax.net.ssl.trustStorePassword");
 		}
 		_logger.debug("javax.net.ssl.trustStoreType {}", System.getProperty("javax.net.ssl.trustStoreType","NOTHING"));
+		
 		_logger.debug("javax.net.ssl.trustStore {}", System.getProperty("javax.net.ssl.trustStore","NOTHING"));
 		_logger.debug("javax.net.ssl.trustStorePassword {}", System.getProperty("javax.net.ssl.trustStorePassword","NOTHING"));
 
@@ -294,9 +292,9 @@ public class SipNodeContext implements SipListener {
 					_logger.error("createListeningPoint FAILED for {} : {} : {} : {}", new Object[]{ sipNode.getLocalIP(), Integer.parseInt(sipNode.getLocalPort()), sipNode.getLocalTransport(), e});
 					sipListening = null;
 					notReadyReason = "createListeningPoint FAILED for " + sipNode.getLocalIP()+ ":" + Integer.parseInt(sipNode.getLocalPort())+ ":" +  sipNode.getLocalTransport() + "due to " + e.getMessage();
-				}    
-
+				}
 			}
+			
 			if (sipListening != null) {
 				try {
 					sipProvider = sipStack.createSipProvider(sipListening);
