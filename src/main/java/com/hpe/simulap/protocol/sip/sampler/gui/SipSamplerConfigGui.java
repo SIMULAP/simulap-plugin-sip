@@ -1,4 +1,3 @@
-//© Copyright 2018 Hewlett Packard Enterprise Development LP
 //Licensed under Apache License version 2.0: http://www.apache.org/licenses/LICENSE-2.0
 package com.hpe.simulap.protocol.sip.sampler.gui;
 
@@ -366,7 +365,7 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 
 	/**
 	 * Refer to  CR7623.
-	 * @param vertPanel
+	 * @param vertPanel Panel in which DirectionPanel is added
 	 */
 	protected void createDirectionPanel(DynamicVerticalPanel vertPanel) {
 		_logger.debug("SipSamplerConfigGui createDirectionPanel");
@@ -462,7 +461,7 @@ public class SipSamplerConfigGui extends AbstractSamplerGui implements
 
 	/**
 	 * Refer to  CR7623.
-	 * @param vertPanel
+	 * @param vertPanel Panel in which RequestResponsePanel is added
 	 */
 	protected void createRequestResponsePanel(HorizontalPanel vertPanel) {
 	

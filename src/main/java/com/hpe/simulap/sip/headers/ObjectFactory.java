@@ -20,7 +20,7 @@ import javax.xml.namespace.QName;
  * This object contains factory methods for each 
  * Java content interface and Java element interface 
  * generated in the com.hp.simulap.sip.headers package. 
- * <p>An ObjectFactory allows you to programatically 
+ * <p>An ObjectFactory allows you to programmatically 
  * construct new instances of the Java representation 
  * for XML content. The Java representation of XML 
  * content can consist of schema derived interfaces 
@@ -45,6 +45,7 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link HeaderList }
      * 
+     * @return HeaderList
      */
     public HeaderList createHeaderList() {
         return new HeaderList();
@@ -53,14 +54,17 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link Header }
      * 
+     * @return Header
      */
     public Header createHeader() {
         return new Header();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link HeaderList }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link HeaderList }{@code >}} @
      * 
+     * @param value HeaderList to be created as headers
+     * @return HeaderList as JAXBElement
      */
     @XmlElementDecl(namespace = "http://www.hp.com/simulap/sip", name = "headers")
     public JAXBElement<HeaderList> createHeaders(HeaderList value) {
