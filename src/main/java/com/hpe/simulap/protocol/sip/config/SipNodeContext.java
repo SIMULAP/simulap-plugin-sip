@@ -173,7 +173,6 @@ public class SipNodeContext implements SipListener {
 		_logger.debug("SipNodeContext(SipNodeElement) for node name {}", sipNode.getSipNodeName());
 
 		testPortStatus(sipNode.getSipNodeName() + " creation" , Integer.parseInt(sipNode.getLocalPort()));
-
 		sipFactory = null;
 		sipStack = null;
 		sipFactory = SipFactory.getInstance();
@@ -196,20 +195,19 @@ public class SipNodeContext implements SipListener {
 		//		prop.setProperty("gov.nist.javax.sip.MESSAGE_PROCESSOR_FACTORY",  "gov.nist.javax.sip.stack.NioMessageProcessorFactory");
 
 		// Set SIP stack logging properties
+		prop.setProperty("gov.nist.javax.sip.STACK_LOGGER", SipStackLogger.class.getName());
+		prop.setProperty("gov.nist.javax.sip.SERVER_LOGGER", SipServerLogger.class.getName());
+		
+		String sipStackLogLevel = System.getProperty("gov.nist.javax.sip.TRACE_LEVEL", "NONE"); 
 		if (!"NONE".equals(sipNode.getStackLog())) {
 			_logger.debug("SipNodeContext(SipNodeElement) SIP stack logging enabled: {}", sipNode.getDebuglevel());
-			prop.setProperty("gov.nist.javax.sip.STACK_LOGGER", SipStackLogger.class.getName());
-			prop.setProperty("gov.nist.javax.sip.SERVER_LOGGER", SipServerLogger.class.getName());
 			prop.setProperty("gov.nist.javax.sip.TRACE_LEVEL", sipNode.getDebuglevel());
-		} 
-		String sipStackLogLevel = System.getProperty("gov.nist.javax.sip.TRACE_LEVEL", "NONE"); 
-		if (!"NONE".equals(sipStackLogLevel)){
+		} else if (!"NONE".equals(sipStackLogLevel)){
 			_logger.debug("SipNodeContext(SipNodeElement) SIP stack logging enabled by property: {}", sipStackLogLevel);
-			prop.setProperty("gov.nist.javax.sip.STACK_LOGGER", SipStackLogger.class.getName());
-			prop.setProperty("gov.nist.javax.sip.SERVER_LOGGER", SipServerLogger.class.getName());
 			prop.setProperty("gov.nist.javax.sip.TRACE_LEVEL", sipStackLogLevel);
 		} else {
-			_logger.debug("SipNodeContext(SipNodeElement) SIP stack logging disabled");
+			_logger.debug("SipNodeContext(SipNodeElement) SIP stack logging forced to `ERROR`");
+			prop.setProperty("gov.nist.javax.sip.TRACE_LEVEL", "ERROR");
 		}
 
 		String enableGlobalCaching = System.getProperty("sip.enableGlobalCaching","NOGLOBALCACHING");
@@ -277,7 +275,7 @@ public class SipNodeContext implements SipListener {
 					_logger.debug("createListeningPoint for {} : {} : {}", sipNode.getLocalIP(), Integer.parseInt(sipNode.getLocalPort()), sipNode.getLocalTransport());
 					sipListening = sipStack.createListeningPoint(sipNode.getLocalIP(), Integer.parseInt(sipNode.getLocalPort()), sipNode.getLocalTransport());
 					if (sipListening == null) {
-						_logger.error("createListeningPoint FAILED for {} : {} : {}", sipNode.getLocalIP(), Integer.parseInt(sipNode.getLocalPort()), sipNode.getLocalTransport());
+						_logger.debug("createListeningPoint FAILED for {} : {} : {}", sipNode.getLocalIP(), Integer.parseInt(sipNode.getLocalPort()), sipNode.getLocalTransport());
 						notReadyReason = "createListeningPoint FAILED for " + sipNode.getLocalIP()+ ":" + Integer.parseInt(sipNode.getLocalPort())+ ":" +  sipNode.getLocalTransport();
 					}
 				} catch (NumberFormatException e) {
@@ -351,7 +349,7 @@ public class SipNodeContext implements SipListener {
 					if ("NOLOCALPERFLISTENER".equals(perfListenerClassName)) {
 						perfListenerClassName = System.getProperty("sip.perfListenerClassName","NOGLOBALPERFLISTENER");
 						if ("NOGLOBALPERFLISTENER".equals(perfListenerClassName)) {
-							_logger.error("perfListener = default SimpleCallWithPrack");
+							_logger.info("perfListener = default SimpleCallWithPrack");
 							perfListenerClassName = SimpleCallWithPrack.class.getName();
 							perfListener = new SimpleCallWithPrack(this);	
 						} else {
@@ -365,7 +363,7 @@ public class SipNodeContext implements SipListener {
 					try {
 						clazz = Class.forName(perfListenerClassName);
 						perfListener = (SipListener) clazz.newInstance();
-						_logger.error("PerfListener created with {}", perfListenerClassName);
+						_logger.debug("PerfListener created with {}", perfListenerClassName);
 					} catch (Exception e) {
 						_logger.error("PerfListener creation failuer for {} due to : {}", perfListenerClassName, e);
 					}
@@ -389,7 +387,7 @@ public class SipNodeContext implements SipListener {
 
 		String idH = sipNode.getIdentificationHeader(); 
 		if ((idH == null || idH.equals("")) || (!idH.equals("To") && !idH.equals("From") && !idH.equals("Request-URI") && !idH.equals("Call-ID") )) {
-			_logger.error("identification header not supported : {}", idH);
+			_logger.warn("identification header not supported : {}", idH);
 			isNodeReady = false;
 			notReadyReason = "identification header not supported : " + idH;
 		}
@@ -990,7 +988,7 @@ public class SipNodeContext implements SipListener {
 	}
 
 	public void resetQueues(String id) {
-		//_logger.error("resetQueues Resp for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> START " + dateToString());
+		//_logger.debug("resetQueues Resp for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> START " + dateToString());
 		long start = dateToString();
 			ArrayBlockingQueue<SipResponseTransaction> queueResp = msgResponsesQueues.get(id);
 			if (queueResp != null) {
@@ -1009,7 +1007,7 @@ public class SipNodeContext implements SipListener {
 	}
 
 	public void resetRequestQueues(String id) {
-		//_logger.error("resetQueues Req for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> START " + dateToString());
+		//_logger.debug("resetQueues Req for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> START " + dateToString());
 		long start = dateToString();
 		ArrayBlockingQueue<SipRequestTransaction> queueReq = msgRequestsQueues.get(id);
 		if (queueReq != null) {
@@ -1022,7 +1020,7 @@ public class SipNodeContext implements SipListener {
 	}
 
 	public void resetResponseQueues(String id) {
-		//_logger.error("resetQueues Resp for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> START " + dateToString());
+		//_logger.debug("resetQueues Resp for id " + id + ", and node name " + sipNode.getSipNodeName() + " -> START " + dateToString());
 		long start = dateToString();
 		ArrayBlockingQueue<SipResponseTransaction> queueResp = msgResponsesQueues.get(id);
 		if (queueResp != null) {
@@ -1079,14 +1077,14 @@ public class SipNodeContext implements SipListener {
 	}
 
 	public SipDialogData readSessionData(String id) {
-		//_logger.error("readSessionData for " + sipNodeName +"." + dialogueNb + ", with identification = " + identification);
+		//_logger.debug("readSessionData for " + sipNodeName +"." + dialogueNb + ", with identification = " + identification);
 		        
 			return dialogList.get(id);
 		
 	}
 
 	public void resetSessionData(String id) {
-		//_logger.error("resetSessionData for " + sipNodeName +"." + dialogueNb + ", with identification = " + identification);
+		//_logger.debug("resetSessionData for " + sipNodeName +"." + dialogueNb + ", with identification = " + identification);
 		
 			dialogList.remove(id);
 		
