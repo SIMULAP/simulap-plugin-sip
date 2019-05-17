@@ -30,9 +30,7 @@
 		<url>https://github.com/SIMULAP/simulap-plugin-sip/issues</url>
 	</issueManagement>
 
-	<ciManagement>
-		<system></system>
-	</ciManagement>
+	<ciManagement/>
 
 	<properties>
 		<maven.install.plugin>2.5.2</maven.install.plugin>
@@ -152,7 +150,7 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>${maven.javadoc.plugin}</version>
 				<configuration>
-					<outputDirectory>${project.build.directory}/jar</outputDirectory>
+					<jarOutputDirectory>${project.build.directory}/jar</jarOutputDirectory>
 				</configuration>
 				<executions>
 					<execution>
