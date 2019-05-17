@@ -129,6 +129,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<version>${maven.source.plugin}</version>
+				<configuration>
+					<outputDirectory>${project.build.directory}/jar</outputDirectory>
+				</configuration>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -148,6 +151,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>${maven.javadoc.plugin}</version>
+				<configuration>
+					<outputDirectory>${project.build.directory}/jar</outputDirectory>
+				</configuration>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
@@ -163,7 +169,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>${maven.jar.plugin}</version>
 				<configuration>
-					<outputDirectory>${project.build.directory}/lib/ext</outputDirectory>
+					<outputDirectory>${project.build.directory}/jar</outputDirectory>
 					<archive>
 						<index>false</index>
 						<manifest>
@@ -238,7 +244,7 @@
 					<arguments>
 						<argument>-j</argument>
 						<argument>${project.build.directory}/jmeter.log</argument>
-						<argument>"-Jsearch_paths=${project.build.directory}"</argument>
+						<argument>"-Jsearch_paths=${project.build.directory}/jar"</argument>
 						<argument>"-Jplugin_dependency_paths=${project.build.directory}/dependencies"</argument>
 						<argument>"-Jsimulap.sip.dictionary.path=${main.basedir}/dictionaries"</argument>
 						<argument>-Duser.dir=${main.basedir}/tests</argument>
