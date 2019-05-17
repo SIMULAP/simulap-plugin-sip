@@ -11,7 +11,7 @@
 	<description>brings SIP connectivity to Apache JMeter</description>
 	<packaging>pom</packaging>
 	<version>${plugin.version}-${src.version}</version>
-	<name>simulap-jmeter-sip</name>
+	<name>simulap-plugin-sip</name>
 
 	<organization>
 		<name>HPE SIMULAP</name>

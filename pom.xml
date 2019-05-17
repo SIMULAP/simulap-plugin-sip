@@ -9,7 +9,7 @@
 	<artifactId>simulap-plugin-sip</artifactId>
 	<description>brings SIP connectivity to Apache JMeter</description>
 	<packaging>jar</packaging>
-	<name>simulap-jmeter-sip</name>
+	<name>simulap-plugin-sip</name>
 
 	<organization>
 		<name>HPE SIMULAP</name>
