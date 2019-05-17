@@ -28,9 +28,7 @@
 		<url>https://github.com/SIMULAP/simulap-plugin-sip/issues</url>
 	</issueManagement>
 
-	<ciManagement>
-		<system></system>
-	</ciManagement>
+	<ciManagement/>
 
 	<parent>
 		<artifactId>simulap-plugin-sip-parent</artifactId>
