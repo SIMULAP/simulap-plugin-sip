@@ -163,7 +163,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>${maven.jar.plugin}</version>
 				<configuration>
-                    <outputDirectory>${project.build.directory}/lib/ext</outputDirectory>
+					<outputDirectory>${project.build.directory}/lib/ext</outputDirectory>
 					<archive>
 						<index>false</index>
 						<manifest>
@@ -240,7 +240,7 @@
 						<argument>${project.build.directory}/jmeter.log</argument>
 						<argument>"-Jsearch_paths=${project.build.directory}"</argument>
 						<argument>"-Jplugin_dependency_paths=${project.build.directory}/dependencies"</argument>
-						<argument>"-Jsimulap.sip.dictionary.path=${project.basedir}/dictionaries"</argument>
+						<argument>"-Jsimulap.sip.dictionary.path=${main.basedir}/dictionaries"</argument>
 						<argument>-Duser.dir=${main.basedir}/tests</argument>
 						<argument>-t</argument>
 						<argument>${main.basedir}/tests/SIPtestsGlobal.jmx</argument>
@@ -283,7 +283,7 @@
 			<artifactId>jainsip-api</artifactId>
 			<version>${jain.sip.api.version}</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/vendor/jain-sip/jain-sip-api-${jain.sip.api.version}.jar</systemPath>
+			<systemPath>${main.basedir}/lib/vendor/jain-sip/jain-sip-api-${jain.sip.api.version}.jar</systemPath>
 		</dependency>
 
 		<dependency>
@@ -291,7 +291,7 @@
 			<artifactId>jain-sip-ri</artifactId>
 			<version>${jain.sip.ri.version}</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/vendor/jain-sip/jain-sip-ri-${jain.sip.ri.version}.jar</systemPath>
+			<systemPath>${main.basedir}/lib/vendor/jain-sip/jain-sip-ri-${jain.sip.ri.version}.jar</systemPath>
 		</dependency>
 
 	</dependencies>
