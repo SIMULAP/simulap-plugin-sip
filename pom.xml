@@ -4,26 +4,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<apache.jmeter.version>4.0</apache.jmeter.version>
-		<plugin.version>0.0</plugin.version>
-		<jain.sip.api.version>1.2.0-4</jain.sip.api.version>
-		<jain.sip.ri.version>1.2.234.4-hpe-1</jain.sip.ri.version>
-		<javasimon.core.version>3.5.2</javasimon.core.version>
-		<src.version>0.0</src.version>
-		<jmeter.command>/opt/simulap_manager/simulap/apache-jmeter/apache-jmeter-${apache.jmeter.version}/bin/jmeter</jmeter.command>
-		<slf4j.version>1.7.25</slf4j.version>
-	</properties>
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.hpe.simulap</groupId>
 	<artifactId>simulap-plugin-sip</artifactId>
-	<description>brings SIP connectivity in SIMULAP</description>
-	<packaging>pom</packaging>
-	<version>${plugin.version}-${src.version}</version>
+	<description>brings SIP connectivity to Apache JMeter</description>
+	<packaging>jar</packaging>
+	<name>simulap-jmeter-sip</name>
+
+	<organization>
+		<name>HPE SIMULAP</name>
+		<url>https://github.hpe.com/SIMULAP</url>
+	</organization>
 
 	<scm>
 		<connection>scm:git@github.com:SIMULAP/simulap-plugin-sip.git</connection>
@@ -32,316 +23,27 @@
 		<tag>JMeter plugin SIP</tag>
 	</scm>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-install-plugin</artifactId>
-				<version>2.4</version>
-				<executions>
-					<execution>
-						<id>install-jain-sip-api</id>
-						<phase>clean</phase>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-						<configuration>
-							<packaging>jar</packaging>
-							<file>${project.basedir}/sys/lib/jain-sip-api-${jain.sip.api.version}.jar</file>
-							<groupId>javax.sip</groupId>
-							<artifactId>jain-sip-api</artifactId>
-							<version>${jain.sip.api.version}</version>
-						</configuration>
-					</execution>
-					<execution>
-						<id>install-jain-sip-ri</id>
-						<phase>clean</phase>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-						<configuration>
-							<packaging>jar</packaging>
-							<file>${project.basedir}/sys/lib/jain-sip-ri-${jain.sip.ri.version}.jar</file>
-							<groupId>javax.sip</groupId>
-							<artifactId>jain-sip-ri</artifactId>
-							<version>${jain.sip.ri.version}</version>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.1.0</version>
-				<executions>
-					<execution>
-						<id>default-testResources</id>
-						<phase>process-test-resources</phase>
-						<goals>
-							<goal>testResources</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>default-resources</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>resources</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
-				<executions>
-					<execution>
-						<id>sip-compile</id>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-						<phase>package</phase>
-					</execution>
-				</executions>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.0.2</version>
-				<executions>
-					<execution>
-						<id>sip-jar</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<finalName>simulap-plugin-sip</finalName>
-							<outputDirectory>${project.build.directory}</outputDirectory>
-							<archive>
-								<index>false</index>
-								<manifest>
-									<addClasspath>false</addClasspath>
-									<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-									<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-								</manifest>
-								<manifestEntries>
-									<mode>production</mode>
-									<Apache-JMeter-Version>${apache.jmeter.version}</Apache-JMeter-Version>
-								</manifestEntries>
-							</archive>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>rpm-maven-plugin</artifactId>
-				<version>2.1.5</version>
-				<configuration>
-					<name>simulap-jmeter-sip</name>
-					<group>hpe/simulap</group>
-					<packager>hpe</packager>
-					<needarch>noarch</needarch>
-
-					<defaultFilemode>644</defaultFilemode>
-					<defaultUsername>ocadmin</defaultUsername>
-					<defaultGroupname>ocadmin</defaultGroupname>
-					<defaultDirmode>755</defaultDirmode>
-
-					<requires>
-						<require>simulap-jmeter-manager</require>
-					</requires>
-
-					<prefixes>
-						<prefix>/opt</prefix>
-					</prefixes>
-
-					<mappings>
-						<mapping>
-							<directory>/opt/simulap_manager/simulap/simulap-jmeter-sip/lib/ext</directory>
-							<sources>
-								<source>
-									<location>${project.build.directory}/simulap-plugin-sip.jar</location>
-								</source>
-							</sources>
-						</mapping>
-						<mapping>
-							<directory>/</directory>
-							<sources>
-								<source>
-									<location>${project.basedir}/rpm/</location>
-								</source>
-							</sources>
-						</mapping>
-						<mapping>
-							<directory>/opt/simulap_manager/simulap/simulap-jmeter-sip/sys/lib</directory>
-							<dependency>
-								<includes>
-									<include>org.javasimon:javasimon-core</include>
-								</includes>
-							</dependency>
-						</mapping>
-                        <mapping>
-                            <directory>/opt/simulap_manager/simulap/simulap-jmeter-sip/sys/lib</directory>
-                            <dependency>
-                                <includes>
-                                    <include>javax.sip:jain-sip-api</include>
-                                    <include>javax.sip:jain-sip-ri</include>
-                                </includes>
-                            </dependency>
-                            <sources>
-                                <source>
-                                    <location>${project.basedir}/sys/lib/jain-sip-api-${jain.sip.api.version}.jar</location>
-                                </source>
-                                <source>
-                                    <location>${project.basedir}/sys/lib/jain-sip-ri-${jain.sip.ri.version}.jar</location>
-                                </source>
-                            </sources>
-                        </mapping>
-						<mapping>
-							<directory>/opt/simulap_manager/simulap/simulap-jmeter-sip/lib</directory>
-							<sources>
-								<softlinkSource>
-									<destination>jain-sip-api.jar</destination>
-									<location>/opt/simulap_manager/simulap/simulap-jmeter-sip/sys/lib/jain-sip-api-${jain.sip.api.version}.jar</location>
-								</softlinkSource>
-								<softlinkSource>
-									<destination>jain-sip-ri.jar</destination>
-									<location>/opt/simulap_manager/simulap/simulap-jmeter-sip/sys/lib/jain-sip-ri-${jain.sip.ri.version}.jar</location>
-								</softlinkSource>
-								<softlinkSource>
-									<destination>javasimon-core.jar</destination>
-									<location>/opt/simulap_manager/simulap/simulap-jmeter-sip/sys/lib/javasimon-core-${javasimon.core.version}.jar</location>
-								</softlinkSource>
-							</sources>
-						</mapping>
-					</mappings>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>3.0.2</version>
-				<executions>
-					<execution>
-						<id>get dependencies into target/dependencies</id>
-						<phase>install</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<artifactItems>
-						<artifactItem>
-							<groupId>javax.sip</groupId>
-							<artifactId>jain-sip-api</artifactId>
-							<version>${jain.sip.api.version}</version>
-							<type>jar</type>
-							<overWrite>false</overWrite>
-							<outputDirectory>${project.build.directory}/dependencies</outputDirectory>
-						</artifactItem>
-						<artifactItem>
-							<groupId>javax.sip</groupId>
-							<artifactId>jain-sip-ri</artifactId>
-							<version>${jain.sip.ri.version}</version>
-							<type>jar</type>
-							<overWrite>false</overWrite>
-							<outputDirectory>${project.build.directory}/dependencies</outputDirectory>
-						</artifactItem>
-						<artifactItem>
-							<groupId>org.javasimon</groupId>
-							<artifactId>javasimon-core</artifactId>
-							<version>${javasimon.core.version}</version>
-							<type>jar</type>
-							<overWrite>false</overWrite>
-							<outputDirectory>${project.build.directory}/dependencies</outputDirectory>
-						</artifactItem>
-					</artifactItems>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.1</version>
-				<executions>
-					<execution>
-						<id>start-jmeter-with-sip-plugin</id>
-						<phase>install</phase>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<executable>${jmeter.command}</executable>
-					<arguments>
-						<argument>-j</argument>
-						<argument>${project.build.directory}/jmeter.log</argument>
-						<argument>-Jsearch_paths=${project.build.directory}</argument>
-						<argument>"-Jplugin_dependency_paths=${project.build.directory}/dependencies;${project.basedir}/sys/lib"</argument>
-						<argument>-Duser.dir=${project.basedir}/rpm/opt/simulap_manager/simulap/simulap-jmeter-sip/test </argument>
-						<argument>-t</argument>
-						<argument>${project.basedir}/rpm/opt/simulap_manager/simulap/simulap-jmeter-sip/tests/SIPtestsGlobal.jmx</argument>
-					</arguments>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.apache.jmeter</groupId>
-			<artifactId>ApacheJMeter_core</artifactId>
-			<version>${apache.jmeter.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.commons</groupId>
-					<artifactId>commons-math3</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.apache.commons</groupId>
-					<artifactId>commons-pool2</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.javasimon</groupId>
-			<artifactId>javasimon-core</artifactId>
-			<version>${javasimon.core.version}</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.sip</groupId>
-			<artifactId>jainsip-api</artifactId>
-			<version>${jain.sip.api.version}</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/sys/lib/jain-sip-api-${jain.sip.api.version}.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.sip</groupId>
-			<artifactId>jain-sip-ri</artifactId>
-			<version>${jain.sip.ri.version}</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/sys/lib/jain-sip-ri-${jain.sip.ri.version}.jar</systemPath>
-		</dependency>
-
-	</dependencies>
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/SIMULAP/simulap-plugin-sip/issues</url>
 	</issueManagement>
+
 	<ciManagement>
-		<system> </system>
+		<system></system>
 	</ciManagement>
+
+	<parent>
+		<artifactId>simulap-plugin-sip-parent</artifactId>
+		<version>${plugin.version}-${src.version}</version>
+		<groupId>com.hpe.simulap</groupId>
+		<relativePath>parent/pom.xml</relativePath>
+	</parent>
+
+	<properties>
+		<main.basedir>${project.basedir}</main.basedir>
+
+		<jmeter.command>jmeter</jmeter.command>
+	</properties>
+
+	<build />
 </project>
