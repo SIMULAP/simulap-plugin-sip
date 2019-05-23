@@ -5,16 +5,16 @@
 <!--- Do not assign the issue to someone -->
 <!--- Do not give the issue a milestone -->
 <!--- Give the issue a label as following:
-- a `question` you have about how to use SIMULAP,
-- a `bug` you experienced by testing with SIMULAP,
-- an `enhancements` you required to lead your tests with SIMULAP,
-- the `help wanted` to increase your testing skills with SIMULAP. -->
+- a `question` you have about how to use the SIP plugin,
+- a `bug` you experienced by testing with the SIP plugin,
+- an `enhancement` you required to lead your tests with the SIP plugin,
+- the `help wanted` to increase your testing skills with the SIP plugin. -->
 <!--- Select `Support` as project -->
 
 ## Motivation and Context
 <!--- Provide issue context: -->
-* Project context: 
-* SIMULAP version: 
+* JMeter version: 
+* Plugin version: 
 * Operating System version: 
 <!--- Describe the impact of the issue on your activity. -->
 

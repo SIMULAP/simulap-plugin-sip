@@ -12,7 +12,7 @@ Changes proposed in this pull request:
 <!--- Do not give the issue a milestone -->
 <!--- Give the PR a label as following:
 - a `bug` you experienced by testing with the plugin,
-- an `enhancements` you required to lead your tests with the plugin. -->
+- an `enhancement` you required to lead your tests with the plugin. -->
 
 ## Resources
 <!--- (if appropriate):
