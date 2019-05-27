@@ -851,6 +851,8 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                         requestURI = addressFactory.createSipURI(req[0], req[1] );
                         ackRequest.setRequestURI(requestURI);
                     }
+				 // add other headers
+                    addHeaders(ackRequest);
                     
                     // Route header
                     ArrayList<RouteHeader> routeHeaders = createRouteHeader();
@@ -860,10 +862,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                         	ackRequest.addHeader(routeHeader);
                         }
                     }
-
-
-                    // add other headers
-                    addHeaders(ackRequest);
 
                     // Body part
                     String body = getPropertyAsString("sip.body.text");
@@ -1136,6 +1134,8 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
             	if (_logger.isDebugEnabled()) _logger.debug("contact header automatically set.");
             }            
 
+            // add other headers
+            addHeaders(request);
             // Route header
             ArrayList<RouteHeader> routeHeaders = createRouteHeader();
             if (routeHeaders != null) {
@@ -1144,10 +1144,6 @@ public class SipSampler extends AbstractSampler implements TestStateListener, Te
                 	request.addHeader(routeHeader);
                 }
             }
-            
-            // add other headers
-            addHeaders(request);
-            
             ClientTransaction ct = null;
 
 
