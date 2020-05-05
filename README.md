@@ -1,4 +1,4 @@
-![Update statistics](https://github.com/SIMULAP/simulap-plugin-sip/workflows/Update%20statistics/badge.svg) ![Lines of code](https://github.com/SIMULAP/simulap-plugin-sip/workflows/Update%20statistics/output/badge.svg)
+![Update statistics](https://github.com/SIMULAP/simulap-plugin-sip/workflows/Update%20statistics/badge.svg) ![Lines of code](https://github.com/SIMULAP/simulap-plugin-sip/workflows/Update%20statistics/update%20statistics/gha%20loc/badge.svg)
 
 © Copyright 2018-2020 Hewlett Packard Enterprise Development LP
 Licensed under Apache License version 2.0: http://www.apache.org/licenses/LICENSE-2.0
