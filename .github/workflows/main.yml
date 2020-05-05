@@ -16,7 +16,7 @@ jobs:
           debug: true
           directory: ./
           badge: ./output/badge.svg
-          patterns: '*.java|*.properties|pom.xml'  # Patterns in the format of a '.gitignore' file, separated by pipes.
+          patterns: '**/*.java|**/*.properties|**/pom.xml'  # Patterns in the format of a '.gitignore' file, separated by pipes.
           ignore: '*.md|scenario/|target/|tests/|lib/'
           
       - name: Print the output
