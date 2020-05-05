@@ -14,5 +14,5 @@ jobs:
           directory: ./
           badge: ./loc_badge.svg
           patterns: '*.js'  # Patterns in the format of a '.gitignore' file, separated by pipes.
-          ignore: 'node_modules'
+          ignore: 'node_modules|*.md|eclipse.*|scenario|target|tests|lib'
         
