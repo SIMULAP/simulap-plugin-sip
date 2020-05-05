@@ -12,6 +12,6 @@ jobs:
         with:
           debug: true
           directory: ./
-          badge: ./update_statistics/gha_loc/badge.svg
+          badge: ./update%20statistics/loc/badge.svg
           patterns: '*.js'  # Patterns in the format of a '.gitignore' file, separated by pipes.
           ignore: 'node_modules'
