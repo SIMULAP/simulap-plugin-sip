@@ -15,3 +15,6 @@ jobs:
           badge: ./loc/badge.svg
           patterns: '*.js'  # Patterns in the format of a '.gitignore' file, separated by pipes.
           ignore: 'node_modules'
+      - name: Count Lines of Code (cloc)
+        uses: djdefi/cloc-action@2
+        
