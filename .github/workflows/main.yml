@@ -2,17 +2,13 @@ on: [push]
 name: Update statistics
 
 jobs:
-  hello_world_job:
+  main_job:
     runs-on: ubuntu-latest
     name: Update statistics
     steps:
       - name: Make Code Badge
         uses: shadowmoose/GHA-LoC-Badge@1.0.0
         id: badge
-        on:
-          push:
-            branches:
-            - master
         with:
           debug: true
           directory: ./
