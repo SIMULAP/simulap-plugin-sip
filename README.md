@@ -1,7 +1,8 @@
-![Update statistics](https://github.com/SIMULAP/simulap-plugin-sip/workflows/Update%20statistics/badge.svg): ![Generated Lines of Code Button](https://raw.githubusercontent.com/SIMULAP/simulap-plugin-sip/image-data/badge.svg)
+<!-- ![Update statistics](https://github.com/SIMULAP/simulap-plugin-sip/workflows/Update%20statistics/badge.svg): ![Generated Lines of Code Button](https://raw.githubusercontent.com/SIMULAP/simulap-plugin-sip/image-data/badge.svg) -->
 
 [![License][License-Image]][License-Url]
 [![Version][Version-Badge]][Version-URL]
+![Generated Lines of Code Button](https://raw.githubusercontent.com/SIMULAP/simulap-plugin-sip/image-data/badge.svg)
 
 © Copyright 2018-2020 Hewlett Packard Enterprise Development LP
 Licensed under Apache License version 2.0: http://www.apache.org/licenses/LICENSE-2.0
