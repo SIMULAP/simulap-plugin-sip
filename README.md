@@ -67,5 +67,5 @@ Please refer to [simulap-plugin-sip GitHub wiki](https://github.com/SIMULAP/simu
 [License-Url]: https://www.apache.org/licenses/LICENSE-2.0
 [License-Image]: https://img.shields.io/badge/License-Apache2-blue.svg
 
-[Version-Badge]: https://d25lcipzij17d.cloudfront.net/badge.svg?id=go&type=5&v=1.11.0
+[Version-Badge]: https://d25lcipzij17d.cloudfront.net/badge.svg?id=gh&type=6&v=1.11.0
 [Version-URL]: https://github.com/SIMULAP/simulap-plugin-sip/releases/tag/1.11.0
