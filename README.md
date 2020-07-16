@@ -40,6 +40,10 @@ __Prerequisites__:
 
 __Step 1__:
 
+Copy `bin/upgrade.properties.sip` content into your JMeter's `bin/upgrade.properties` file.
+
+__Step 2__:
+
 ```
 > cd simulap-plugin-sip
 > mvn -X clean package 
